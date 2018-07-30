@@ -9,7 +9,7 @@
 \usepackage{tikz}
 \usepackage{mathrsfs}
 
-\usetikzlibrary{fit, shapes}
+\usetikzlibrary{fit, shapes, arrows}
 
 % \usepackage{courier}
 % \usepackage{subfigure}
@@ -292,10 +292,10 @@
             \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
             \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
         
-            \draw[projection] (a1) -- (b1);
-            \draw[projection] (a2) -- (b2);
-            \draw[projection] (a3) -- (b3);
-            \draw[projection] (a4) -- (b4);
+            \onslide<2->{\draw[projection] (a1) -- (b1);}
+            \onslide<3->{\draw[projection] (a2) -- (b2);}
+            \onslide<4->{\draw[projection] (a3) -- (b3);}
+            \onslide<5->{\draw[projection] (a4) -- (b4);}
           \end{tikzpicture}
     \end{center}
 \end{frame}
@@ -311,6 +311,52 @@
     \end{exampleblock} \pause
     \bigskip
     ¿Es la relación \textit{menor que} $(<)$ transitiva sobre los naturales?
+\end{frame}
+
+\begin{frame}{Transitividad}{Relaciones y funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            },
+            projection2/.style={
+              -o,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b,4/a}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3,4/4}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
+        
+            \onslide<2-4>{\draw[projection] (a1) -- (b2);}
+            \onslide<3-4,5->{\draw[projection] (a2) -- (b3);}
+            \onslide<4>{\draw[projection2] (a1) -- (b3);}
+            \onslide<6->{\draw[projection] (a3) -- (b4);}
+            \onslide<7->{\draw[projection2] (a2) -- (b4);}
+          \end{tikzpicture}
+    \end{center}
 \end{frame}
 
 \begin{frame}{Simetría}{Relaciones y funciones}
