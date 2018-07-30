@@ -1,0 +1,387 @@
+\documentclass[spanish]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{fit, shapes}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\usetheme{Boadilla}
+\usefonttheme[onlymath]{serif}
+
+% Sets the templates
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Conceptos matemáticos preliminares}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+    \texorpdfstring{
+        \begin{center}
+            M.C. Xavier Sánchez Díaz \\
+            \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+        \end{center}
+    }
+    {M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{img/logo}}
+\date{}
+
+\begin{document}
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+    \titlepage        
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+    \tableofcontents
+\end{frame}
+
+\section{Conjuntos}
+\label{sec:conjuntos}
+
+\begin{frame}{Definición de conjunto}{Conjuntos}
+    \begin{definition}
+        Un \alert{conjunto} es una colección de elementos.
+        Usamos letras mayúsculas $A, B, C, \dots$ para representarlos, y letras minúsculas $a, b, c, \dots$ para representar sus elementos.
+    \end{definition}
+    \bigskip
+    \[A = \{a, b, c, d\}\]
+\end{frame}
+
+\begin{frame}{Describiendo un conjunto}{Conjuntos}
+    Podemos definirlos por \textit{enumeración} o por \textit{descripción}. \pause
+    \bigskip
+    \begin{center}
+        $A$ es el conjunto de todos los números naturales menores que 6. \pause
+    \end{center}
+
+    \begin{exampleblock}{Enumerando sus elementos}
+        $A = \{1, 2, 3, 4, 5\} = \{2, 3, 1, 5, 4\}$
+    \end{exampleblock} \pause
+
+    \begin{exampleblock}{Describiendo sus elementos}
+        $A = \{a \in \mathbb{N} : a < 6\}$
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Notación de conjuntos}{Conjuntos}
+    \begin{itemize}
+    \justifying
+    \itemsep1.5em
+        \item <1-> \textbf{Pertenencia}: $a \in A$, cuando $a$ es un elemento de $A$.
+        \item <2-> \textbf{Cardinalidad}: $|A|$ representa el número de elementos en $A$.
+        \item <3-> \textbf{Inclusión}: $A \subseteq B$ si todos los elementos de $A$ son elementos de $B$.
+        \item <4-> \textbf{Igualdad}: si $A \subseteq B$ y $B \subseteq A$, entonces $A = B$.
+        \item <5-> \textbf{Inclusión propia}: $A \subset B$ si todos los elementos de $A$ son elementos de $B$ y $A \neq B$.
+        \item <6-> \textbf{Conjunto vacío}: $\varnothing$ o \{\} para representar un conjunto sin elementos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pertenencia e inclusión}{Conjuntos}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+        \begin{enumerate}
+            \itemsep1.5em
+            \item <1,11> $\{a\} \subseteq \{\{a\}\}$
+            \item <2,11> \alert<11>{$\{a\} \subseteq \{b, c, \{a\}\}$}
+            \item <3,11> \alert<11>{$a \subseteq \{a, b, c\}$}
+            \item <4,11> $\{a\} \in \{b,c, \{a\}\}$
+            \item <5,11> $a \in \{a,b,c\}$
+        \end{enumerate}
+    \end{column}
+
+        \begin{column}{0.5\textwidth}
+        \begin{enumerate}
+            \itemsep1.5em
+            \setcounter{enumi}{5}
+            \item <6,11> $\{b\} \in \{a, c, \{b\}\}$
+            \item <7,11> $b \in \{b\}$
+            \item <8,11> \alert<11>{$\{b\} \subseteq \{\{b,c\}\}$}
+            \item <9,11> \alert<11>{$\{b\} \subseteq \{\{a\}, c, \{b\}\}$}
+            \item <10,11> $\{c\} \subset \{\{a\}, c, \{b\}\}$
+        \end{enumerate}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Conjunto vacío}{Conjuntos}
+    \begin{enumerate}
+        \itemsep1.5em
+        \item <1,6> $\varnothing \subset \{\varnothing\}$ 
+        \item <2,6> $\varnothing \in \{\varnothing\}$
+        \item <3,6> \alert<6>{$0 = \varnothing$}
+        \item <4,6> $\varnothing \subseteq \varnothing$
+        \item <5,6> \alert<6>{$\varnothing \subset \varnothing$}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Operaciones de conjuntos}{Conjuntos} 
+    \def \setA{(-0.7, 0) circle (1)}
+    \def \setB{(0.7, 0) circle (1)}
+    \def \setC{(0, -1) circle (1)}
+
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{tikzpicture}
+                \draw (-2, 1.5) rectangle (2, -2.5);
+                \draw[color=red, line width=1pt] \setA node[above left] {$A$};
+                \draw[color=blue, line width=1pt] \setB node[above] {$B$};
+                \draw[color=green, line width=1pt] \setC node[below] {$C$};
+            \end{tikzpicture}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{enumerate}
+                \item <1> $B \cup C$
+                \item <2> $C \cup (A \cap B)$
+                \item <3> $C - (A \cap B)$
+                \item <4> $A - (B \cup C)$
+                \item <5> $A^\complement$
+                \item <6> $B - (A \cup C)$
+                \item <7> $(B - A)^\complement$
+            \end{enumerate}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Producto Cartesiano}{Conjuntos}
+    \begin{definition}
+        El \alert{producto Cartesiano} entre $A$ y $B$ se define como:
+        \[A \times B = \{(x,y) : x \in A, y \in B\}\] 
+    \end{definition}
+        \pause
+    \begin{exampleblock}{Ejemplo}
+        \vspace{-2.5ex}
+        \begin{align*}
+        \onslide<2->{& A = \{1,2,3\} \quad B = \{1,2\}\\}
+        \onslide<3->{A \times B & = \{(1,1), (1,2), (2,1), (2,2), (3,1), (3,2)\}}
+        \end{align*}
+    \end{exampleblock}
+        \onslide<4->{\[|A \times B| = |A| \times |B|\]}
+\end{frame}
+
+\begin{frame}{Conjunto potencia}{Conjuntos}
+    \begin{definition}
+        Sea $A$ cualquier conjunto. El \alert{conjunto potencia} de $A$---denotado por $\mathscr{P}(A)$ o $\wp(A)$---consiste en el conjunto de todos (y únicamente) los subconjuntos de $A$.
+    \end{definition}
+    \pause
+    \bigskip
+    \[\mathscr{P}(\{a,b,c\}) = \{\varnothing, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a,b,c\}\}\] \pause
+    \bigskip
+    \[|\mathscr{P}(A)| = 2^{|A|}\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Conjuntos}
+    La \textbf{unión} y la \textbf{intersección} son \alert{conmutativas}. \pause
+    \bigskip
+    \[A \cup B = B \cup A\] \pause
+    \bigskip
+    \[A \cap B = B \cap A\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Conjuntos}
+    La \textbf{unión} y la \textbf{intersección} son \alert{asociativas}. \pause
+    \bigskip
+    \[(A \cup B) \cup C = A \cup (B \cup C)\] \pause
+    \bigskip
+    \[(A \cap B) \cap C = A \cap (B \cap C)\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Conjuntos}
+    La \textbf{unión} y la \textbf{intersección} son \alert{distributivas} entre ellas. \pause
+    \bigskip
+    \[A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\] \pause
+    \bigskip
+    \[A \cap (B \cup C) = (A \cap B) \cup (A \cap C)\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Conjuntos}
+    Leyes de \alert{De Morgan}: \pause
+    \bigskip
+    \[(A \cup B)^\complement = A^\complement \cap B^\complement\] \pause
+    \[(A \cap B)^\complement = A^\complement \cup B^\complement\]
+\end{frame}
+
+\section{Relaciones y Funciones}
+\label{sec:relfunc}
+
+\begin{frame}{Relaciones}{Relaciones y Funciones}
+    \begin{definition}
+        Sean $A$ y $B$ dos conjuntos cualesquiera. Una \alert{relación binaria} $R$ \textit{de} $A$ \textit{a} $B$ se define como cualquier subconjunto del producto Cartesiano $A \times B$.
+        Es decir, cualquier conjunto de pares ordenados de la forma $(a,b)$ tal que $a \in A$ y $b \in B$.
+        También se dice que una relación $R$ puede ser \textit{sobre} $A \times B$.
+    \end{definition} \pause
+    \bigskip
+    \begin{exampleblock}{Ejemplo}
+        \textit{Menor o igual} ($\leq$) es una \textbf{relación} sobre $\mathbb{N} \times \mathbb{N}$:
+        \[\leq \, = \{(1,1), (1,2), (1,3), \dots , (2,2), (2,3), \dots , (3,4), \dots \}\]
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Reflexividad}{Relaciones y funciones}
+
+    \begin{definition}
+        Sea $R$ una relación binaria. Se dice que es \alert{reflexiva} sobre un conjunto $A$ sí y solo sí $(a,a) \in R$ para todo $a \in A$.
+    \end{definition} \pause
+    \bigskip
+    \begin{exampleblock}{Ejemplo}
+        \textit{Menor o igual} ($\leq$) es una relación \textbf{reflexiva} sobre $\mathbb{N} \times \mathbb{N}$:
+        \[\leq \, = \{\mathbf{(1,1)}, (1,2), (1,3), \dots , \mathbf{(2,2)}, (2,3), \dots , (3,4), \dots \}\]
+    \end{exampleblock} \pause
+    \bigskip
+    ¿Es la relación \textit{menor que} $(<)$ reflexiva sobre los naturales?
+\end{frame}
+
+\begin{frame}{Reflexividad}{Relaciones y funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b,4/a}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3,4/4}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
+        
+            \draw[projection] (a1) -- (b1);
+            \draw[projection] (a2) -- (b2);
+            \draw[projection] (a3) -- (b3);
+            \draw[projection] (a4) -- (b4);
+          \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Transitividad}{Relaciones y funciones}
+    \begin{definition}
+        Decimos que $R$ es \alert{transitiva} si y sólo si cuando $(a,b) \in R$ y $(b,c) \in R$, entonces $(a,c) \in R$.
+    \end{definition} \pause
+    \bigskip
+    \begin{exampleblock}{Ejemplo}
+        \textit{Menor o igual} ($\leq$) es una relación \textbf{transitiva} sobre $\mathbb{N} \times \mathbb{N}$:
+        \[\leq \, = \{(1,1), \mathbf{(1,2)}, \mathbf{(1,3)}, \dots , (2,2), \mathbf{(2,3)}, \dots , (3,4), \dots \}\]
+    \end{exampleblock} \pause
+    \bigskip
+    ¿Es la relación \textit{menor que} $(<)$ transitiva sobre los naturales?
+\end{frame}
+
+\begin{frame}{Simetría}{Relaciones y funciones}
+    \begin{definition}
+        Una relación $R$ es \alert{simétrica} si y sólo si cuando $(a,b) \in R$, entonces $(b,a) \in R$.
+    \end{definition} \pause
+    \bigskip
+    \begin{exampleblock}{Ejemplo 1}
+        La relación de \textit{igualdad} $(=)$ es una relación \textbf{simétrica}: si $a = b$, entonces $b = a$.
+    \end{exampleblock} \pause
+    \bigskip
+    \begin{exampleblock}{Ejemplo 2}
+        La relación de \textit{hermandad} es \textbf{simétrica}: si $Juan$ es hermano de $Pedro$, entonces $Pedro$ es hermano de $Juan$. 
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Mapeo o Función}{Relaciones y Funciones}
+    
+    ¿Cualquier relación es una función? \pause
+    
+    \bigskip
+
+    ¿Cualquier función es una relación?
+\end{frame}
+
+\begin{frame}{Mapeo o Función}{Relaciones y Funciones}
+    \begin{definition}
+        Una \alert{función} \textit{unitaria} de un conjunto $A$ en un conjunto $B$ es cualquier relación binaria $R$ de $A$ a $B$ que satisfaga la condición de que \textit{para todo} $a \in A$ existe \textit{exactamente un} $b \in B$ tal que $(a,b) \in R$.
+    \end{definition} \pause
+    \bigskip
+    Podemos describir una función $f$ de $A$ en $B$ como $f : A \to B$. \pause
+    \bigskip
+    \begin{exampleblock}{Ejemplo}
+        La relación \textit{sucesor} es una \textbf{función} de los naturales en los naturales $f : \mathbb{N} \to \mathbb{N}$
+        \[\mathtt{suc}(n) = \{(1,2), (2,3), (3,4), (4,5), \dots\}\]
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Dominio}{Funciones y Relaciones}
+    \begin{definition}
+        El \alert{dominio} de una función $f$ puede definirse como
+        \[\mathtt{dom}(f) = \{a \in A : \exists b \in B, f(a) = b\}\]
+    \end{definition} \pause
+    \bigskip
+    En una función de forma $f : A \to B$, el \textbf{dominio} es simplemente $A$.
+\end{frame}
+
+\begin{frame}{Codominio o Rango}{Funciones y Relaciones}
+    \begin{definition}
+        El \alert{codominio} (también conocido como \alert{rango}) de una función $f$ puede definirse como
+        \[\mathtt{codom}(f) = \{b \in B : \exists a \in A, f(a) = b\}\]
+    \end{definition} \pause
+    \bigskip
+    En una función de forma $f : A \to B$, el \textbf{codominio} es simplemente $B$.    
+\end{frame}
+
+% Falta definición de funciones totales y parciales
+% Falta imagen
+% Propiedades de funciones (inyectiva...)
+% Conjuntos infinitos
+% Lógica básica
+% 
+
+% \section*{Referencias}
+
+% \begin{frame}[t]{Referencias}
+    % \nocite{bibID01}
+    % \nocite{bibID02}
+
+    % \bibliographystyle{IEEE}
+    % \bibliography{biblio}
+% \end{frame}
+
+\end{document}
