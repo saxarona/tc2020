@@ -413,8 +413,253 @@
     En una función de forma $f : A \to B$, el \textbf{codominio} es simplemente $B$.    
 \end{frame}
 
-% Falta definición de funciones totales y parciales
-% Falta imagen
+\begin{frame}{Funciones totales y parciales}{Relaciones y Funciones}
+
+    \begin{definition}
+        Una \alert{función parcial} de un conjunto $A$ a un conjunto $B$ es una relación binaria $R$ de $A$ a $B$ tal que para toda $a \in A$, hay \textit{a lo mucho} un $b \in B$ con $(a,b) \in R$.
+    \end{definition} \pause
+    \bigskip
+    Es decir que puede haber elementos en $A$ que no tengan la relación $R$ a ningún elemento de $B$; o en otras palabras, que no se \textit{usen}. \pause
+    
+    \bigskip
+
+    A las funciones donde se utilizan \textbf{todos} los elementos de $A$ les llamamos \alert{funciones totales}, y son usualmente a las que nos referimos al simplemente decir ``funciones''.
+\end{frame}
+
+\begin{frame}{Funciones Parciales}{Relaciones y funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b,4/a}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3,4/4}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
+        
+            \draw[projection] (a1) -- (b1);
+            \draw[projection] (a2) -- (b2);
+            \draw[projection] (a3) -- (b3);
+          \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Imagen}{Relaciones y Funciones}
+    \begin{definition}
+        Sean $f : A \to B$ y $X \subseteq A$. La \alert{imagen} \textit{bajo} $f$ de $X \subseteq A$ es el conjunto $\{b \in B : \exists a \in X, b = f(a)\}$, o bien $\{f(a) : a \in A\}$.
+    \end{definition} \pause
+    \bigskip
+    En otras palabras, la \textbf{imagen} de una función es el conjunto de todos los \textit{valores} de $B$ que \textit{utiliza}.
+    \bigskip
+    Puede haber elementos de $B$ fuera de la función. Todo $B$ es el \textbf{codominio} de la función, y sólo aquellos $b \in B$ que son usados representan la \textbf{imagen} de la función.
+    
+\end{frame}
+
+\begin{frame}{Funciones inyectivas}{Relaciones y Funciones}
+    \begin{definition}
+        Sea $f : A \to B$. Se dice que $f$ es \alert{inyectiva} (o \alert{uno a uno}) si y sólo si cuando $a \neq a'$, entonces $f(a) \neq f(a')$.
+    \end{definition} \pause
+    \bigskip
+    En otras palabras, si y sólo si para cada $b \in B$, hay a lo mucho un $a \in A$ con $f(a) = b$. Es decir, sólo si distintos \textit{inputs} generan \textit{outputs} diferentes.
+\end{frame}
+
+\begin{frame}{Funciones inyectivas}{Relaciones y Funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3,4/4}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
+        
+            \draw[projection] (a1) -- (b1);
+            \draw[projection] (a2) -- (b2);
+            \draw[projection] (a3) -- (b3);
+          \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Funciones inyectivas}{Relaciones y Funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b,4/d}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3,4/4}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
+        
+            \draw[projection] (a1) -- (b1);
+            \draw[projection] (a2) -- (b2);
+            \draw[projection] (a3) -- (b3);
+            \draw[projection] (a4) -- (b4);
+          \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Funciones sobreyectivas}{Relaciones y Funciones}
+    \begin{definition}
+        Sea $f : A \to B$. Decimos que $f$ es una función \alert{sobre} $B$ (o \alert{sobreyectiva} con respecto a $B$) si y sólo si para todo $b \in B$ hay algún $a \in A$ con $f(a) = b$.
+    \end{definition} \pause
+    \bigskip
+    Una manera mucho más sencilla de verlo: si y sólo si $\mathtt{imagen}(f) = B$.
+\end{frame}
+
+\begin{frame}{Funciones sobreyectivas}{Relaciones y Funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b,4/d}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3), minimum width=1.8cm] {} ;
+        
+            \draw[projection] (a1) -- (b1);
+            \draw[projection] (a2) -- (b2);
+            \draw[projection] (a3) -- (b3);
+          \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Funciones biyectivas}{Relaciones y Funciones}
+    \begin{definition}
+        Se dice que una función es \alert{biyectiva} si y sólo si es \textbf{inyectiva} y \textbf{sobre}.
+    \end{definition} \pause
+    \bigskip
+    Simple.
+\end{frame}
+
+\begin{frame}{Funciones biyectivas}{Relaciones y Funciones}
+    \begin{center}
+        \begin{tikzpicture}[
+            >=stealth,
+            bullet/.style={
+              fill=black,
+              circle,
+              minimum width=1pt,
+              inner sep=1pt
+            },
+            projection/.style={
+              ->,
+              thick,
+              shorten <=2pt,
+              shorten >=2pt
+            },
+            every fit/.style={
+              ellipse,
+              draw,
+              inner sep=0pt
+            }
+          ]
+            \foreach \y/\l in {1/d,2/c/,3/b,4/d}
+              \node[bullet,label=left:$\y$] (a\y) at (0,\y) {};
+        
+            \foreach \y/\l in {1/1,2/2,3/3,4/4}
+              \node[bullet,label=right:$\l$] (b\y) at (4,\y) {};
+        
+            \node[draw,fit=(a1) (a2) (a3) (a4),minimum width=1.8cm] {} ;
+            \node[draw,fit=(b1) (b2) (b3) (b4),minimum width=1.8cm] {} ;
+        
+            \draw[projection] (a1) -- (b1);
+            \draw[projection] (a2) -- (b2);
+            \draw[projection] (a3) -- (b3);
+            \draw[projection] (a4) -- (b4);
+          \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Conjuntos infinitos}{Relaciones y Funciones}
+    \begin{itemize}
+        \item <1-> Los números \alert{naturales} $\mathbb{N} = \{1, 2, 3, 4, \dots\}$. Algunos autores consideran que $0 \in \mathbb{N}$, otros no. Es \textbf{contable}.
+        \item <2-> Los números
+    \end{itemize}
+\end{frame}
+
 % Propiedades de funciones (inyectiva...)
 % Conjuntos infinitos
 % Lógica básica
