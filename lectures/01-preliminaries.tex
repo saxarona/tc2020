@@ -36,6 +36,7 @@
 \setbeamercolor{title}{fg=navyblue, bg=white}
 \setbeamercolor{frametitle}{fg=navyblue, bg=white}
 \setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
 
 \setbeamercovered{transparent}
 
@@ -201,6 +202,7 @@
 \end{frame}
 
 \begin{frame}{Equivalencias}{Conjuntos}
+    \label{fr:equivalence}
     La \textbf{unión} y la \textbf{intersección} son \alert{conmutativas}. \pause
     \bigskip
     \[A \cup B = B \cup A\] \pause
@@ -229,6 +231,8 @@
     \bigskip
     \[(A \cup B)^\complement = A^\complement \cap B^\complement\] \pause
     \[(A \cap B)^\complement = A^\complement \cup B^\complement\]
+    \bigskip
+    \hyperlink{fr:logicequiv}{\beamergotobutton{Slide de Lógica}}
 \end{frame}
 
 \section{Relaciones y Funciones}
@@ -609,9 +613,7 @@
 \begin{frame}{Funciones biyectivas}{Relaciones y Funciones}
     \begin{definition}
         Se dice que una función es \alert{biyectiva} si y sólo si es \textbf{inyectiva} y \textbf{sobre}.
-    \end{definition} \pause
-    \bigskip
-    Simple.
+    \end{definition}
 \end{frame}
 
 \begin{frame}{Funciones biyectivas}{Relaciones y Funciones}
@@ -655,15 +657,62 @@
 
 \begin{frame}{Conjuntos infinitos}{Relaciones y Funciones}
     \begin{itemize}
-        \item <1-> Los números \alert{naturales} $\mathbb{N} = \{1, 2, 3, 4, \dots\}$. Algunos autores consideran que $0 \in \mathbb{N}$, otros no. Es \textbf{contable}.
-        \item <2-> Los números
+        \justifying
+        \itemsep1.5em
+        \item <1-> Los números \alert{naturales} $\mathbb{N} = \{1, 2, 3, 4, \dots\}$ son infinitos. Algunos autores consideran que $0 \in \mathbb{N}$, otros no. $\mathbb{N}$ es un conjunto infinito \textbf{contable}.
+        \item <2-> Los números \alert{enteros} $\mathbb{Z}$ y los números \alert{racionales} $\mathbb{Q}$ son también \textbf{infinitos contables} porque existe una \textbf{biyección} que los empareja uno a uno con cada $n \in \mathbb{N}$.
+        \item <3-> Los números \alert{irracionales} $\mathbb{Q}'$ y los \alert{reales} $\mathbb{R}$ en cambio, \textbf{son infinitos no contables} porque no existe biyección que empareje uno a uno sus elementos con todo $n \in \mathbb{N}$.
+        \item <4-> $|\mathscr{P}(A)| \gg |A|$---no existe biyección que pueda emparejar uno a uno los elementos de ambos conjuntos, por lo que $|\mathscr{P}(\mathbb{N})| \gg |\mathbb{N}|$. El conjunto potencia de los naturales es \textbf{infinito no contable}.
     \end{itemize}
 \end{frame}
 
-% Propiedades de funciones (inyectiva...)
-% Conjuntos infinitos
-% Lógica básica
-% 
+\section{Lógica}
+\label{sec:logic}
+
+\begin{frame}{Conectivos lógicos}{Lógica}
+    \label{fr:logicequiv}
+    \begin{itemize}
+        \justifying
+        \itemsep1.5em
+        \item <1-> La \alert{disyunción} ($\vee$) funciona de manera similar a la \textbf{unión} en los conjuntos. Le corresponde la compuerta lógica \texttt{OR}.
+        \item <2-> La \alert{conjunción} ($\wedge$) funciona de manera similar a la \textbf{intersección} en los conjuntos. Le corresponde la compuerta lógica \texttt{AND}.
+        \item <3-> La \alert{negación} ($\neg$) funciona de manera similar al \textbf{complemento}. Su compuerta lógica es el \texttt{NOT}.
+    \end{itemize}
+    \bigskip
+    \onslide<4->{¿Puedes describir la \alert{implicación} y la \alert{doble implicación}? ¿Cuáles de las leyes de conjuntos aplican también para lógica? \hyperlink{fr:equivalence}{\beamergotobutton{Slide de Equivalencias}}}
+\end{frame}
+
+\begin{frame}{Equivalencias}{Lógica}
+    La \textbf{conjunción} y la \textbf{disyunción} son \alert{conmutativas}. \pause
+    \bigskip
+    \[p  \vee q = q \vee p\] \pause
+    \bigskip
+    \[p \wedge q = q \wedge p\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Lógica}
+    La \textbf{conjunción} y la \textbf{disyunción} son \alert{asociativas}. \pause
+    \bigskip
+    \[p \vee (q \vee r) = (p \vee q) \vee r\] \pause
+    \bigskip
+    \[p \wedge (q \wedge r) = (p \wedge q) \wedge r\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Lógica}
+    La \textbf{conjunción} y la \textbf{disyunción} son \alert{distributivas} entre ellas. \pause
+    \bigskip
+    \[p \vee (q \wedge r) = (p \vee q) \wedge (p \vee r)\] \pause
+    \bigskip
+    \[p \wedge (q \vee r) = (p \wedge q) \vee (p \wedge r)\]
+\end{frame}
+
+\begin{frame}{Equivalencias}{Lógica}
+    Leyes de \alert{De Morgan}: \pause
+    \bigskip
+    \[\neg (p \vee q) = \neg p \wedge \neg q\] \pause
+    \bigskip
+    \[\neg (p \wedge q) = \neg p \vee \neg q\]
+\end{frame}
 
 % \section*{Referencias}
 
