@@ -1,0 +1,123 @@
+\documentclass[]{book}
+
+%These tell TeX which packages to use.
+\usepackage{array,epsfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage[spanish, mexico]{babel}
+\usepackage[utf8]{inputenc}
+
+%Here I define some theorem styles and shortcut commands for symbols I use often
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem*{rmk}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem*{joke}{Joke}
+\newtheorem{ex}{Example}
+\newtheorem*{sol}{Solution}
+\newtheorem{prop}{Proposition}
+
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\graph}{\mathrm{graph}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\Z}{\bb{Z}}
+\newcommand{\Q}{\bb{Q}}
+\newcommand{\R}{\bb{R}}
+\newcommand{\C}{\bb{C}}
+\newcommand{\N}{\bb{N}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\MM}{\mathscr{M}}
+\newcommand{\HH}{\mathscr{H}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Ho}{\in\HH(\Om)}
+\newcommand{\bd}{\partial}
+\newcommand{\del}{\partial}
+\newcommand{\bardel}{\overline\partial}
+\newcommand{\textdf}[1]{\textbf{\textsf{#1}}\index{#1}}
+\newcommand{\img}{\mathrm{img}}
+\newcommand{\ip}[2]{\left\langle{#1},{#2}\right\rangle}
+\newcommand{\inter}[1]{\mathrm{int}{#1}}
+\newcommand{\exter}[1]{\mathrm{ext}{#1}}
+\newcommand{\cl}[1]{\mathrm{cl}{#1}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\vol}{\mathrm{vol}}
+\newcommand{\cnt}{\mathrm{ct}}
+\newcommand{\osc}{\mathrm{osc}}
+\newcommand{\LL}{\mathbf{L}}
+\newcommand{\UU}{\mathbf{U}}
+\newcommand{\support}{\mathrm{support}}
+\newcommand{\AND}{\;\wedge\;}
+\newcommand{\OR}{\;\vee\;}
+\newcommand{\Oset}{\varnothing}
+\newcommand{\st}{\ni}
+\newcommand{\wh}{\widehat}
+\newcommand{\myqed}{\blacksquare}
+
+%Pagination stuff.
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+\setlength{\itemsep}{0.45in}
+\pagestyle{empty}
+
+
+
+\begin{document}
+
+\begin{center}
+{\huge Matemáticas Computacionales (TC2020)}\\[1.5ex]
+{\large \textbf{Apéndice 01: Conjuntos}\\[1.5ex] %You should put your name here
+06.08.18} %You should write the date here.
+\end{center}
+
+\vspace{0.2 cm}
+
+\subsection*{Ejercicios de clase}
+
+En clase revisamos 10 expresiones, algunas de las cuales eran incorrectas.
+Aquí explicamos (de manera formal) el porqué de las respuestas.
+Te puede servir para darte una idea de cómo \textit{formatear} tu tarea o para estudiar.
+
+\begin{enumerate}
+	\itemsep0.35in
+
+	\item La expresión $\{a\} \subseteq \{\{a\}\}$ es \textdf{incorrecta}.\\
+	Dado a que $a \neq \{a\}$, puede deducirse que $\{a\} \nsubseteq \{\{a\}\}$.
+	Otra manera de verlo es por su \textbf{conjunto potencia}: $\mathscr{P}(\{\{a\}\}) = \{\varnothing, \{\{a\}\}\}$.
+	Dado a que $\{a\} \notin \mathscr{P}(\{\{a\}\})$ entonces $\{a\} \nsubseteq \{\{a\}\} \myqed$
+
+	\item $\{a\} \nsubseteq \{b, c, \{a\}\}$, debido a la misma razón que en la Expresión 1 (arriba) $\myqed$
+
+	\item $a \not \subseteq \{a,b,c\}$, dado a que $a$ no es un conjunto $\myqed$
+
+	\item La expresión $\{a\} \in \{b,c, \{a\}\}$ es \textdf{verdadera} dado a que $\{a\}$ pertenece a $\{b, c, \{a\}\} \myqed$
+
+	\item La expresión $a \in \{a, b, c\}$ es \textdf{verdadera} por la misma razón $\myqed$
+
+	\item La expresión $\{b\} \in \{a, c, \{b\}\}$ es \textdf{verdadera} por la misma razón $\myqed$
+
+	\item $b \in \{b\}$ también es \textdf{verdadera} por la misma razón $\myqed$
+
+	\item La expresión $\{b\} \subseteq \{\{b, c\}\}$ es \textdf{falsa}\\
+	Dado a que $b \not \in \{\{b, c\}\}$, entonces $\{b\} \nsubseteq \{\{b, c\}\} \myqed$
+
+	\item $\{b\} \nsubseteq \{\{a\}, c, \{b\}\}$, debido a la misma razón que en la expresión anterior $\myqed$
+
+	\item $\{c\} \subset \{\{a\}, c, \{b\}\}$ dado a que $c \in \{\{a\}, c, \{b\}\} \myqed$
+\end{enumerate}
+
+\end{document}
+
+

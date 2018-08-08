@@ -1,4 +1,4 @@
-\documentclass[spanish,handout]{beamer}
+\documentclass[spanish]{beamer}
 
 \usepackage[utf8]{inputenc}
 \usepackage[spanish, mexico]{babel}
@@ -113,13 +113,13 @@
         \begin{column}{0.5\textwidth}
         \begin{enumerate}
             \itemsep1.5em
-            \item <1,11> $\{a\} \subseteq \{\{a\}\}$
+            \item <1,11> \alert<11>{$\{a\} \subseteq \{\{a\}\}$}
             \item <2,11> \alert<11>{$\{a\} \subseteq \{b, c, \{a\}\}$}
             \item <3,11> \alert<11>{$a \subseteq \{a, b, c\}$}
             \item <4,11> $\{a\} \in \{b,c, \{a\}\}$
             \item <5,11> $a \in \{a,b,c\}$
         \end{enumerate}
-    \end{column}
+        \end{column}
 
         \begin{column}{0.5\textwidth}
         \begin{enumerate}
@@ -254,7 +254,7 @@
 \begin{frame}{Reflexividad}{Relaciones y funciones}
 
     \begin{definition}
-        Sea $R$ una relación binaria. Se dice que es \alert{reflexiva} sobre un conjunto $A$ sí y solo sí $(a,a) \in R$ para todo $a \in A$.
+        Sea $R$ una relación binaria. Se dice que es \alert{reflexiva} sobre un conjunto $A$ si y solo si $(a,a) \in R$ para todo $a \in A$.
     \end{definition} \pause
     \bigskip
     \begin{exampleblock}{Ejemplo}
