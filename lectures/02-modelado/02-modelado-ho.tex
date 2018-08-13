@@ -1,0 +1,298 @@
+\documentclass[spanish, handout]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{arrows, automata}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\usetheme{Boadilla}
+\usefonttheme[onlymath]{serif}
+
+% Sets the templates
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Lenguajes y Modelado}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+    \texorpdfstring{
+        \begin{center}
+            M.C. Xavier Sánchez Díaz \\
+            \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+        \end{center}
+    }
+    {M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+    \titlepage        
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+    \tableofcontents
+\end{frame}
+
+\section{Lenguajes}
+\label{sec:langs}
+
+\subsection{Elementos básicos de un lenguaje}
+\label{subsec:lang-elements}
+
+\begin{frame}{¿Qué es un lenguaje?}{Elementos básicos de un lenguaje}
+
+    Según la RAE, un lenguaje es un conjunto de signos y reglas que permite la comunicación (con una computadora). A nivel matemático, usamos otra definición: \pause
+
+    \bigskip
+
+    \begin{definition}
+        Un \alert{lenguaje} es un conjunto de \textbf{palabras}.
+    \end{definition} \pause
+
+    \bigskip
+
+    \begin{exampleblock}{Ejemplo de lenguaje}
+        \(L = \{hola, pueblo\}\)
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}{¿Qué es una palabra?}{Elementos básicos de un lenguaje}
+    
+    La RAE define a \textbf{palabra} como una unidad lingüística dotada generalmente de significado, que se separa de las demás mediante pausas potenciales en la pronunciación y blancos en la escritura. \pause
+
+    \bigskip
+
+    \begin{definition}
+        Una \alert{palabra} es una sucesión de símbolos de algún \textbf{alfabeto}.
+    \end{definition} \pause
+
+    \bigskip
+
+    \begin{exampleblock}{Ejemplos de palabras}
+        Tanto $hola$ como $pueblo$ son palabras.
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{¿Qué es un alfabeto?}{Elementos básicos de un lenguaje}
+
+    \begin{definition}
+        Un \alert{alfabeto} es un conjunto finito no vacío de \textbf{símbolos}.
+    \end{definition} \pause
+
+    \bigskip
+
+    \begin{exampleblock}{Ejemplo de alfabeto}
+        $ \Sigma = \{ a, b, c, \dots , z \} $ es un alfabeto 
+    \end{exampleblock} \pause
+
+    \bigskip
+
+    \begin{definition}
+        Un \alert{símbolo} es una unidad atómica de información.
+    \end{definition} \pause
+
+    \bigskip
+
+    \begin{exampleblock}{Ejemplos de símbolos}
+        $a, b, e, h, l, o, p, u$ son todos símbolos del \textbf{alfabeto} $\Sigma$.
+    \end{exampleblock}
+    
+\end{frame}
+
+\begin{frame}{Recapitulación}{Elementos básicos de un lenguaje}
+
+    Es decir, los \textbf{símbolos} $h, o, l, a, p, u, e, b$ son elementos del \textbf{alfabeto} $\Sigma = \{a, b, c, \dots , z\}$. \pause
+    
+    \bigskip
+
+    Dos palabras que podemos formar con $\Sigma$ son \textit{hola} y \textit{pueblo}. \pause
+
+    \bigskip
+
+    Podemos agrupar \textit{hola} y \textit{pueblo} en un lenguaje: $L = \{hola, pueblo\}$
+\end{frame}
+
+\subsection{Operaciones con lenguajes}
+\label{subsec:lang-ops}
+
+\begin{frame}{¿Qué podemos hacer con los lenguajes?}{Operaciones con lenguajes}
+    Cuando dos lenguajes son definidos con respecto al mismo alfabeto, podemos aplicarles las mismas operaciones de conjuntos que ya conocemos. \pause
+    
+    \bigskip
+
+    \begin{itemize}
+        \itemsep1.5ex
+        \item Unión \pause
+        \item Intersección \pause
+        \item Diferencia
+    \end{itemize}
+
+    \pause
+    \bigskip
+
+    Sin embargo también hay otras operaciones que aplican a los lenguajes (y también a las palabras y a los símbolos).
+\end{frame}
+
+\begin{frame}{Concatenación}{Operaciones con lenguajes}
+
+    \begin{definition}
+        La \alert{concatenación} de dos lenguajes $A$ y $B$ se define como
+        \[AB = \{ww' : w \in A, w' \in B\}\]
+    \end{definition} \pause
+
+    \bigskip
+
+    Es decir, $AB$ es el conjunto de todas las palabras obtenidas tomando una palabra arbitraria $w$ en $A$ y otra palabra arbitraria $w'$ en $B$, y juntándolas. \pause
+
+    \bigskip
+
+    \begin{exampleblock}{Ejemplo de concatenación}
+        \[A = \{hola, chao\} \quad B = \{pueblo,  mundo\}\]
+        \[AB = \{holapueblo, holamundo, chaopueblo, chaomundo\}\]
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Cerradura de Kleene}{Operaciones con lenguajes}
+
+    \begin{definition}
+        La \alert{Kleene Star} (también llamada \textbf{estrella de Kleene}) de un lenguaje $A$ se define como
+        \[A^{*} = \{u_1 u_2 u_3 \dots u_k : k \geq 0, u_i \in A, i = 1, 2, 3, \dots , k\}\]
+    \end{definition} \pause
+    
+    \bigskip
+
+    En otras palabras, la concatenación de \textbf{todas} las palabras \textbf{posibles} en $A$, incluyendo la \alert{palabra vacía} (de longitud 0, que representamos con $\varepsilon$). \pause
+
+    \bigskip
+
+    \begin{exampleblock}{Ejemplo de Kleene Star}
+        \[A* = \{\varepsilon, hola, ola, holaola, holahola, olaolaola, olaholaolahola, \dots \}\]
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Kleene Plus}{Operaciones con lenguajes}
+    Existe una variante de la cerradura de Kleene llamada \alert{Kleene Plus}: \pause
+
+    \bigskip
+
+    \begin{definition}
+        \[A^{+} = \{u_1 u_2 u_3 \dots u_k : k \geq 1, u_i \in A, i = 1, 2, 3, \dots , k\}\]
+    \end{definition} \pause
+
+    \bigskip
+
+    Es decir, $A^{+} = A^{*} - \{\varepsilon\}$
+\end{frame}
+
+\section{Modelado con Autómatas}
+\label{sec:modeling}
+
+\begin{frame}{¿Qué se puede modelar?}{Modelado con autómatas}
+
+    \begin{itemize}
+        \itemsep1.5ex
+        \item Procesos por medio de \textbf{estados} y \textbf{eventos} o \textbf{transiciones}. \pause
+        \item Los estados son situaciones por las que el proceso atraviesa. Algunos de los estados son transitorios. \pause
+        \item Los eventos son \textbf{acciones instantáneas} que provocan cambios en el estado del proceso modelado.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Ejemplo}{Modelado con autómatas}
+    \begin{center}
+        \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm, semithick]
+            \tikzstyle{every state}=[fill=gray,draw=none]
+    
+            \node[initial,state] (A) {soltera};
+            \node[state] (B) [right of=A] {casada};
+            \node[state] (C) [below left of=B]{divorciada};
+            \node[state] (D) [below right of=B] {viuda};
+    
+            \path (A) edge [bend left] node {boda} (B)
+                  (B) edge [bend right] node {divorcio} (C)
+                      edge [bend right] node [above right]{pareja$^{\dag}$} (D)
+                  (C) edge [bend right] node [below right] {boda} (B)
+                  (D) edge [bend right] node [above right] {boda} (B);
+        \end{tikzpicture}
+    \end{center}
+    \blfootnote{Ejemplo de \texttt{sconant}}
+\end{frame}
+
+\begin{frame}{Notación de autómatas}{Modelado con autómatas}
+    \begin{definition}
+        Un \alert{autómata finito determinista} (AFD) es una \textbf{quíntupla} de la forma
+        \[M = \{Q, \Sigma, \delta, q, F\}\] \pause
+        \begin{itemize}
+            \item $Q$ es un \textbf{conjunto de estados} que es finito, \pause
+            \item $\Sigma$ es el \textbf{alfabeto} aceptado, \pause
+            \item $\delta : Q \times \Sigma \to Q$ es la \textbf{función de transición}, \pause
+            \item $q \in Q$ es el \textbf{estado inicial}, \pause
+            \item $F \subseteq Q$ es un \textbf{conjunto de estados finales}.
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Determinismo}{Modelado con autómatas}
+    \begin{itemize}
+        \itemsep1.5ex
+        \item Dada una acción, el siguiente estado será \textbf{siempre el mismo}. \pause
+        \item Para cada par de estados y acciones del AFD hay \textbf{un solo estado siguiente}. \pause
+        \item La función de transición está definida para \textbf{todas} las entradas posibles. \pause
+        \item Hay \textbf{un solo estado inicial} pero \textbf{cualquier cantidad de estados finales}.
+    \end{itemize}
+    
+\end{frame}
+
+% \section*{Referencias}
+
+% \begin{frame}[t]{Referencias}
+    % \nocite{bibID01}
+    % \nocite{bibID02}
+
+    % \bibliographystyle{IEEE}
+    % \bibliography{biblio}
+% \end{frame}
+
+\end{document}
