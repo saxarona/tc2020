@@ -1,0 +1,151 @@
+\documentclass[]{book}
+
+%These tell TeX which packages to use.
+\usepackage{array,epsfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage[spanish, mexico]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+%Here I define some theorem styles and shortcut commands for symbols I use often
+\theoremstyle{definition}
+\newtheorem{defn}{Definición}
+\newtheorem{thm}{Teorema}
+\newtheorem{cor}{Corolario}
+\newtheorem*{rmk}{Nota}
+\newtheorem{lem}{Lema}
+\newtheorem*{joke}{Joke}
+\newtheorem{ex}{Ejemplo}
+\newtheorem*{sol}{Solución}
+\newtheorem{prop}{Proposición}
+
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\graph}{\mathrm{graph}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\Z}{\bb{Z}}
+\newcommand{\Q}{\bb{Q}}
+\newcommand{\R}{\bb{R}}
+\newcommand{\C}{\bb{C}}
+\newcommand{\N}{\bb{N}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\MM}{\mathscr{M}}
+\newcommand{\HH}{\mathscr{H}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Ho}{\in\HH(\Om)}
+\newcommand{\bd}{\partial}
+\newcommand{\del}{\partial}
+\newcommand{\bardel}{\overline\partial}
+\newcommand{\textdf}[1]{\textbf{\textsf{#1}}\index{#1}}
+\newcommand{\img}{\mathrm{img}}
+\newcommand{\ip}[2]{\left\langle{#1},{#2}\right\rangle}
+\newcommand{\inter}[1]{\mathrm{int}{#1}}
+\newcommand{\exter}[1]{\mathrm{ext}{#1}}
+\newcommand{\cl}[1]{\mathrm{cl}{#1}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\vol}{\mathrm{vol}}
+\newcommand{\cnt}{\mathrm{ct}}
+\newcommand{\osc}{\mathrm{osc}}
+\newcommand{\LL}{\mathbf{L}}
+\newcommand{\UU}{\mathbf{U}}
+\newcommand{\support}{\mathrm{support}}
+\newcommand{\AND}{\;\wedge\;}
+\newcommand{\OR}{\;\vee\;}
+\newcommand{\Oset}{\varnothing}
+\newcommand{\st}{\ni}
+\newcommand{\wh}{\widehat}
+\newcommand{\myqed}{\blacksquare}
+
+%Pagination stuff.
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+\setlength{\itemsep}{0.45in}
+\pagestyle{empty}
+
+
+
+\begin{document}
+
+\begin{center}
+{\huge Matemáticas Computacionales (TC2020)}\\[1.5ex]
+{\large \textbf{Apéndice 02: Lógica}\\[1.5ex] %You should put your name here
+13.08.18} %You should write the date here.
+\end{center}
+
+\vspace{0.2 cm}
+
+\subsection*{Equivalencias lógicas}
+
+En clase vimos algunas equivalencias lógicas, sin embargo no son todas las necesarias para poder realizar la tarea.
+Aquí se desarrollan las pruebas de dos equivalencias más para que veas cómo operar con ellas.
+
+\vspace{0.5in}
+
+\begin{thm}
+    $P \implies Q \equiv \neg P \vee Q$
+\end{thm}
+
+\begin{proof}
+    Usando verificación de modelos (tablas de verdad), se puede probar que la implicación es equivalente a la disyunción de la negación de la premisa y la conclusión:
+
+    \begin{table}[htbp]
+        \centering
+        \caption{Tabla de verdad de $P \implies Q$ y $\neg P \vee Q$}
+        \label{tab:implies}
+        \begin{tabular}{@{}cccccc@{}}
+        \toprule
+        \multicolumn{1}{l}{$P$} & \multicolumn{1}{l}{$Q$} & \multicolumn{1}{l}{$P \implies Q$} & \multicolumn{1}{l}{$\neg P$} & \multicolumn{1}{l}{$Q$} & \multicolumn{1}{l}{$\neg P \vee Q$} \\ \midrule
+        F & F & T & T & F & T \\
+        F & T & T & T & T & T \\
+        T & F & F & F & F & F \\
+        T & T & T & F & T & T \\ \bottomrule
+        \end{tabular}
+    \end{table}
+
+Como las columnas de la implicación (3) y la disyunción entre la negación de la premisa y la conclusión (6) son idénticas, entonces podemos decir que son expresiones lógicas equivalentes.
+\end{proof}
+\vspace{0.5in}
+\begin{thm}
+    La implicación $P \implies Q$ y su contrapositiva $\neg Q \implies \neg P$ son equivalentes.
+\end{thm}
+
+\begin{proof}
+    Nuevamente utilizando verificación de modelos, podemos comprobarlo.
+
+    \begin{table}[htbp]
+        \centering
+        \caption{Tabla de verdad de la implicación $P \implies Q$ y su contrapositiva.}
+        \label{tab:contrapositive}
+        \begin{tabular}{@{}cccccc@{}}
+        \toprule
+        \multicolumn{1}{l}{$P$} & \multicolumn{1}{l}{$Q$} & \multicolumn{1}{l}{$P \implies Q$} & \multicolumn{1}{l}{$\neg P$} & \multicolumn{1}{l}{$\neg Q$} & \multicolumn{1}{l}{$\neg Q \implies \neg P$} \\ \midrule
+        F & F & T & T & T & T \\
+        F & T & T & T & F & T \\
+        T & F & F & F & T & F \\
+        T & T & T & F & F & T \\ \bottomrule
+        \end{tabular}
+    \end{table}
+
+    Fíjate que la implicación ahora es en sentido inverso, de $\neg Q \implies \neg P$, así que utilizamos las columnas 5 y 4 para la premisa y conclusión de la contrapositiva, respectivamente.
+    Como las columnas correspondientes a la implicación y su contrapositiva (3 y 6) son idénticas, entonces podemos decir que son expresiones lógicas equivalentes.
+\end{proof}
+
+\begin{rmk}
+    La contrapositiva (en inglés \textit{contrapositive}) es un recurso muy usado en la resolución (regla de inferencia)\footnote{Para revisar más sobre pruebas formales de características clásicas de conjuntos y lógica, sugiero revisar la \textit{Proof Wiki}: \url{https://proofwiki.org/wiki/Main_Page}}.
+\end{rmk}
+
+\end{document}
+
+
