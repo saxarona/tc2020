@@ -1,0 +1,445 @@
+\documentclass[spanish, handout]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+
+\tikzset{
+    ->, %arrow type
+    >=stealth', %arrow head type (bold)
+    shorten >=1pt, 
+    auto,
+    semithick,
+    initial text=$ $, %no start text
+    }
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\usetheme{Boadilla}
+\usefonttheme[onlymath]{serif}
+
+% Sets the templates
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Autómatas Finitos Deterministas}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+    \texorpdfstring{
+        \begin{center}
+            M.C. Xavier Sánchez Díaz \\
+            \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+        \end{center}
+    }
+    {M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+    \titlepage        
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+    \tableofcontents
+\end{frame}
+
+\section{AFDs: Las bases}
+\label{sec:afds}
+
+\begin{frame}{Definición}{AFDs}
+    \begin{definition}
+        Un \alert{autómata finito determinista} (AFD) es una \textbf{quíntupla} de la forma
+        \[M = (Q, \Sigma, \delta, q, F)\] \pause
+        \begin{itemize}
+            \item $Q$ es un \textbf{conjunto de estados} que es finito, \pause
+            \item $\Sigma$ es el \textbf{alfabeto} aceptado, \pause
+            \item $\delta : Q \times \Sigma \to Q$ es la \textbf{función de transición}, \pause
+            \item $q \in Q$ es el \textbf{estado inicial}, \pause
+            \item $F \subseteq Q$ es un \textbf{conjunto de estados finales}.
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Ejemplo}{AFDs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=3cm]
+
+            \node[initial,state, accepting] (A) {$q_0$};
+            \node[state] (B) [above right of=A] {$q_1$};
+            \node[state, accepting] (C) [below right of=A]{$q_2$};
+
+            \path (A) edge [bend left] node {$a$} (C)
+                      edge [bend left] node {$b$} (B)
+                  (B) edge [loop above] node {$a$} (B)
+                      edge [loop below] node {$b$} (B)
+                  (C) edge [bend left] node {$a$} (A)
+                      edge [bend right] node {$b$} (B);
+        \end{tikzpicture}
+    \end{center}
+    \blfootnote{Ejemplo de \texttt{ramon.brena}}
+\end{frame}
+
+\begin{frame}{Lenguaje aceptado}{AFDs}
+    Un AFD \alert{acepta} una palabra si al consumir todos sus caracteres llega a uno de sus estados finales (representados con un doble círculo en el diagrama). \pause
+    
+    \bigskip
+
+    El \textbf{lenguaje aceptado} por una máquina $M$ es el conjunto de palabras aceptadas por dicha máquina.
+\end{frame}
+
+\section{Diseñando un AFD}
+\label{sec:afd-design}
+
+\begin{frame}{Corrección y Completez}{Diseñando un AFD}
+    En ocasiones, el problema radica en construir un AFD a partir del lenguaje que debe aceptar. \pause
+
+    \bigskip
+
+    El autómata diseñado debe ser \alert{correcto} y \alert{completo}.
+\end{frame}
+
+\begin{frame}{Corrección y Completez}{Diseñando un AFD}
+    \textbf{Corrección}: se refiere a la cualidad de un sistema de ser \alert{correcto}. En el caso de un autómata, se refiere a que acepta \textbf{sólo} las palabras que pertenecen al lenguaje. \pause
+
+    \bigskip
+    
+    \textbf{Completez}: se refiere a la cualidad de un sistema de ser \alert{completo}. En el caso de un autómata, se refiere a que acepta \textbf{todas} las palabras que pertenecen al lenguaje.
+\end{frame}
+
+\begin{frame}{Diseñando un AFD}
+    AFD para lenguaje en $\{a,b\}$ de palabras que no tienen varias $a$s seguidas.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.5cm]
+
+            \node[initial,state] (A) {$q_0$};
+            \node[state, accepting] (B) [above right of=A] {$q_1$};
+            \node[state, accepting] (C) [below right of=A]{$q_2$};
+
+            \path (A) edge [bend left] node {$a$} (B)
+                      edge [bend left] node {$b$} (C)
+                  (B) edge [loop above] node {$a$} (B)
+                      edge [loop below] node {$b$} (B)
+                  (C) edge [bend left] node {$a$} (A)
+                      edge [loop below] node {$b$} (B);
+        \end{tikzpicture}
+    \end{center}
+    %\blfootnote{Ejemplo de \texttt{ramon.brena}}
+\end{frame}
+
+\begin{frame}{Diseñando un AFD}
+    AFD para lenguaje en $\{0, 1\}$ de palabras que no contienen $101$.
+
+    \bigskip
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.8cm]
+
+            \node[initial,state, accepting] (A) {$q_0$};
+            \node[state, accepting] (B) [right of=A] {$q_1$};
+            \node[state, accepting] (C) [right of=B]{$q_2$};
+            \node[state] (D) [right of=C]{$q_3$};
+
+            \path (A) edge [loop above] node {$0$} (A)
+                      edge [bend left] node {$1$} (B)
+                  (B) edge [bend left] node {$0$} (C)
+                      edge [bend left] node {$1$} (A)
+                  (C) edge [loop above] node {$0$} (C)
+                      edge [bend left] node {$1$} (D)
+                  (D) edge [loop above] node {$0$} (D)
+                      edge [loop below] node {$1$} (D);
+        \end{tikzpicture}
+    \end{center}
+    %\blfootnote{Ejemplo de \texttt{ramon.brena}}
+\end{frame}
+
+\begin{frame}{Principios de diseño}{Diseñando un AFD}
+    ¿Qué alternativas tenemos? \pause
+
+    \begin{itemize}
+        \itemsep1.5ex
+        \item \textbf{Prueba y error}. Inconveniente dado a que hay demasiados casos a considerar. \pause
+        \item \textbf{Sistemático}. Por condiciones de estados. \pause
+        \item \textbf{Conjuntos de estados}. Agrupando estados similares.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Diseño sistemático}{Diseñando un AFD}
+    \begin{enumerate}
+        \itemsep1.5ex
+        \item Determinar de manera explícita qué condición necesita cada uno de los estados. \pause
+        \begin{itemize}
+            \item Los estados deben ser mutuamente excluyentes \pause
+            \item Los estados deben ser exhaustivos (\textit{comprehensive}) \pause
+        \end{itemize}
+        \item Proponer las transiciones que permiten pasar de un estado a otro.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejemplo de diseño sistemático}{Diseñando un AFD}
+    Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{no comienzan con 00}. \pause
+
+    \bigskip
+
+    Condiciones a recordar: \pause
+
+    \begin{itemize}
+        \item $q_0$: no se han recibido caracteres. \pause
+        \item $q_1$: empieza con un solo $0$. \pause
+        \item $q_2$: empieza con dos o más $0$s. \pause
+        \item $q_3$: no empieza con dos $0$s. \pause
+    \end{itemize}
+
+    Estados finales: \onslide<7->$q_0$, \onslide<8->$q_1$, \onslide<9->$q_3$.
+    
+\end{frame}
+
+\begin{frame}{Ejemplo de diseño sistemático}{Diseñando un AFD}
+    Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{no comienzan con 00}.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm]
+
+            \node[initial,state, accepting] (A) {$q_0$};
+            \node[state, accepting] (B) [above right of=A] {$q_1$};
+            \node[state] (C) [right of=B]{$q_2$};
+            \node[state, accepting] (D) [below right of=A]{$q_3$};
+
+            \path
+            (A) edge [bend left] node {$0$} (B)
+                edge [bend right] node {$1$} (D)
+            (B) edge [bend left] node {$0$} (C)
+                edge [bend left] node {$1$} (D)
+            (C) edge [loop above] node {$0,1$} (C)
+            (D) edge [loop below] node {$0,1$} (D);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Diseño por conjuntos de estados}{Diseñando un AFD}
+    \begin{center}
+        \begin{tikzpicture}[node distance=3.2cm]
+
+            \node[initial,state, draw=none] (A) {};
+            \node[state, accepting, draw=none] (B) [above right of=A] {};
+            \node[state, draw=none] (C) [below right of=A] {};
+
+            \path
+            (A) edge node {$0$} (B)
+                edge node {$1$} (C)
+            (B) edge node {$1$} (C);
+
+            \begin{scope}[on background layer]
+                \node[fit=(A), ellipse, fill=blue!30, draw=blue, fill opacity=0.5, label=below:Ni $11$ ni $00$] (gA) {};
+                \node[fit=(B), ellipse, double, fill=green!30, draw=green, fill opacity=0.5, label=above:$00$ pero no $11$] (gB) {};
+                \node[fit=(C), ellipse, fill=red!30, draw=red, fill opacity=0.5] (hell) {$11$};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Subdivisión: diseño por conjuntos de estados}{Diseñando un AFD}
+    \begin{itemize}
+        \itemsep1.5ex
+        \item Los caracteres alimentados hasta el momento no contienen ni $00$ ni $11$: \pause
+        \begin{itemize}
+            \item $A$ --- no se han recibido caracteres (estado inicial). \pause
+            \item $B$ --- se recibió el primer $0$ de $00$. \pause
+            \item $C$ --- se recibió el primer $1$ de $11$. \pause
+        \end{itemize}
+        \item Contienen $00$ pero no $11$: \pause
+        \begin{itemize}
+            \item $D$ --- se recibió otro $0$. \pause
+            \item $E$ --- se recibió el primer $1$ de $11$. \pause
+        \end{itemize}
+        \item Contienen $11$: \pause
+            \begin{itemize}
+                \item No importa nada más (estado \textit{infierno}).
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Diseño por conjuntos de estados}{Diseñando un AFD}
+
+    Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{no comienzan con 00}.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=1.5cm]
+
+            \node[initial, state, draw=blue] (A) {$A$};
+            \node[state, draw=blue] (B) [right of=A] {$B$};
+            \node[state, draw=blue] (C) [below of=B]{$C$};
+            \node[state, accepting, draw=green] (D) [above right of=B, xshift=2cm] {$D$};
+            \node[state, accepting, draw=green] (E) [right of=D] {$E$};
+            \node[state, draw=red] (F) [right of=C, xshift=2cm] {$F$};
+
+            \path
+            (A) edge [bend left] node {$0$} (B)
+                edge [bend right] node {$1$} (C)
+            (B) edge node {$0$} (D)
+                edge [bend left] node {$1$} (C)
+            (C) edge node {$1$} (F)
+            (D) edge [loop above] node {$0$} (D)
+                edge [bend right] node [below] {$1$} (E)
+            (E) edge [bend right] node [above] {$0$} (D)
+                edge node {$1$} (F)
+            (F) edge [loop below] node {$0,1$} (F);
+
+            \begin{scope}[on background layer]
+                \node[fit=(A) (B) (C), ellipse, fill=blue!30, draw=blue, fill opacity=0.5] (gA) {};
+                \node[fit=(D) (E), ellipse, double, fill=green!30, draw=green, fill opacity=0.5] (gB) {};
+                \node[fit=(F), ellipse, fill=red!30, draw=red, fill opacity=0.5] (hell) {};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Diseño por complemento}{Diseñando un AFD}
+
+    Si $M$ es un autómata determinista que acepta un lenguaje regular $L$, para construir un autómata $M^\complement$ que acepte el lenguaje $L^\complement$, basta con \textbf{intercambiar} los estados finales por estados no finales, y viceversa. \pause
+
+    \bigskip
+
+    Cuando una palabra se rechaza en $M$, entonces se aceptará en $M^\complement$, y viceversa.
+\end{frame}
+
+\begin{frame}{Diseño por complemento}{Diseñando un AFD}
+    Obtener un AFD para el lenguaje en $\{a,b\}^*$ de las palabras que \textbf{no contienen la sub-cadena} $\mathbf{abaab}$.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=3cm]
+
+            \node[initial,state, draw=none] (A) {};
+            \node[state, accepting, draw=none] (B) [above right of=A] {};
+
+            \path
+            (A) edge node {$b$} (B)
+            (B) edge [loop right] node {$a,b$} (B);
+
+            \begin{scope}[on background layer]
+                \node[fit=(A), ellipse, fill=red!30, draw=red, fill opacity=0.5] (gA) {Sin $abaab$};
+                \node[fit=(B), ellipse, double, fill=green!30, draw=green, fill opacity=0.5] (gB) {Con $abaab$};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Diseño por complemento}{Diseñando un AFD}
+    \begin{center}
+        \begin{tikzpicture}[node distance=1.8cm]
+
+            \node[initial, state, draw=red] (st) {\^{}};
+            \node[state, draw=red] (a) [right of=st] {a};
+            \node[state, draw=red] (b) [right of=a] {b};
+            \node[state, draw=red] (aba) [right of=b] {aba};
+            \node[state, draw=red] (abaa) [above right of=a] {abaa};
+            \node[state, accepting, draw=green] (abaab) [above right of=abaa, xshift=2cm, yshift=1.2cm] {abaab};
+
+            \path
+            (st) edge node {$a$} (a)
+                 edge [loop above] node {$b$} (st)
+            (a) edge [loop above] node {$a$} (a)
+                edge node {$b$} (b)
+            (b) edge node {$a$} (aba)
+                edge [bend left] node [below] {$b$} (st)
+            (aba) edge node [above] {$a$} (abaa)
+                  edge [bend left] node {$b$} (b)
+            (abaa) edge node [above] {$a$} (a)
+                   edge node {$b$} (abaab)
+            (abaab) edge [loop right] node {$a,b$} (abaab);            
+
+            \begin{scope}[on background layer]
+                \node[fit=(st) (a) (b) (aba) (abaa), ellipse, fill=red!30, draw=red, fill opacity=0.5, label=below:Sin $abaab$] (gA) {};
+                \node[fit=(abaab), ellipse, double, fill=green!30, draw=green, fill opacity=0.5, label=above:Con $abaab$] (gB) {};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Diseño por complemento}{Diseñando un AFD}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm]
+
+            \node[state, initial, accepting, draw=green] (st) {\^{}};
+            \node[state, accepting, draw=green] (a) [right of=st] {a};
+            \node[state, accepting, draw=green] (b) [right of=a] {b};
+            \node[state, accepting, draw=green] (aba) [right of=b] {aba};
+            \node[state, accepting, draw=green] (abaa) [above right of=a] {abaa};
+            \node[state, draw=red] (abaab) [above right of=abaa, xshift=2cm, yshift=1.2cm] {abaab};
+
+            \path
+            (st) edge node {$a$} (a)
+                 edge [loop above] node {$b$} (st)
+            (a) edge [loop above] node {$a$} (a)
+                edge node {$b$} (b)
+            (b) edge node {$a$} (aba)
+                edge [bend left] node [below] {$b$} (st)
+            (aba) edge node [above] {$a$} (abaa)
+                  edge [bend left] node {$b$} (b)
+            (abaa) edge node [above] {$a$} (a)
+                   edge node {$b$} (abaab)
+            (abaab) edge [loop right] node {$a,b$} (abaab);            
+
+            % \begin{scope}[on background layer]
+            %     \node[fit=(st) (a) (b) (aba) (abaa), ellipse, double, fill=green!30, draw=green, fill opacity=0.5, label=below:Sin $abaab$] (gA) {};
+            %     \node[fit=(abaab), ellipse, fill=red!30, draw=red, fill opacity=0.5, label=above:Con $abaab$] (gB) {};
+            % \end{scope}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+
+% \section*{Referencias}
+
+% \begin{frame}[t]{Referencias}
+    % \nocite{bibID01}
+    % \nocite{bibID02}
+
+    % \bibliographystyle{IEEE}
+    % \bibliography{biblio}
+% \end{frame}
+
+\end{document}
