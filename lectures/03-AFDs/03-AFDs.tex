@@ -258,8 +258,9 @@
 \end{frame}
 
 \begin{frame}{Diseño por conjuntos de estados}{Diseñando un AFD}
+    Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{tengan $00$ pero no $11$}.
     \begin{center}
-        \begin{tikzpicture}[node distance=3.2cm]
+        \begin{tikzpicture}[node distance=2.8cm]
 
             \node[initial,state, draw=none] (A) {};
             \node[state, accepting, draw=none] (B) [above right of=A] {};
@@ -302,7 +303,7 @@
 
 \begin{frame}{Diseño por conjuntos de estados}{Diseñando un AFD}
 
-    Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{no comienzan con 00}.
+    Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{tengan $00$ pero no $11$}.
 
     \begin{center}
         \begin{tikzpicture}[node distance=1.5cm]
@@ -319,6 +320,7 @@
                 edge [bend right] node {$1$} (C)
             (B) edge node {$0$} (D)
                 edge [bend left] node {$1$} (C)
+            (C) edge node {$0$} (B)
             (C) edge node {$1$} (F)
             (D) edge [loop above] node {$0$} (D)
                 edge [bend right] node [below] {$1$} (E)
