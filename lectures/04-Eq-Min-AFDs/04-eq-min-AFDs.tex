@@ -151,9 +151,9 @@
             \bigskip
         
             \begin{tikzpicture}[node distance=1.5cm]
-                \node[initial, state, accepting] (A) {$A$};
-                \node[state, right of=A] (B) {$B$};
-                \node[state, accepting, right of=B] (C) {$C$};
+                \node[initial, state, accepting] (A) {$A'$};
+                \node[state, right of=A] (B) {$B'$};
+                \node[state, accepting, right of=B] (C) {$C'$};
                 \path
                 (A) edge [bend left] node {$a$} (B)
                 (A) edge [loop below] node {$b$} (A)
@@ -168,15 +168,18 @@
           \begin{center}
             \begin{tikzpicture}[level distance=1.5cm]
               \Tree
-              [.\node(13){$(1,3)$};
-                [.\node(24){$(2,4)$};
-                  [.$(1,5)$
-                    \edge node[midway, left]{$a$};
-                    [.$(2,5)$ ]
-                    \edge node[midway, right] {$b$};
-                    [.$(1,4)$ ] ] ] ]
-              \draw (13) ..controls +(north east:2) and +(north:2).. node[above] {$a$} (13);
-              \draw (24)..controls +(north east:2) and +(east:2).. node[above] {$a$} (24);
+              [.\node(aa){$(A,A')$};
+                \edge node[midway]{$a$};
+                [.\node(bb){$(B,B')$};
+                  \edge node[midway]{$a$};
+                  [.$(A,C')$
+                  \edge node[midway, left]{$a$};
+                  [.$(B,C')\alert{\times}$ ]
+                  \edge node[midway, right]{$b$};
+                  [.$(A,B')\alert{\times}$ ] ] ] ]
+
+              \draw (aa) ..controls +(north east:2) and +(north:2).. node[above] {$b$} (aa);
+              \draw (bb) ..controls +(north east:2) and +(east:2).. node[above] {$b$} (bb);
           \end{tikzpicture}
           \end{center}
         \end{column}
@@ -622,7 +625,7 @@
   \begin{center}
     \begin{tikzpicture}[node distance=2.5cm]
       \node[state, initial, draw=blue] (a) {$a$};
-      \node[state, right of=a, draw=green] (b) {$b$};
+      \node[state, accepting, right of=a, draw=green] (b) {$b$};
       \node[state, right of=b, draw=red] (c) {$c$};
 
       \path
