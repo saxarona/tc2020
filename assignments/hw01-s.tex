@@ -1,0 +1,123 @@
+\documentclass[]{book}
+
+%These tell TeX which packages to use.
+\usepackage{array,epsfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage[spanish, mexico]{babel}
+\usepackage[utf8]{inputenc}
+
+%Here I define some theorem styles and shortcut commands for symbols I use often
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem*{rmk}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem*{joke}{Joke}
+\newtheorem{ex}{Example}
+\newtheorem*{sol}{Solution}
+\newtheorem{prop}{Proposition}
+
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\graph}{\mathrm{graph}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\Z}{\bb{Z}}
+\newcommand{\Q}{\bb{Q}}
+\newcommand{\R}{\bb{R}}
+\newcommand{\C}{\bb{C}}
+\newcommand{\N}{\bb{N}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\MM}{\mathscr{M}}
+\newcommand{\HH}{\mathscr{H}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Ho}{\in\HH(\Om)}
+\newcommand{\bd}{\partial}
+\newcommand{\del}{\partial}
+\newcommand{\bardel}{\overline\partial}
+\newcommand{\textdf}[1]{\textbf{\textsf{#1}}\index{#1}}
+\newcommand{\img}{\mathrm{img}}
+\newcommand{\ip}[2]{\left\langle{#1},{#2}\right\rangle}
+\newcommand{\inter}[1]{\mathrm{int}{#1}}
+\newcommand{\exter}[1]{\mathrm{ext}{#1}}
+\newcommand{\cl}[1]{\mathrm{cl}{#1}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\vol}{\mathrm{vol}}
+\newcommand{\cnt}{\mathrm{ct}}
+\newcommand{\osc}{\mathrm{osc}}
+\newcommand{\LL}{\mathbf{L}}
+\newcommand{\UU}{\mathbf{U}}
+\newcommand{\support}{\mathrm{support}}
+\newcommand{\AND}{\;\wedge\;}
+\newcommand{\OR}{\;\vee\;}
+\newcommand{\Oset}{\varnothing}
+\newcommand{\st}{\ni}
+\newcommand{\wh}{\widehat}
+
+%Pagination stuff.
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+\setlength{\itemsep}{0.45in}
+\pagestyle{empty}
+
+
+
+\begin{document}
+
+\begin{center}
+{\huge Matemáticas Computacionales TC2020 -- 01}\\[1.5ex]
+{\large \textbf{Tarea 01 -- Soluciones}\\[1.5ex] %You should put your name here
+17.08.18} %You should write the date here.
+\end{center}
+
+\vspace{0.2 cm}
+
+\subsection*{Preliminares: Conjuntos, relaciones y funciones}
+
+\begin{enumerate}
+	\itemsep0.35in
+	\item Calcula el resultado de las operaciones siguientes:
+	\begin{enumerate}
+        \item $\{a,b,c\} \times \{1,2,3,4\} = \{(a,1), (a,2), (a,3), (a,4), (b,1), (b,2), (b,3), (b,4), (c,1), (c,2), (c,3), (c,4)\}$
+		\item $\{a,\{b\}, \{\{c\}\}\} \times \varnothing = \varnothing$
+		\item $\mathscr{P}(\{x : x \in \N, x < 4\}) = \mathscr{P}(\{1,2,3\}) = \{\varnothing, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}$
+		\item $|\mathscr{P}(\{y : y \in \Z, 0 < y < 10 \})| = |\mathscr{P}(\{1,2,3,4,5,6,7,8,9\})| = 2^9 = 512$
+	\end{enumerate}
+
+	\item Las siguientes son relaciones de $\{1,2,3,4\}$ a $\{1,2,3,4\}$.
+	Indica cuáles de ellas son relaciones \textdf{transitivas}, \textdf{reflexivas} o \textdf{simétricas}.
+	Indica también cuáles son \textdf{funciones} y cuáles son sólo \textdf{relaciones}.
+	En caso de ser funciones, indica si son funciones \textdf{totales} o \textdf{parciales}, y cuáles son \textdf{inyectivas}, \textdf{sobreyectivas} y cuáles son \textdf{biyectivas}.
+	\begin{enumerate}
+        \item $\{(2,2), (3,3), (1,1), (4,4)\}$\\
+        Reflexiva, simétrica, transitiva, función total, inyectiva, sobreyectiva y por tanto biyectiva.
+        \item $\{(1,1), (2,2), (3,3), (4,3)\}$\\
+        No reflexiva, no simétrica, transitiva, función total, no inyectiva, no sobreyectiva, no biyectiva.
+        \item $\{(1,1), (3,4), (2,2), (3,3)\}$\\
+        No reflexiva, no simétrica, transitiva, no es función, sólo es relación (así que tampoco es inyectiva ni sobreyectiva ni biyectiva).
+        \item $\{(1,1), (2,2), (3,3)\}$\\
+        No reflexiva, simétrica, transitiva, función parcial, inyectiva, no sobreyectiva (y por tanto no biyectiva).
+	\end{enumerate}
+
+	\item Apóyate en la información vista en clase e investiga qué es la \textdf{cerradura transitiva}. Posteriormente escribe su definición con tus propias palabras. Luego, encuentra la cerradura transitiva de cada una de las relaciones del problema anterior.\footnotemark
+\end{enumerate}
+
+    La cerradura transitiva $R'$ es la relación transitiva más pequeña que incluye a la relación original $R$: $R \subseteq R'$. Como quien dice, le agregamos a $R$ los elementos necesarios para hacerla transitiva, y entonces obtenemos la cerradura transitiva $R'$.
+
+    Como todas las relaciones del ejercicio anterior son transitivas, entonces la relación transitiva más pequeña que contiene a cada una de ellas es esa misma relación.
+
+\footnotetext{No olvides citar tus fuentes de manera adecuada. Considera que sean fuentes fiables y, de ser posible, lista dos o tres recursos; no te quedes con la primera definición que encuentres.}
+\end{document}
+
+
