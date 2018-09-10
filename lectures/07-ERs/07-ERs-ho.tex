@@ -1,0 +1,238 @@
+\documentclass[spanish, handout]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+
+\tikzset{
+->, %arrow type
+>=stealth', %arrow head type (bold)
+shorten >=1pt, 
+auto,
+semithick,
+initial text=$ $, %no start text
+}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+\begingroup
+\renewcommand\thefootnote{}\footnote{#1}%
+\addtocounter{footnote}{-1}%
+\endgroup
+}
+
+\usetheme{Boadilla}
+\usefonttheme[onlymath]{serif}
+
+% Sets the templates
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Expresiones Regulares}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+\texorpdfstring{
+\begin{center}
+    M.C. Xavier Sánchez Díaz \\
+    \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+\end{center}
+}
+{M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+\titlepage        
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+\tableofcontents
+\end{frame}
+
+\section{Conceptos básicos de ERs}
+\label{sec:basics}
+
+\begin{frame}{¿Qué es una expresión regular?}{Conceptos básicos de Expresiones Regulares}
+
+    Recordemos que un \alert{lenguaje} es un \textbf<3->{conjunto} de palabras aceptadas por un autómata. \pause
+
+    \bigskip
+
+    Si existe autómata que pueda representar al lenguaje, entonces es un lenguaje \alert{regular}. \pause
+
+    \bigskip
+
+    \onslide<4-> Como es un conjunto, podemos \textbf{describirlo} usando expresiones.
+\end{frame}
+
+\begin{frame}{Lenguajes regulares}{Conceptos básicos de Expresiones Regulares}
+    Un lenguaje $L$ es \alert{regular} si y sólo si se cumple al menos una de las condiciones siguientes: \pause
+
+    \bigskip
+
+    \begin{itemize}
+        \itemsep1.25em
+        \item $L$ es finito. \pause
+        \item $L$ es la unión o concatenación de otros lenguajes regulares $R_1$ y $R_2$: $L = R_1 \cup R_2$ o $L = R_1R_2$. \pause
+        \item L es la cerradura de Kleene de algún lenguaje regular: $L = R^*$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lenguajes regulares}{Conceptos básicos de Expresiones Regulares}
+
+    \textit{El lenguaje en $\{a,b\}$ de las palabras que empiecen con $00$ pero que no tengan $11$}. \pause
+
+    \bigskip
+
+    \begin{center}
+        {\huge $00$ ALGO NO$(11)$}
+    \end{center} \pause
+
+    \bigskip
+    
+    Hay un patrón \textit{regular} que podemos modelar usando un AF.
+\end{frame}
+
+\begin{frame}{Lenguajes regulares}{Conceptos básicos de Expresiones Regulares}
+
+    \textit{El lenguaje $L$ de palabras formadas por $a$ y $b$, pero que empiezan con $a$}: $aab, ab, a, abaa, \dots$. \pause
+
+    \begin{itemize}
+        \itemsep1.25em
+        \item $\Sigma = \{a, b\}$ \pause
+        \item $L = R_1 R_2$: \pause
+            \begin{itemize}
+                \item $R_1 = $ el lenguaje que contiene una $a$. \pause
+                \item $R_2 = $ el lenguaje que contiene cadenas cualesquiera de $a$ y $b$. \pause
+            \end{itemize}
+    \end{itemize}
+
+    \[L = \{a\}\{a,b\}^* \]
+\end{frame}
+
+\begin{frame}{Expresiones Regulares}{Conceptos básicos de Expresiones Regulares}
+    Una \alert{expresión regular} es una representación textual de un \textbf{lenguaje regular}. \pause
+
+    \begin{block}{Definición de Expresiones Regulares}
+        Sea $\Sigma$ un alfabeto no vacío. \pause
+
+        \begin{itemize}
+            \item \^{} es una expresión regular. \pause
+            \item $\varnothing$ es una expresión regular. \pause
+            \item Para cada $\sigma \in \Sigma$, $\sigma$ es una expresión regular. \pause
+            \item Si $R_1$ y $R_2$ son expresiones regulares, entonces $R_1 \cup R_2$ es una expresión regular. \pause
+            \item Si $R_1$ y $R_2$ son expresiones regulares, entonces $R_1 R_2$ es una expresión regular. \pause
+            \item Si $R$ es una expresión regular, entonces $R^*$ es una expresión regular.
+        \end{itemize}
+    \end{block}
+    
+\end{frame}
+
+\begin{frame}{Operaciones}{Conceptos básicos de Expresiones Regulares}
+    Las operaciones disponibles son las mismas que usábamos en autómatas, pero algunas cambian de notación: \pause
+
+    \bigskip
+
+    \begin{itemize}
+        \item La ER $\varnothing$ representa al \textbf{lenguaje vacío} $\{\}$. \pause
+        \item La \textbf{palabra vacía} $\varepsilon$ la representamos con la expresión regular $\hat{}$. \pause
+        \item La \textbf{unión} se representa usualmente con la ER $+$. \pause
+        \item La \textbf{cerradura o estrella de Kleene} de un lenguaje regular $R$ sigue representándose con $R^*$
+    \end{itemize}
+\end{frame}
+
+\section{Ejemplos de ERs}
+\label{sec:ex}
+
+\begin{frame}{ERs sintácticamente bien formadas}{Ejemplos de ERs}
+    A nivel \textit{implementación}, una ER es una secuencia de ERs que nos dicen \textbf{cómo} debería ser el lenguaje descrito por la ER completa: \pause
+
+    \bigskip
+
+    \onslide
+
+    \only<2>{
+        {\Large $0$} es una ER válida que describe al lenguaje $\{0\}$.
+    } 
+    \pause
+
+    \only<3>{
+        {\Large $01^*$} es una ER válida: \textit{La \textbf{concatenación} del lenguaje $\{0\}$ y $\{1\}^*$}---\textit{un $0$ seguido de cero o más $1$s}.
+    }
+
+    \pause
+
+    \only<4>{
+        {\Large $0 + 1$} es una ER válida: \textit{La \textbf{unión} del lenguaje $\{0\}$ y $\{1\}$}---\textit{o un $0$ o un $1$}.
+    }
+    
+    \pause
+
+    \only<5>{
+        {\Large $(0 + 1)^*11$} es una ER válida: \textit{o $0$ o $1$ cero o más veces, seguida de dos $1$s}.
+    }
+\end{frame}
+
+\begin{frame}{ERs más complejas}{Ejemplos de ERs}
+    \textit{Diseñar una ER para el lenguaje de las palabras en $\{0,1\}$ que empiezan o terminan en $01$}: \pause
+
+    \bigskip
+
+    \begin{enumerate}
+        \item Estructuramos con patrones:
+        $01 \, algo \, 01$ \pause 
+        \item Definimos restricciones:
+        $algo$ no tiene restricción alguna, puede ser o $0$ o $1$, cero o más veces.\pause
+        \item Generamos una ER para el patrón $algo$:
+        $(0 + 1)^*$ \pause
+        \item Finalmente, concatenamos las ERs para hacer una nueva ER.
+    \end{enumerate}
+
+    \[01(0+1)^*01\]
+\end{frame}
+
+
+% \section*{Referencias}
+% \begin{frame}[t]{Referencias}
+% \nocite{bibID01}
+% \nocite{bibID02}
+
+% \bibliographystyle{IEEE}
+% \bibliography{biblio}
+% \end{frame}
+
+\end{document}
