@@ -48,8 +48,8 @@
 \usepackage{sectsty}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %set section/subsections HEADINGS font and color
-\sectionfont{\color{MyColor1}}  % sets colour of sections
-\subsectionfont{\color{MyColor1}}  % sets colour of sections
+%\sectionfont{\color{Black}}  % sets colour of sections
+%\subsectionfont{\color{Black}}  % sets colour of sections
 
 %set section enumerator to arabic number (see footnotes markings alternatives)
 \renewcommand\thesection{\arabic{section}} %define sections numbering
@@ -100,8 +100,8 @@
 }
 
 \title{
-    {\blue \myclass} \\
-    {\blueb \mytitle} \\
+    \myclass \\
+    \textbf{\mytitle} \\
     \myheader
     \date{}
 }
@@ -118,7 +118,15 @@
 \begin{document}
 \maketitle
 
-\vspace{-2cm}
+\vspace{-1.5cm}
+
+Lee cuidadosamente y contesta lo que se te pide.
+Este examen está pensado para resolverse de manera individual, y en poco menos de 90 minutos.
+Se sugiere que administres bien tu tiempo.
+
+Al momento de contestar, intenta ser lo más explícito posible: se calificará con base en lo que esté escrito, y se considerará el proceso aún cuando la respuesta final esté errada.
+Recuerda que puedes revisar material de la clase, el libro de texto o tus notas.
+Buena suerte.
 
 \section{Relaciones y funciones (15\%)}
 
@@ -127,7 +135,7 @@ Para las siguientes relaciones, indica si son \textbf{reflexivas}, \textbf{simé
 Menciona también si son \textbf{funciones}. En caso de que lo sean, indica si son \textbf{totales} o \textbf{parciales}, y si son \textbf{inyecciones}, \textbf{sobreyecciones} o \textbf{biyecciones}.
 
 \begin{enumerate}[label=\tt \alph*)]
-    \itemsep1.5em
+    \itemsep0em
     \item $\{(1,1), (2,2), (3,3), (4,4)\}$
     \item $\{(2,2), (1,1), (3,3), (5,5), (4,4)\}$
     \item $\{(1,2), (2,1), (3,4), (4,3), (3,5), (5,3)\}$
@@ -141,7 +149,7 @@ Menciona también si son \textbf{funciones}. En caso de que lo sean, indica si s
 Calcula el resultado de las siguientes operaciones.
 
 \begin{enumerate}[label=\tt \alph*)]
-    \itemsep1.5em
+    \itemsep0em
     \item $\{1, 2, 3\} \cup \{z : z \in \mathbb{Z}, 4 \leq z < 10 \}$
     \item $\{1\} \times \{2,3,4\}$
     \item $|\mathscr{P}(\{n : n \in \mathbb{N} \cup \{0\}, n < 15\})|$
@@ -152,9 +160,8 @@ Calcula el resultado de las siguientes operaciones.
 
 \section{Diseño de AFDs (15 \%)}
 
-\begin{description}
-    \item[a)] Diseña un AFD correcto y completo para el lenguaje de las palabras en $\{a,b\}$ que contienen la subcadena \texttt{abba} (10 \%) y escribe su definición formal completa (2 \%). Después, da tres ejemplos de palabras que sean aceptadas y otros tres de palabras no aceptadas (3 \%).
-\end{description}
+Diseña un AFD correcto y completo para el lenguaje de las palabras en $\{a,b\}$ que contienen la subcadena \texttt{abba} (10 \%) y escribe su definición formal completa (2 \%).
+Después, da tres ejemplos de palabras que sean aceptadas y otros tres de palabras no aceptadas (3 \%).
 
 
 \section{Minimización de AFDs (25 \%)}
@@ -195,13 +202,13 @@ Si algún movimiento te parece muy ``lógico'', puedes explicarlo a grandes rasg
 \end{center}
 
 
-\section{Diseño de Autómatas Finitos (30 \%)}
+\section{Diseño de Autómatas Finitos (30 \% + 7 \%)}
 
 El \textit{Biologic Space Lab} que orbita \textsc{SR388} sufrió una falla eléctrica dejando fuertes daños en algunos de sus sectores. Uno de los más afectados fue el que alberga muestras de la vida marina del planeta, el Sector 4 (AQA). Por ello, el equipo de mantenimiento te ha asignado la tarea de implementar un componente de control para el nivel del agua de los 32 tanques en el sector mientras se llevan a cabo las reparaciones.
 
 Cada tanque tiene tres sensores: uno para la detección de movimiento (y así saber si en el tanque se encuentra algún espécimen o si el tanque se encuentra vacío), otro para medir la toxicidad del agua, y uno más para medir la cantidad de carga eléctrica, la cual es indicio de alguna falla. En el caso de los últimos dos, se marca como `peligroso' cuando se sobrepasa un umbral.
 
-Los tanques envían actualizaciones al mecanismo de control una vez cada dos horas; y por medio de un packet de 8 bits donde los primeros 3 corresponden a la lectura de los sensores (movimiento, toxicidad y carga, en ese orden), y los últimos 5 al ID del tanque (en binario).
+Los tanques envían actualizaciones al mecanismo de control una vez cada dos horas por medio de un packet de 8 bits, donde los primeros 3 corresponden a la lectura de los sensores (movimiento, toxicidad y carga, en ese orden), y los últimos 5 al ID del tanque (en binario).
 
 HQ te ha notificado que la compuerta que alimenta a cada tanque debe cerrarse en cualquiera de las siguientes situaciones:
 
@@ -209,10 +216,10 @@ HQ te ha notificado que la compuerta que alimenta a cada tanque debe cerrarse en
     \itemsep0em
     \item Si las especies del tanque están a salvo (baja toxicidad y baja carga eléctrica).
     \item Si el tanque está deshabitado, pero es altamente tóxico, sin importar lo demás.
-    \item Si el agua del tanque presenta una cantidad de carga eléctrica peligrosa, independientemente de que esté habitado o de su toxicidad.
+    \item Si el agua del tanque presenta una cantidad peligrosa de carga eléctrica, independientemente de que esté habitado o de su toxicidad.
 \end{itemize}
 
-Diseña un autómata que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet de información que envía es aceptado. Sugerencias:
+Diseña un autómata que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet completo de información que se recibe es aceptado. Sugerencias:
 
 \begin{enumerate}[label=\tt \alph*)]
     \itemsep0em
@@ -225,7 +232,7 @@ Diseña un autómata que funcione como mecanismo de control para cerrar la compu
     \item Si te es posible, minimízalo (+5 \%)
 \end{enumerate}
 
-\section*{Reto: Conversión de AFN a AFDs (+15\%)}
+\section*{Reto: Conversión de AFN a AFDs (+15 \%)}
 
 Diseña un AFN por \textbf{concatenación} para el lenguaje de las palabras $\{a^n b^m\}$ donde $n$ y $m$ describen las veces que se repite cada carácter.
 Las palabras tienen $n \,$ $a$s, seguidas por $m \,$ $b$s para cualquier valor de $n$ y $m$.
@@ -237,5 +244,7 @@ Las palabras tienen $n \,$ $a$s, seguidas por $m \,$ $b$s para cualquier valor d
 
 Sugerencia: minimiza lo más que puedas tu AFN para que no batalles al convertirlo.
 
+\vfill
 
+\textbf{De acuerdo con el Código de Ética del Tecnológico de Monterrey, mi desempeño en esta actividad estará guiado por la integridad académica.}
 \end{document}
