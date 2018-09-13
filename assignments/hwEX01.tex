@@ -1,0 +1,121 @@
+\documentclass[]{book}
+
+%These tell TeX which packages to use.
+\usepackage{array,epsfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage[spanish, mexico]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+%Here I define some theorem styles and shortcut commands for symbols I use often
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem*{rmk}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem*{joke}{Joke}
+\newtheorem{ex}{Example}
+\newtheorem*{sol}{Solution}
+\newtheorem{prop}{Proposition}
+
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\graph}{\mathrm{graph}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\Z}{\bb{Z}}
+\newcommand{\Q}{\bb{Q}}
+\newcommand{\R}{\bb{R}}
+\newcommand{\C}{\bb{C}}
+\newcommand{\N}{\bb{N}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\MM}{\mathscr{M}}
+\newcommand{\HH}{\mathscr{H}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Ho}{\in\HH(\Om)}
+\newcommand{\bd}{\partial}
+\newcommand{\del}{\partial}
+\newcommand{\bardel}{\overline\partial}
+\newcommand{\textdf}[1]{\textbf{\textsf{#1}}\index{#1}}
+\newcommand{\img}{\mathrm{img}}
+\newcommand{\ip}[2]{\left\langle{#1},{#2}\right\rangle}
+\newcommand{\inter}[1]{\mathrm{int}{#1}}
+\newcommand{\exter}[1]{\mathrm{ext}{#1}}
+\newcommand{\cl}[1]{\mathrm{cl}{#1}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\vol}{\mathrm{vol}}
+\newcommand{\cnt}{\mathrm{ct}}
+\newcommand{\osc}{\mathrm{osc}}
+\newcommand{\LL}{\mathbf{L}}
+\newcommand{\UU}{\mathbf{U}}
+\newcommand{\support}{\mathrm{support}}
+\newcommand{\AND}{\;\wedge\;}
+\newcommand{\OR}{\;\vee\;}
+\newcommand{\Oset}{\varnothing}
+\newcommand{\st}{\ni}
+\newcommand{\wh}{\widehat}
+
+%Pagination stuff.
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+\setlength{\itemsep}{0.45in}
+\pagestyle{empty}
+
+
+
+\begin{document}
+
+\begin{center}
+{\huge Matemáticas Computacionales TC2020}\\[1.5ex]
+{\large \textbf{Tarea EX 01}\\[1.5ex] %You should put your name here
+15.09.18} %You should write the date here.
+\end{center}
+
+\vspace{0.2 cm}
+
+\subsection*{Diseño de Autómatas Finitos (30 \% + 7 \%)}
+
+El \textit{Biologic Space Lab} que orbita \textsc{SR388} sufrió una falla eléctrica dejando fuertes daños en algunos de sus sectores.
+Uno de los más afectados fue el que alberga muestras de la vida marina del planeta, el Sector 4 (AQA).
+Por ello, el equipo de mantenimiento te ha asignado la tarea de implementar un componente de control para el nivel del agua de los 32 tanques en el sector mientras se llevan a cabo las reparaciones.
+
+Cada tanque tiene tres sensores: uno para la detección de movimiento (y así saber si en el tanque se encuentra algún espécimen o si el tanque se encuentra vacío), otro para medir la toxicidad del agua, y uno más para medir la cantidad de carga eléctrica, la cual es indicio de alguna falla.
+En el caso de los últimos dos, se marca como `peligroso' cuando se sobrepasa un umbral.
+
+Los tanques envían actualizaciones al mecanismo de control una vez cada dos horas por medio de un packet de 8 bits, donde los primeros 3 bits corresponden a la lectura de los sensores (movimiento, toxicidad y carga, en ese orden), y los últimos 5 al ID del tanque (en binario). Por ejemplo, la palabra 10100101 significa que hay animales en el tanque (1), el agua no es tóxica (0) y hay una carga eléctrica peligrosa (1), y que la información viene del tanque número 5 (00101).
+
+HQ te ha notificado que la compuerta que alimenta a cada tanque debe cerrarse en \textbf{cualquiera} de las siguientes situaciones:
+
+\begin{itemize}
+    \itemsep0em
+    \item Si hay especies en el tanque, y están a salvo (baja toxicidad y baja carga eléctrica).
+    \item Si el tanque está deshabitado, pero es altamente tóxico, sin importar la carga eléctrica.
+    \item Si el agua del tanque presenta una cantidad peligrosa de carga eléctrica, independientemente de que esté habitado o de su toxicidad.
+\end{itemize}
+
+Diseña un autómata que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet completo de información (la palabra de longitud 8 bits) que se recibe es \textbf{aceptado}. Sugerencias:
+
+\begin{enumerate}[label=\tt \alph*)]
+    \itemsep0em
+    \item Genera el alfabeto de tu autómata. \textit{¿Cuáles son los símbolos que verá tu autómata?} (2 \%)
+    \item Convierte las condiciones de aceptación a palabras de entrada específicas. Considera el ejemplo dado (3 \%)
+    \item Diseña cuantos componentes sean necesarios. Lo más sencillo es hacer un autómata para cada condición de aceptación. No tiene por qué ser un AFD (15 \%)
+    \item Presenta el mecanismo de control completo. El mecanismo debe aceptar \textbf{cualquiera} de las condiciones. Habrá que juntar los autómatas que hiciste (5 \%)
+    \item Describe formalmente tu autómata usando $M = (Q, \Sigma, \delta, q, F)$ (5 \%)
+    \item Ponle un nombre a tu mecanismo de control. Algo creativo como \textit{El Portero Maximus-9000} o algo así (+2 \%)
+    \item Si te es posible, minimízalo. Puede que haya estados redundantes que habría que eliminar, pero antes debes asegurarte de que el mecanismo sea un AFD y no un AFN. (+5 \%)
+\end{enumerate}
+
+\end{document}
