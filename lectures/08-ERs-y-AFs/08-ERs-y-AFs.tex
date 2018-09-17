@@ -1,0 +1,471 @@
+\documentclass[spanish]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+
+\tikzset{
+->, %arrow type
+>=stealth', %arrow head type (bold)
+shorten >=1pt, 
+auto,
+semithick,
+initial text=$ $, %no start text
+}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+\begingroup
+\renewcommand\thefootnote{}\footnote{#1}%
+\addtocounter{footnote}{-1}%
+\endgroup
+}
+
+\usetheme{Boadilla}
+\usefonttheme[onlymath]{serif}
+
+% Sets the templates
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Conversión entre Expresiones Regulares y Autómatas Finitos}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+\texorpdfstring{
+\begin{center}
+    M.C. Xavier Sánchez Díaz \\
+    \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+\end{center}
+}
+{M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+\tableofcontents
+\end{frame}
+
+\section{Preliminares}
+\label{sec:pre}
+
+\begin{frame}{¿Por qué convertir entre ERs y AFs?}{Conversión entre ERs y AFs}
+    \begin{itemize}
+        \itemsep1.5em
+        \item Los AFs son más \textbf{fáciles de entender} (y por tanto, de \textbf{diseñar}). \pause
+        \item Los AFs son muy \textbf{aparatosos}: describen qué pasa en cada estado y con cada acción. \pause
+        \item Las ERs son más \textbf{compactas}: sólo describen cómo va a ser el \textit{output} del autómata---el lenguaje de palabras que acepta. \pause
+        \item Pasar de una condición de aceptación de un problema a un AF puede ser \textbf{más complicado}. \pause
+        \item Explicar una condición de aceptación de un problema, a otra persona mediante una ER puede ser \textbf{muy complicado}.
+    \end{itemize}
+\end{frame}
+
+\section{De AFs a ERs}
+
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (q0) {$q0$};
+            \node[state] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state] (q3) [below right of=q1] {$q3$};
+            \node[state] (q4) [right of=q1] {$q4$};
+            \node[state, accepting] (q5) [below right of=q4] {$q5$};
+
+            \path
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge node {$0$} (q4)
+            (q1) edge node {$1$} (q3)
+            (q2) edge node {$0$} (q3)
+            (q2) edge node [below] {$1$} (q5)
+            (q3) edge node {$1$} (q5)
+            (q4) edge node {$0,1$} (q5)
+            (q5) edge [loop below] node {$0,1$} (q5);
+        \end{tikzpicture}
+    \end{center} \pause
+
+    Es un AFN ya que $q3$ no tiene transición $0$.
+\end{frame}
+
+\begin{frame}{Paso a paso}{De AFs a ERs}
+    \begin{enumerate}
+        \itemsep1.5em
+        \item Agregamos un nuevo estado inicial y otro final por medio de transiciones vacías. \pause
+        \item Empezando desde el \textbf{final} y yendo hacia atrás, reemplazamos transiciones por sus equivalencias en ERs: \pause
+        \begin{enumerate}
+            \itemsep1.1em
+            \item Primero cambiamos sus transiciones por ERs. \pause
+            \item Después cambiamos las transiciones que llegan al estado. \pause
+            \item Marcamos el nodo, \textit{uniendo o concatenando} las ERs. \pause
+            \item Varias ERs yendo de un estado a otro pueden reducirse a una sola \textbf{uniéndolas}. \pause
+        \end{enumerate}
+        \item Continuamos reemplazando hasta tener una sola ER.
+    \end{enumerate}
+\end{frame}
+
+%adding s and f
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state] (q3) [below right of=q1] {$q3$};
+            \node[state] (q4) [right of=q1] {$q4$};
+            \node[state] (q5) [below right of=q4] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge node {$0$} (q4)
+            (q1) edge node {$1$} (q3)
+            (q2) edge node {$0$} (q3)
+            (q2) edge node [below] {$1$} (q5)
+            (q3) edge node {$1$} (q5)
+            (q4) edge node {$0,1$} (q5)
+            (q5) edge [loop below] node {$0,1$} (q5)
+            (q5) edge node {$\varepsilon$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% changing q5 and its actions
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state] (q3) [below right of=q1] {$q3$};
+            \node[state] (q4) [right of=q1] {$q4$};
+            \node[state] (q5) [below right of=q4] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge node {$0$} (q4)
+            (q1) edge node {$1$} (q3)
+            (q2) edge node {$0$} (q3)
+            (q2) edge node [below] {$1$} (q5)
+            (q3) edge node {$1$} (q5)
+            (q4) edge node {$0,1$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% changing actions leading to q5
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state] (q3) [below right of=q1] {$q3$};
+            \node[state, fill=gray!50] (q4) [right of=q1] {$q4$};
+            \node[state] (q5) [below right of=q4] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge node {$0$} (q4)
+            (q1) edge node {$1$} (q3)
+            (q2) edge node {$0$} (q3)
+            (q2) edge node [below] {$1$} (q5)
+            (q3) edge node {$1$} (q5)
+            (q4) edge node {$0+1$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% removing q4 and reorienting coming actions to q5
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state, fill=gray!50] (q3) [below right of=q1] {$q3$};
+            \node[state] (q5) [right of=q3] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge [bend left] node {$0(0+1)$} (q5)
+            (q1) edge node {$1$} (q3)
+            (q2) edge node {$0$} (q3)
+            (q2) edge node [below] {$1$} (q5)
+            (q3) edge node {$1$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% removing q3 and reorienting coming actions to q5
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state] (q5) [right of=q0, xshift=2cm] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge [bend left] node {$0(0+1)$} (q5)
+            (q1) edge node [below] {$11$} (q5)
+            (q2) edge [bend left] node {$01$} (q5)
+            (q2) edge node [below] {$1$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% joining incoming actions for q5 into a single RE
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state,fill=gray!50] (q1) [above right of=q0] {$q1$};
+            \node[state] (q2) [below right of=q0] {$q2$};
+            \node[state] (q5) [right of=q0, xshift=2cm] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge node {$1$} (q1)
+            (q1) edge [bend left] node {$11 + 0(0+1)$} (q5)
+            (q2) edge [bend right] node {$1 + 01$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% removing q1 and reorienting incoming actions to q5
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state,fill=gray!50] (q2) [below right of=q0] {$q2$};
+            \node[state] (q5) [right of=q0, xshift=2cm] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node {$0$} (q2)
+            (q0) edge [bend left] node {$1(11 + 0(0+1))$} (q5)
+            (q2) edge [bend right] node {$1 + 01$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% removing q2 and reorienting incoming actions to q5
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state] (q0) [right of=s]{$q0$};
+            \node[state] (q5) [right of=q0, xshift=2cm] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge [bend left] node {$1(11 + 0(0+1))$} (q5)
+            (q0) edge [bend right] node {$0(1 + 01)$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+% joining q0 actions for q5 into a single RE (END)
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        \begin{tikzpicture}[node distance=2.3cm]
+
+            \node[state, initial] (s) {$s$};
+            \node[state, fill=gray!50] (q0) [right of=s]{$q0$};
+            \node[state, fill=gray!50] (q5) [right of=q0, xshift=2cm] {$q5$};
+            \node[state, accepting] (f) [right of=q5] {$f$};
+
+            \path
+            (s) edge node {$\varepsilon$} (q0)
+            (q0) edge node[above, yshift=0.5cm] {$1(11 + 0(0+1)) + 0(1 + 01)$} (q5)
+            (q5) edge node {$(0+1)^*$} (f);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
+    \begin{center}
+        {\huge $(1(11 + 0(0+1)) + 0(1 + 01))(0+1)^*$}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Paso a paso}{Conversión de ERs a AFs}
+    
+    Para convertir de una ER a un AF hay que seguir el proceso inverso, el cual parte del mismo principio:
+
+    \bigskip
+
+    \begin{enumerate}
+        \itemsep1.5em
+        \item Empezamos con un autómata \textit{genérico} con un estado inicial y uno final, unidos por la ER. A este AF le llamaremos \alert{Gráfica de Transición}. \pause
+        \item \textit{Partimos} la ER en ERs más pequeñas (vía \textbf{unión}, por ejemplo).
+        \item Reemplazamos cada ER con un estado-acción.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Generalizando}{Conversión entre ERs y AFs}
+    
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{center}
+                {\huge $R_1 R_2$}
+            \end{center}
+        \end{column}
+
+        \begin{column}{0.7\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[node distance=2cm]
+        
+                    \node[state, initial] (s) {$s$};
+                    \node[state] (k) [right of=s]{$k$};
+                    \node[state, accepting] (f) [right of=k] {$f$};
+        
+                    \path
+                    (s) edge node {$R_1$} (k)
+                    (k) edge node {$R_2$} (f);
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns} \pause
+
+    \bigskip
+
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{center}
+                {\huge $R_1 + R_2$}    
+            \end{center}
+        \end{column}
+        
+        \begin{column}{0.7\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[node distance=2.5cm]
+        
+                    \node[state, initial] (s) {$s$};
+                    \node[state, accepting] (f) [right of=s] {$f$};
+        
+                    \path
+                    (s) edge [bend left] node {$R_1$} (f)
+                    (s) edge [bend right] node {$R_2$} (f);
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns} \pause
+    
+    \bigskip
+
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{center}
+                {\huge $R^*$}
+            \end{center}
+        \end{column}
+
+        \begin{column}{0.7\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[node distance=2cm]
+        
+                    \node[state, initial] (s) {$s$};
+                    \node[state] (k) [right of=s]{$k$};
+                    \node[state, accepting] (f) [right of=k] {$f$};
+        
+                    \path
+                    (s) edge node {$\varepsilon$} (k)
+                    (k) edge [loop above] node {$R$} (k)
+                    (k) edge node {$\varepsilon$} (f);
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% \section*{Referencias}
+% \begin{frame}[t]{Referencias}
+% \nocite{bibID01}
+% \nocite{bibID02}
+
+% \bibliographystyle{IEEE}
+% \bibliography{biblio}
+% \end{frame}
+
+\end{document}
