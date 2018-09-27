@@ -1,0 +1,222 @@
+\documentclass[spanish]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+\usepackage{textcomp}
+\usepackage{enumitem}
+
+\newlist{longenum}{enumerate}{4}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+\tikzset{%
+    stylename/.style={->, >=stealth', shorten >=1pt, auto, semithick, initial text=$ $}
+}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+\begingroup
+\renewcommand\thefootnote{}\footnote{#1}%
+\addtocounter{footnote}{-1}%
+\endgroup
+}
+
+\usetheme{Boadilla}
+%\usecolortheme{default}
+\usefonttheme[onlymath]{serif}
+\useoutertheme{infolines}
+
+% Sets the templates
+
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg = navyblue, bg = white}
+\setbeamercolor{frametitle}{fg = navyblue, bg = white}
+\setbeamercolor{structure}{fg = navyblue}
+\setbeamercolor{button}{fg = white,bg = navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Gramáticas Regulares}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+\texorpdfstring{
+\begin{center}
+    M.C. Xavier Sánchez Díaz \\
+    \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+\end{center}
+}
+{M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+\tableofcontents
+\end{frame}
+
+\section{Gramáticas como representaciones de lenguajes}
+
+\begin{frame}{Definición}{Gramáticas como representaciones de lenguajes}
+
+    \begin{block}{Definición}
+        Según la Real Academia Española, la \alert{gramática} es una parte de la lingüística que estudia los elementos de una lengua, así como \textbf{la forma} en que estos se organizan y se combinan.
+    \end{block} \pause
+
+    \bigskip
+
+    Es decir, la \alert{gramática} estudia la \textbf{forma} en que las palabras se organizan y combinan. \pause
+    
+    \bigskip
+
+    Tenemos gramáticas \textit{naturales} como las que usamos en español, en inglés, en francés, ... \pause
+    Pero también existen gramáticas \textit{artificiales} como las que usamos en Python, C\#, Java, ... \pause
+
+    \bigskip
+
+    ¿Qué las hace naturales o artificiales?
+\end{frame}
+
+\begin{frame}{Ejemplo: gramática \texttt{es-MX}}{Gramáticas como representaciones de lenguajes}
+
+    Una \alert{oración} suele tener \textbf{sujeto} y \textbf{predicado}. \pause
+
+    {\large \texttt{<frase> $\to$ <sujeto><predicado>}} \pause
+
+    \bigskip
+
+    El \alert{sujeto} suele ser un \textbf{sustantivo}. \pause
+
+    {\large \texttt{<sujeto> $\to$ <sustantivo>}} \pause
+
+    \bigskip
+
+    \textbf{Juan}, \textbf{María} y \textbf{Gustavo} (el perro) son todos \alert{sustantivos}. \pause
+
+    {\large \texttt{<sustantivo> $\to$ Gustavo}}\\
+    {\large \texttt{<sustantivo> $\to$ Juan}}\\
+    {\large \texttt{<sustantivo> $\to$ María}} \pause
+
+    \bigskip
+
+    El \alert{predicado} suele llevar un \textbf{verbo} y a veces un \textbf{objeto}. Y un \alert{objeto} es algún \textbf{conectivo} y un \textbf{sustantivo}, y ... \pause
+
+    {\large \texttt{<predicado> $\to$ <verbo intransitivo>}}\\
+    {\large \texttt{<predicado> $\to$ <verbo transitivo><objeto>}}\\
+    {\large \texttt{<objeto> $\to$ a <sustantivo>}}
+
+\end{frame}
+
+\begin{frame}{Ejemplo: gramática \texttt{es-MX}}{Gramáticas como representaciones de lenguajes}
+
+    \begin{align*}
+        \langle \text{frase} \rangle & \to \langle \text{sujeto} \rangle \langle \text{predicado} \rangle\\
+        \langle \text{sujeto} \rangle & \to \langle \text{sustantivo} \rangle\\
+        \langle \text{sustantivo} \rangle & \to \alert<2->{\text{Gustavo}}\\
+        \langle \text{sustantivo} \rangle & \to \alert<2->{\text{Juan}}\\
+        \langle \text{sustantivo} \rangle & \to \alert<2->{\text{María}}\\
+        \langle \text{predicado} \rangle & \to \langle \text{verbo intransitivo} \rangle\\
+        \langle \text{predicado} \rangle & \to \langle \text{verbo transitivo} \rangle \langle \text{objeto}\rangle\\
+        \langle \text{verbo intransitivo} \rangle & \to \alert<2->{\text{patina}}\\
+        \langle \text{verbo transitivo} \rangle & \to \alert<2->{\text{abraza}}\\
+        \langle \text{objeto} \rangle & \to \text{a } \langle \text{sustantivo} \rangle
+    \end{align*}
+
+    \onslide<3>{
+        Conjunto de reglas con \textbf{\textlangle variables\textrangle} y \alert{símbolos terminales}.
+    }
+
+\end{frame}
+
+\section{Reglas y derivación}
+
+\begin{frame}{La gramática como un conjunto de reglas}{Reglas y derivación}
+    Cada línea del ejemplo anterior es una \alert{regla}:
+    
+    \bigskip
+
+    \begin{center}
+        {\large \texttt{\textlangle objeto\textrangle \quad $\to$ \quad \textlangle sustantivo\textrangle}}
+    \end{center}  \pause
+    
+    \bigskip
+
+    ¿Qué \textbf{forma} tienen las reglas? \pause
+    
+    \[\alpha \to \beta\] \pause
+
+    Tanto $\alpha$ como $\beta$ son símbolos---algunos son terminales, otros no.
+
+\end{frame}
+
+\begin{frame}{Aplicación de Reglas}{Reglas y derivación}
+    Las reglas se aplican recursivamente:
+
+    \begin{longenum}
+        \item \textlangle frase\textrangle $\to$ \textlangle sujeto\textrangle \textlangle predicado\textrangle
+
+        \begin{longenum}
+
+            \item \textlangle sujeto\textrangle $\to$ \textlangle sustantivo\textrangle
+
+            \begin{longenum}
+               \item \textlangle sustantivo\textrangle $\to$ María
+            \end{longenum}
+
+            \item \textlangle predicado\textrangle $\to$ \textlangle verbo transitivo\textrangle \textlangle objeto\textrangle
+            
+            \begin{longenum}
+                \textlangle verbo transitivo\textrangle $\to$ \textlangle abraza\textrangle
+                \textlangle objeto\textrangle $\to$ a \textlangle sustantivo\textrangle
+                \begin{longenum}
+                    \item \textlangle sustantivo\textrangle $\to$ Gustavo
+                \end{longenum}
+            \end{longenum}
+        \end{longenum}
+    \end{longenum}
+
+        {\huge María abraza a Gustavo}
+
+\end{frame}
+
+
+% \section*{Referencias}
+% \begin{frame}[t]{Referencias}
+% \nocite{bibID01}
+% \nocite{bibID02}
+
+% \bibliographystyle{IEEE}
+% \bibliography{biblio}
+% \end{frame}
+
+\end{document}
