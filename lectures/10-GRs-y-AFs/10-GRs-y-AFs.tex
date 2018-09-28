@@ -1,0 +1,204 @@
+\documentclass[spanish, handout]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+\usepackage{textcomp}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+\tikzset{%
+    stylename/.style={->, >=stealth', shorten >=1pt, auto, semithick, initial text=$ $}
+}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+\begingroup
+\renewcommand\thefootnote{}\footnote{#1}%
+\addtocounter{footnote}{-1}%
+\endgroup
+}
+
+\usetheme{Boadilla}
+%\usecolortheme{default}
+\usefonttheme[onlymath]{serif}
+\useoutertheme{infolines}
+
+% Sets the templates
+
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg = navyblue, bg = white}
+\setbeamercolor{frametitle}{fg = navyblue, bg = white}
+\setbeamercolor{structure}{fg = navyblue}
+\setbeamercolor{button}{fg = white,bg = navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Gramáticas Regulares y Autómatas Finitos}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+\texorpdfstring{
+\begin{center}
+    M.C. Xavier Sánchez Díaz \\
+    \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+\end{center}
+}
+{M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+% \begin{frame}{Tabla de contenidos}
+% \tableofcontents
+% \end{frame}
+
+
+\begin{frame}{Equivalencias de GRs y AFs}
+
+    Las \textbf{variables} de una GR son los \alert{estados} de un AF
+
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{enumerate}
+                \itemsep1.5ex
+                \item $S \to aI$
+                \item $S \to bI$
+                \item $I \to aP$
+                \item $I \to bP$
+                \item $I \to a$
+                \item $P \to aI$
+                \item $P \to bI$
+            \end{enumerate}
+        \end{column}
+        \begin{column}{0.7\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[stylename, node distance=1.5cm]
+
+                    \node[initial,state] (S) {$S$};
+                    \node[state] (I) [right of=S] {$I$};
+                    \node[state] (P) [right of=I]{$P$};                    
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Equivalencias de GRs y AFs}
+
+    Las \textbf{reglas} de una GR son las \alert{transiciones} de un AF: $X \to \sigma Y = (X,\sigma,Y)$.
+
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{enumerate}
+                \itemsep1.5ex
+                \item $S \to aI$
+                \item $S \to bI$
+                \item $I \to aP$
+                \item $I \to bP$
+                \item $I \to a$
+                \item $P \to aI$
+                \item $P \to bI$
+            \end{enumerate}
+        \end{column}
+        \begin{column}{0.7\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[stylename, node distance=2.5cm]
+
+                    \node[initial,state] (S) {$S$};
+                    \node[state] (I) [right of=S] {$I$};
+                    \node[state] (P) [right of=I]{$P$};
+                    
+                    \path
+                    (S) edge [bend left] node {$a$} (I)
+                    (S) edge [bend right] node {$b$} (I)
+                    (I) edge [bend left=65] node {$a$} (P)
+                    (I) edge [bend right=65] node [below] {$b$} (P)
+                    (P) edge [bend left] node {$a$} (I)
+                    (P) edge [bend right] node {$b$} (I);
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Equivalencias de GRs y AFs}
+
+    Las \textbf{reglas} de una GR son las \alert{transiciones} de un AF: $X \to \sigma = (X,\sigma,Z)$, donde $Z$ es un único estado final.
+
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{enumerate}
+                \itemsep1.5ex
+                \item $S \to aI$
+                \item $S \to bI$
+                \item $I \to aP$
+                \item $I \to bP$
+                \item \alert{$I \to a$}
+                \item $P \to aI$
+                \item $P \to bI$
+            \end{enumerate}
+        \end{column}
+        \begin{column}{0.7\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[stylename, node distance=2.5cm]
+
+                    \node[initial,state] (S) {$S$};
+                    \node[state] (I) [right of=S] {$I$};
+                    \node[state] (P) [right of=I] {$P$};
+                    \node[state, accepting] (Z) [below of=I] {$Z$};
+                    
+                    \path
+                    (S) edge [bend left] node {$a$} (I)
+                    (S) edge [bend right] node {$b$} (I)
+                    (I) edge [bend left=65] node {$a$} (P)
+                    (I) edge [bend right=65] node [below] {$b$} (P)
+                    (P) edge [bend left] node {$a$} (I)
+                    (P) edge [bend right] node {$b$} (I)
+                    (I) edge node [left] {$a$} (Z);
+
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% \section*{Referencias}
+% \begin{frame}[t]{Referencias}
+% \nocite{bibID01}
+% \nocite{bibID02}
+
+% \bibliographystyle{IEEE}
+% \bibliography{biblio}
+% \end{frame}
+
+\end{document}
