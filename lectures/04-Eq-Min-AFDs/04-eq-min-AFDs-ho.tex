@@ -1,584 +1,560 @@
-\documentclass[spanish,handout]{beamer}
+\documentclass[spanish, handout]{beamer}
 
-  \usepackage[utf8]{inputenc}
-  \usepackage[spanish, mexico]{babel}
-  \usepackage{hyperref}
-  \usepackage{xcolor}
-  \usepackage{color}
-  \usepackage{ragged2e}
-  \usepackage{tikz}
-  \usepackage{tikz-qtree}
-  \usepackage{mathrsfs}
-  
-  \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
-  
-  \tikzset{
-      ->, %arrow type
-      >=stealth', %arrow head type (bold)
-      shorten >=1pt, 
-      auto,
-      semithick,
-      initial text=$ $, %no start text
-      }
-  
-  % \usepackage{courier}
-  % \usepackage{subfigure}
-  % \usepackage{enumerate}
-  % \usepackage{algorithmic}
-  % \usepackage{algorithm}
-  
-  
-  % \usepackage{listings}
-  % \usepackage{lstlinebgrd}
-  
-  \newcommand\blfootnote[1]{%
-    \begingroup
-    \renewcommand\thefootnote{}\footnote{#1}%
-    \addtocounter{footnote}{-1}%
-    \endgroup
-  }
-  
-  \usetheme{Boadilla}
-  \usefonttheme[onlymath]{serif}
-  
-  % Sets the templates
-  \definecolor{navyblue}{RGB}{0, 0, 128}
-  
-  \setbeamertemplate{navigation symbols}{} 
-  \setbeamertemplate{headline}{}
-  \setbeamertemplate{footline}[frame number]
-  \setbeamertemplate{bibliography item}[text]
-  \setbeamertemplate{theorems}[numbered]
-  
-  \setbeamercolor{title}{fg=navyblue, bg=white}
-  \setbeamercolor{frametitle}{fg=navyblue, bg=white}
-  \setbeamercolor{structure}{fg=navyblue}
-  \setbeamercolor{button}{fg=white,bg=navyblue}
-  
-  \setbeamercovered{transparent}
-  
-  \title{Equivalencia y Minimización de Autómatas Finitos Deterministas}
-  \subtitle{Matemáticas Computacionales \\ (TC2020)}
-  \author{
-      \texorpdfstring{
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+
+\tikzset{
+    stylename/.style={
+    ->, %arrow type
+    >=stealth', %arrow head type (bold)
+    shorten >=1pt, 
+    auto,
+    %semithick,
+    initial text=$ $, %no start text
+    }
+}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\usetheme{Boadilla}
+\usefonttheme[onlymath]{serif}
+
+% Sets the templates
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Equivalencia y Minimización de Autómatas Finitos Deterministas}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+    \texorpdfstring{
+        \begin{center}
+            M.C. Xavier Sánchez Díaz \\
+            \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+        \end{center}
+    }
+    {M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+    \titlepage        
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+    \tableofcontents
+\end{frame}
+
+\section{Equivalencia de AFDs}
+\label{sec:equiv}
+
+\begin{frame}{Definición de Equivalencia}{Equivalencia de AFDs}
+    \begin{definition}
+        Dos autómatas $M_1$ y $M_2$ son \alert{equivalentes}, $M_1 \equiv M_2$, cuando aceptan exactamente el mismo lenguaje.
+    \end{definition}
+\end{frame}
+
+\begin{frame}[t]{Equivalencia}{Equivalencia de AFDs}
+    ¿Son estos dos autómatas equivalentes?
+    \begin{center}
+        \begin{tikzpicture}[node distance=1.5cm, stylename]
+            \node[initial, state, accepting] (A) {$A$};
+            \node[state, right of=A] (B) {$B$};
+            \path
+            (A) edge [bend left] node {$a$} (B)
+            (A) edge [loop below] node {$b$} (A)
+            (B) edge [bend left] node {$a$} (A)
+            (B) edge [loop below] node {$b$} (B);
+        \end{tikzpicture}
+
+        \bigskip
+    
+        \begin{tikzpicture}[node distance=1.5cm, stylename]
+            \node[initial, state, accepting] (A) {$A$};
+            \node[state, right of=A] (B) {$B$};
+            \node[state, accepting, right of=B] (C) {$C$};
+            \path
+            (A) edge [bend left] node {$a$} (B)
+            (A) edge [loop below] node {$b$} (A)
+            (B) edge [bend left] node {$a$} (C)
+            (B) edge [loop below] node {$b$} (B)
+            (C) edge [loop below] node {$a$} (C)
+            (C) edge [bend left] node {$b$} (B);
+        \end{tikzpicture}
+    \end{center}    
+\end{frame}
+
+\begin{frame}{¿Cómo podemos probarlo?}{Equivalencia de AFDs}
+    \textbf{Sistemáticamente}, probando con las palabras de $\sigma^* = \{\varepsilon, a, b, aa, ab, \dots\}$ \pause
+    \bigskip
+    ¿Qué pasa si no son equivalentes? \pause
+    Simplemente nunca acabaremos. \pause
+    
+    \bigskip
+
+    Podemos probar todas las posibilidades mediante un \textbf{árbol de estados incompatibles}.
+\end{frame}
+
+\begin{frame}{Árbol de comparación}{Equivalencia de AFDs}
+     \begin{columns}
+        \begin{column}{0.5\textwidth}
           \begin{center}
-              M.C. Xavier Sánchez Díaz \\
-              \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
-          \end{center}
-      }
-      {M.C. Xavier Sánchez Díaz}
-  }
-  
-  \institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
-  \date{}
-  
-  \begin{document}
-  
-  \setlength{\rightskip}{0pt}
-  
-  \begin{frame}[plain]
-      \titlepage        
-  \end{frame}
-  
-  \begin{frame}{Tabla de contenidos}
-      \tableofcontents
-  \end{frame}
-  
-  \section{Equivalencia de AFDs}
-  \label{sec:equiv}
-  
-  \begin{frame}{Definición de Equivalencia}{Equivalencia de AFDs}
-      \begin{definition}
-          Dos autómatas $M_1$ y $M_2$ son \alert{equivalentes}, $M_1 \equiv M_2$, cuando aceptan exactamente el mismo lenguaje.
-      \end{definition}
-  \end{frame}
-  
-  \begin{frame}[t]{Equivalencia}{Equivalencia de AFDs}
-      ¿Son estos dos autómatas equivalentes?
-      \begin{center}
-          \begin{tikzpicture}[node distance=1.5cm]
-              \node[initial, state, accepting] (A) {$A$};
-              \node[state, right of=A] (B) {$B$};
-              \path
-              (A) edge [bend left] node {$a$} (B)
-              (A) edge [loop below] node {$b$} (A)
-              (B) edge [bend left] node {$a$} (A)
-              (B) edge [loop below] node {$b$} (B);
-          \end{tikzpicture}
-  
-          \bigskip
-      
-          \begin{tikzpicture}[node distance=1.5cm]
-              \node[initial, state, accepting] (A) {$A$};
-              \node[state, right of=A] (B) {$B$};
-              \node[state, accepting, right of=B] (C) {$C$};
-              \path
-              (A) edge [bend left] node {$a$} (B)
-              (A) edge [loop below] node {$b$} (A)
-              (B) edge [bend left] node {$a$} (C)
-              (B) edge [loop below] node {$b$} (B)
-              (C) edge [loop below] node {$a$} (C)
-              (C) edge [bend left] node {$b$} (B);
-          \end{tikzpicture}
-      \end{center}    
-  \end{frame}
-  
-  \begin{frame}{¿Cómo podemos probarlo?}{Equivalencia de AFDs}
-      \textbf{Sistemáticamente}, probando con las palabras de $\sigma^* = \{\varepsilon, a, b, aa, ab, \dots\}$ \pause
-      \bigskip
-      ¿Qué pasa si no son equivalentes? \pause
-      Simplemente nunca acabaremos. \pause
-      
-      \bigskip
-  
-      Podemos probar todas las posibilidades mediante un \textbf{árbol de estados incompatibles}.
-  \end{frame}
-  
-  \begin{frame}{Árbol de comparación}{Equivalencia de AFDs}
-       \begin{columns}
-          \begin{column}{0.5\textwidth}
-            \begin{center}
-              \begin{tikzpicture}[node distance=1.5cm]
-                  \node[initial, state, accepting] (A) {$A$};
-                  \node[state, right of=A] (B) {$B$};
-                  \path
-                  (A) edge [bend left] node {$a$} (B)
-                  (A) edge [loop below] node {$b$} (A)
-                  (B) edge [bend left] node {$a$} (A)
-                  (B) edge [loop below] node {$b$} (B);
-              \end{tikzpicture}
-      
-              \bigskip
-          
-              \begin{tikzpicture}[node distance=1.5cm]
-                  \node[initial, state, accepting] (A) {$A'$};
-                  \node[state, right of=A] (B) {$B'$};
-                  \node[state, accepting, right of=B] (C) {$C'$};
-                  \path
-                  (A) edge [bend left] node {$a$} (B)
-                  (A) edge [loop below] node {$b$} (A)
-                  (B) edge [bend left] node {$a$} (C)
-                  (B) edge [loop below] node {$b$} (B)
-                  (C) edge [loop below] node {$a$} (C)
-                  (C) edge [bend left] node {$b$} (B);
-              \end{tikzpicture}
-          \end{center}
-          \end{column}
-          \begin{column}{0.5\textwidth}
-            \begin{center}
-              \begin{tikzpicture}[level distance=1.5cm]
-                \Tree
-                [.\node(aa){$(A,A')$};
-                  \edge node[midway]{$a$};
-                  [.\node(bb){$(B,B')$};
-                    \edge node[midway]{$a$};
-                    [.$(A,C')$
-                    \edge node[midway, left]{$a$};
-                    [.$(B,C')\alert{\times}$ ]
-                    \edge node[midway, right]{$b$};
-                    [.$(A,B')\alert{\times}$ ] ] ] ]
-  
-                \draw (aa) ..controls +(north east:2) and +(north:2).. node[above] {$b$} (aa);
-                \draw (bb) ..controls +(north east:2) and +(east:2).. node[above] {$b$} (bb);
+            \begin{tikzpicture}[node distance=1.5cm, stylename]
+                \node[initial, state, accepting] (A) {$A$};
+                \node[state, right of=A] (B) {$B$};
+                \path
+                (A) edge [bend left] node {$a$} (B)
+                (A) edge [loop below] node {$b$} (A)
+                (B) edge [bend left] node {$a$} (A)
+                (B) edge [loop below] node {$b$} (B);
             \end{tikzpicture}
-            \end{center}
-          \end{column}
-       \end{columns}
-  \end{frame}
-  
-  \begin{frame}[t,plain]
-    \begin{FlushLeft}
-      \begin{tikzpicture}[node distance=1.8cm]
-        \node[initial, state] (s0) {$q_0$};
-        \node[state, right of=s0] (s1) {$q_1$};
-        \node[state, below of=s0] (s4) {$q_4$};
-        \node[state, right of=s4] (s5) {$q_5$};
-        \node[state, accepting, right of=s1] (s2) {$q_2$};
-        \node[state, right of=s2] (s3) {$q_3$};
-        \node[state, below of=s2] (s6) {$q_6$};
-        \node[state, accepting, right of=s6] (s7) {$q_7$};
     
-        \path
-        (s0) edge node {$a$} (s1)
-        (s0) edge node [left] {$b$} (s4)
-        (s1) edge [bend left] node {$a$} (s5)
-        (s1) edge node {$b$} (s2)
-        (s2) edge node {$a$} (s3)
-        (s2) edge node {$b$} (s6)
-        (s3) edge [loop above] node {$a,b$} (s3)
-        (s4) edge node {$a$} (s1)
-        (s4) edge [loop below] node {$b$} (s4)
-        (s5) edge [bend left] node [right] {$a$} (s1)
-        (s5) edge node {$b$} (s4)
-        (s6) edge node {$a$} (s3)
-        (s6) edge [bend left] node [below] {$b$} (s7)
-        (s7) edge node [right] {$a$} (s3)
-        (s7) edge [bend left] node {$b$} (s6);
-    \end{tikzpicture}
-    \end{FlushLeft}
-  
-    \vspace{-1.5cm}
-  
-    \begin{flushright}
-      \begin{tikzpicture}[node distance=1.8cm]
-        \node[initial, state] (B) {$B$};
-        \node[state, right of=B] (C) {$C$};
-        \node[state, accepting, right of=C] (A) {$A$};
-        \node[state, right of=A] (D) {$D$};
-        \node[state, below right of=A] (E) {$E$};
-    
-        \path
-        (B) edge [bend left] node {$a$} (C)
-        (B) edge [loop below] node {$b$} (B)
-        (C) edge [bend left] node {$a$} (B)
-        (C) edge node {$b$} (A)
-        (A) edge node {$a$} (D)
-        (A) edge [bend left] node [below] {$b$} (E)
-        (D) edge [loop above] node {$a,b$} (D)
-        (E) edge node [right] {$a$} (D)
-        (E) edge [bend left] node {$b$} (A);
-    \end{tikzpicture}
-    \end{flushright}
-    
-  \end{frame}
-  
-  \section{Simplificación de AFDs}
-  \label{sec:simplify}
-  
-  \begin{frame}{¿Por qué simplificar AFDs?}{Simplificación de AFDs}
-    Una máquina $M$ puede tener \alert{estados redundantes}. \pause
-  
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
-        \node[initial, state, accepting] (q3) {$q_3$};
-        \node[state, accepting, below right of=q3] (q4) {$q_4$};
-        \node[state, above right of=q3] (q5) {$q_5$};
-    
-        \path
-        (q3) edge [bend right] node [below] {$a$} (q4)
-        (q3) edge [bend right] node {$b$} (q5)
-        (q4) edge [bend right] node {$a$} (q3)
-        (q4) edge [bend right] node {$b$} (q5)
-        (q5) edge [loop above] node {$a,b$} (q5);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Eliminación de estados equivalentes}{Simplificación de AFDs}
-    Borrar transiciones:
-  
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
-        \node[initial, state, accepting] (q3) {$q_3$};
-        \node[state, accepting, below right of=q3] (q4) {$q_4$};
-        \node[state, above right of=q3] (q5) {$q_5$};
-    
-        \path
-        (q3) edge [bend right] node [below] {$a$} (q4)
-        (q3) edge [bend right] node {$b$} (q5)
-        (q5) edge [loop above] node {$a,b$} (q5);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Eliminación de estados equivalentes}{Simplificación de AFDs}
-    Redirigir transiciones:
-  
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
-        \node[initial, state, accepting] (q3) {$q_3$};
-        \node[state, above right of=q3] (q5) {$q_5$};
-    
-        \path
-        (q3) edge [loop below] node {$a$} (q3)
-        (q3) edge [bend right] node {$b$} (q5)
-        (q5) edge [loop above] node {$a,b$} (q5);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Deducción de estados distinguibles}{Simplificación de AFDs}
-    \begin{itemize}
-      \item Dos estados son \alert{distinguibles} si son \textbf{incompatibles}: uno es final y el otro es no final. \pause
-      \bigskip
-      \item Si tenemos transiciones $\delta (p_0,\sigma) = p$ y $\delta (q_0, \sigma) = q$, donde $p,q$ son distinguibles, entonces también $p_0$ y $q_0$ son distinguibles.
-    \end{itemize}
-  \end{frame}
-  
-  \begin{frame}{Deducción de estados distinguibles}{Simplificación de AFDs}
-    \begin{columns}
-      \begin{column}{0.42\textwidth}
-        \begin{center}
-          \begin{tikzpicture}[node distance=1.6cm]
-            \node[state, initial, accepting] (5) {$5$};
-            \node[state, accepting, below right of=5] (3) {$3$};
-            \node[state, accepting, above right of=5] (4) {$4$};
-            \node[state, accepting, right of=4] (2) {$2$};
-            \node[state, right of=3] (1) {$1$};
-  
-            \path
-            (5) edge node {$a$} (4)
-            (5) edge node {$b$} (3)
-            (4) edge [loop above] node {$a$} (4)
-            (4) edge [bend left] node {$b$} (2)
-            (3) edge node {$a$} (4)
-            (3) edge node {$b$} (1)
-            (2) edge [bend left] node {$a$} (4)
-            (2) edge node {$b$} (1)
-            (1) edge [loop below] node {$a,b$} (1);
-          \end{tikzpicture}
+            \bigskip
+        
+            \begin{tikzpicture}[node distance=1.5cm, stylename]
+                \node[initial, state, accepting] (A) {$A'$};
+                \node[state, right of=A] (B) {$B'$};
+                \node[state, accepting, right of=B] (C) {$C'$};
+                \path
+                (A) edge [bend left] node {$a$} (B)
+                (A) edge [loop below] node {$b$} (A)
+                (B) edge [bend left] node {$a$} (C)
+                (B) edge [loop below] node {$b$} (B)
+                (C) edge [loop below] node {$a$} (C)
+                (C) edge [bend left] node {$b$} (B);
+            \end{tikzpicture}
         \end{center}
-      \end{column}
-      \begin{column}{0.29\textwidth}
-        \begin{tabular}{c|c|ccc}
-        \cline{1-2}
-        \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
-        \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-        \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-        \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-          & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
-        \end{tabular}
-  
-        \bigskip
-  
-        \begin{tabular}{c|c|ccc}
-          \cline{1-2}
-          \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
-          \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-          \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-          \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-            & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
-          \end{tabular}
-      \end{column}
-      \begin{column}{0.29\textwidth}
-        \begin{tabular}{c|c|ccc}
-          \cline{1-2}
-          \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
-          \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-          \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-          \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-            & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
-          \end{tabular}
-  
-        \bigskip
-  
-        \begin{tabular}{c|c|ccc}
-          \cline{1-2}
-          \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
-          \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-          \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-          \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-            & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
-          \end{tabular}
-      \end{column}
-    \end{columns}
-  \end{frame}
-  
-  \begin{frame}{Deducción de estados distinguibles}{Simplificación de AFDs}
-    \begin{columns}
-      \begin{column}{0.42\textwidth}
-        \begin{center}
-          \begin{tikzpicture}[node distance=1.6cm]
-            \node[state, initial, accepting] (5) {$5$};
-            \node[state, accepting, below right of=5] (3) {$3$};
-            \node[state, accepting, above right of=5] (4) {$4$};
-            \node[state, accepting, right of=4] (2) {$2$};
-            \node[state, right of=3] (1) {$1$};
-  
-            \path
-            (5) edge node {$a$} (4)
-            (5) edge node {$b$} (3)
-            (4) edge [loop above] node {$a$} (4)
-            (4) edge [bend left] node {$b$} (2)
-            (3) edge node {$a$} (4)
-            (3) edge node {$b$} (1)
-            (2) edge [bend left] node {$a$} (4)
-            (2) edge node {$b$} (1)
-            (1) edge [loop below] node {$a,b$} (1);
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \begin{center}
+            \begin{tikzpicture}[level distance=1.5cm, stylename]
+              \Tree
+              [.\node(aa){$(A,A')$};
+                \edge node[midway]{$a$};
+                [.\node(bb){$(B,B')$};
+                  \edge node[midway]{$a$};
+                  [.$(A,C')$
+                  \edge node[midway, left]{$a$};
+                  [.$(B,C')\alert{\times}$ ]
+                  \edge node[midway, right]{$b$};
+                  [.$(A,B')\alert{\times}$ ] ] ] ]
+
+              \draw (aa) ..controls +(north east:2) and +(north:2).. node[above] {$b$} (aa);
+              \draw (bb) ..controls +(north east:2) and +(east:2).. node[above] {$b$} (bb);
           \end{tikzpicture}
-        \end{center}
-      \end{column}
-      \begin{column}{0.29\textwidth}
-        \begin{tabular}{c|c|ccc}
-        \cline{1-2}
-        \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
-        \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-        \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-        \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-          & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
-        \end{tabular}
+          \end{center}
+        \end{column}
+     \end{columns}
+\end{frame}
+
+\begin{frame}[t,plain]
+  \begin{FlushLeft}
+    \begin{tikzpicture}[node distance=1.8cm, stylename]
+      \node[initial, state] (s0) {$q_0$};
+      \node[state, right of=s0] (s1) {$q_1$};
+      \node[state, below of=s0] (s4) {$q_4$};
+      \node[state, right of=s4] (s5) {$q_5$};
+      \node[state, accepting, right of=s1] (s2) {$q_2$};
+      \node[state, right of=s2] (s3) {$q_3$};
+      \node[state, below of=s2] (s6) {$q_6$};
+      \node[state, accepting, right of=s6] (s7) {$q_7$};
   
-        \bigskip
+      \path
+      (s0) edge node {$a$} (s1)
+      (s0) edge node [left] {$b$} (s4)
+      (s1) edge [bend left] node {$a$} (s5)
+      (s1) edge node {$b$} (s2)
+      (s2) edge node {$a$} (s3)
+      (s2) edge node {$b$} (s6)
+      (s3) edge [loop above] node {$a,b$} (s3)
+      (s4) edge node {$a$} (s1)
+      (s4) edge [loop below] node {$b$} (s4)
+      (s5) edge [bend left] node [right] {$a$} (s1)
+      (s5) edge node {$b$} (s4)
+      (s6) edge node {$a$} (s3)
+      (s6) edge [bend left] node [below] {$b$} (s7)
+      (s7) edge node [right] {$a$} (s3)
+      (s7) edge [bend left] node {$b$} (s6);
+  \end{tikzpicture}
+  \end{FlushLeft}
+
+  \vspace{-1.5cm}
+
+  \begin{flushright}
+    \begin{tikzpicture}[node distance=1.8cm, stylename]
+      \node[initial, state] (B) {$B$};
+      \node[state, right of=B] (C) {$C$};
+      \node[state, accepting, right of=C] (A) {$A$};
+      \node[state, right of=A] (D) {$D$};
+      \node[state, below right of=A] (E) {$E$};
   
-        \begin{tabular}{c|c|ccc}
-          \cline{1-2}
-          \multicolumn{1}{|c|}{2} & $\times$ &  &  &  \\ \cline{1-3}
-          \multicolumn{1}{|c|}{3} & $\times$ & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-          \multicolumn{1}{|c|}{4} & $\times$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-          \multicolumn{1}{|c|}{5} & $\times$ & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-           & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5} 
-          \end{tabular}
-      \end{column}
-      \begin{column}{0.29\textwidth}
-        \begin{tabular}{c|c|ccc}
-        \cline{1-2}
-        \multicolumn{1}{|c|}{2} &  $\times$ &  &  &  \\ \cline{1-3}
-        \multicolumn{1}{|c|}{3} &  $\times$ & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-        \multicolumn{1}{|c|}{4} &  $\times$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
-        \multicolumn{1}{|c|}{5} &  $\times$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-          & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
-        \end{tabular}
+      \path
+      (B) edge [bend left] node {$a$} (C)
+      (B) edge [loop below] node {$b$} (B)
+      (C) edge [bend left] node {$a$} (B)
+      (C) edge node {$b$} (A)
+      (A) edge node {$a$} (D)
+      (A) edge [bend left] node [below] {$b$} (E)
+      (D) edge [loop above] node {$a,b$} (D)
+      (E) edge node [right] {$a$} (D)
+      (E) edge [bend left] node {$b$} (A);
+  \end{tikzpicture}
+  \end{flushright}
   
-        \bigskip
+\end{frame}
+
+\section{Simplificación de AFDs}
+\label{sec:simplify}
+
+\begin{frame}{¿Por qué simplificar AFDs?}{Simplificación de AFDs}
+  Una máquina $M$ puede tener \alert{estados redundantes}. \pause
+
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
+      \node[initial, state, accepting] (q3) {$q_3$};
+      \node[state, accepting, below right of=q3] (q4) {$q_4$};
+      \node[state, above right of=q3] (q5) {$q_5$};
   
-        \begin{tabular}{c|c|ccc}
-          \cline{1-2}
-          \multicolumn{1}{|c|}{2} & $\times$ &  &  &  \\ \cline{1-3}
-          \multicolumn{1}{|c|}{3} & $\times$ & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
-          \multicolumn{1}{|c|}{4} & $\times$ & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{$\times$} &  \\ \hline
-          \multicolumn{1}{|c|}{5} & $\times$ & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{} \\ \hline
-           & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5} 
-          \end{tabular}
-      \end{column}
-    \end{columns}
-  \end{frame}
+      \path
+      (q3) edge [bend right] node [below] {$a$} (q4)
+      (q3) edge [bend right] node {$b$} (q5)
+      (q4) edge [bend right] node {$a$} (q3)
+      (q4) edge [bend right] node {$b$} (q5)
+      (q5) edge [loop above] node {$a,b$} (q5);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Eliminación de estados equivalentes}{Simplificación de AFDs}
+  Borrar transiciones:
+
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
+      \node[initial, state, accepting] (q3) {$q_3$};
+      \node[state, accepting, below right of=q3] (q4) {$q_4$};
+      \node[state, above right of=q3] (q5) {$q_5$};
   
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+      \path
+      (q3) edge [bend right] node [below] {$a$} (q4)
+      (q3) edge [bend right] node {$b$} (q5)
+      (q5) edge [loop above] node {$a,b$} (q5);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Eliminación de estados equivalentes}{Simplificación de AFDs}
+  Redirigir transiciones:
+
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
+      \node[initial, state, accepting] (q3) {$q_3$};
+      \node[state, above right of=q3] (q5) {$q_5$};
   
-    Formar clases de estados de un autómata que pudieran ser equivalentes. \pause
-  
+      \path
+      (q3) edge [loop below] node {$a$} (q3)
+      (q3) edge [bend right] node {$b$} (q5)
+      (q5) edge [loop above] node {$a,b$} (q5);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Deducción de estados distinguibles}{Simplificación de AFDs}
+  \begin{itemize}
+    \item Dos estados son \alert{distinguibles} si son \textbf{incompatibles}: uno es final y el otro es no final. \pause
     \bigskip
-  
-    Al seguir examinando las clases, podremos percatarnos de si es necesario volver a \textbf{dividirlas}. \pause
-  
-    \bigskip
-  
-    Si las clases ya no pueden dividirse más, entonces hemos encontrado el autómata más pequeño.
-    
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.1cm]
-        \node[state, initial, accepting] (5) {$5$};
-        \node[state, accepting, below right of=5] (3) {$3$};
-        \node[state, accepting, above right of=5] (4) {$4$};
-        \node[state, accepting, right of=4] (2) {$2$};
-        \node[state, right of=3] (1) {$1$};
-  
-        \path
-        (5) edge node {$a$} (4)
-        (5) edge node {$b$} (3)
-        (4) edge [loop above] node {$a$} (4)
-        (4) edge [bend left] node {$b$} (2)
-        (3) edge node {$a$} (4)
-        (3) edge node {$b$} (1)
-        (2) edge [bend left] node {$a$} (4)
-        (2) edge node {$b$} (1)
-        (1) edge [loop below] node {$a,b$} (1);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.1cm]
-        \node[state, initial, accepting, draw=green] (5) {$5$};
-        \node[state, accepting, below right of=5, draw=green] (3) {$3$};
-        \node[state, accepting, above right of=5, draw=green] (4) {$4$};
-        \node[state, accepting, right of=4, draw=green] (2) {$2$};
-        \node[state, right of=3, draw=red] (1) {$1$};
-  
-        \path
-        (5) edge node {$a$} (4)
-        (5) edge node {$b$} (3)
-        (4) edge [loop above] node {$a$} (4)
-        (4) edge [bend left] node {$b$} (2)
-        (3) edge node {$a$} (4)
-        (3) edge node {$b$} (1)
-        (2) edge [bend left] node {$a$} (4)
-        (2) edge node {$b$} (1)
-        (1) edge [loop below] node {$a,b$} (1);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.1cm]
-        \node[state, initial, accepting, draw=green] (5) {$5$};
-        \node[state, accepting, below right of=5, draw=blue] (3) {$3$};
-        \node[state, accepting, above right of=5, draw=green] (4) {$4$};
-        \node[state, accepting, right of=4, draw=blue] (2) {$2$};
-        \node[state, right of=3, draw=red] (1) {$1$};
-  
-        \path
-        (5) edge node {$a$} (4)
-        (5) edge node {$b$} (3)
-        (4) edge [loop above] node {$a$} (4)
-        (4) edge [bend left] node {$b$} (2)
-        (3) edge node {$a$} (4)
-        (3) edge node {$b$} (1)
-        (2) edge [bend left] node {$a$} (4)
-        (2) edge node {$b$} (1)
-        (1) edge [loop below] node {$a,b$} (1);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.1cm]
-        \node[state, initial, accepting, draw=green] (A) {$A$};
-        \node[state, accepting, draw=blue, right of=A] (C) {$C$};
-        \node[state, draw=red, right of=C] (B) {$B$};
-  
-        \path
-        (A) edge [loop above] node {$a$} (A)
-        (A) edge [bend left] node {$b$} (C)
-        (C) edge [bend left] node {$a$} (A)
-        (C) edge node {$b$} (B)
-        (B) edge [loop above] node {$a,b$} (B);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+    \item Si tenemos transiciones $\delta (p_0,\sigma) = p$ y $\delta (q_0, \sigma) = q$, donde $p,q$ son distinguibles, entonces también $p_0$ y $q_0$ son distinguibles.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Deducción de estados distinguibles}{Simplificación de AFDs}
+  \begin{columns}
+    \begin{column}{0.42\textwidth}
       \begin{center}
-        \begin{tikzpicture}[node distance=2.5cm]
-          \node[state, initial] (a) {$a$};
-          \node[state, above of=a] (b) {$b$};
-          \node[state, accepting, right of=a] (c) {$c$};
-          \node[state, accepting, right of=b] (d) {$d$};
-          \node[state, accepting, right of=c] (e) {$e$};
-          \node[state, right of=d] (f) {$f$};
-  
+        \begin{tikzpicture}[node distance=1.6cm, stylename]
+          \node[state, initial, accepting] (5) {$5$};
+          \node[state, accepting, below right of=5] (3) {$3$};
+          \node[state, accepting, above right of=5] (4) {$4$};
+          \node[state, accepting, right of=4] (2) {$2$};
+          \node[state, right of=3] (1) {$1$};
+
           \path
-          (a) edge [bend left] node {$0$} (b)
-          (a) edge node {$1$} (c)
-          (b) edge [bend left] node {$0$} (a)
-          (b) edge node {$1$} (d)
-          (c) edge node {$0$} (e)
-          (c) edge [bend left] node [left] {$1$} (f)
-          (d) edge [bend left] node [below] {$0$} (e)
-          (d) edge node {$1$} (f)
-          (e) edge [loop below] node {$0$} (e)
-          (e) edge node [midway, right] {$1$} (f)
-          (f) edge [loop above] node {$0,1$} (f);
+          (5) edge node {$a$} (4)
+          (5) edge node {$b$} (3)
+          (4) edge [loop above] node {$a$} (4)
+          (4) edge [bend left] node {$b$} (2)
+          (3) edge node {$a$} (4)
+          (3) edge node {$b$} (1)
+          (2) edge [bend left] node {$a$} (4)
+          (2) edge node {$b$} (1)
+          (1) edge [loop below] node {$a,b$} (1);
         \end{tikzpicture}
       \end{center}
-  \end{frame}
+    \end{column}
+    \begin{column}{0.29\textwidth}
+      \begin{tabular}{c|c|ccc}
+      \cline{1-2}
+      \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
+      \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+      \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+      \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+        & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
+      \end{tabular}
+
+      \bigskip
+
+      \begin{tabular}{c|c|ccc}
+        \cline{1-2}
+        \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
+        \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+        \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+          & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
+        \end{tabular}
+    \end{column}
+    \begin{column}{0.29\textwidth}
+      \begin{tabular}{c|c|ccc}
+        \cline{1-2}
+        \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
+        \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+        \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+          & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
+        \end{tabular}
+
+      \bigskip
+
+      \begin{tabular}{c|c|ccc}
+        \cline{1-2}
+        \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
+        \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+        \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+          & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
+        \end{tabular}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Deducción de estados distinguibles}{Simplificación de AFDs}
+  \begin{columns}
+    \begin{column}{0.42\textwidth}
+      \begin{center}
+        \begin{tikzpicture}[node distance=1.6cm, stylename]
+          \node[state, initial, accepting] (5) {$5$};
+          \node[state, accepting, below right of=5] (3) {$3$};
+          \node[state, accepting, above right of=5] (4) {$4$};
+          \node[state, accepting, right of=4] (2) {$2$};
+          \node[state, right of=3] (1) {$1$};
+
+          \path
+          (5) edge node {$a$} (4)
+          (5) edge node {$b$} (3)
+          (4) edge [loop above] node {$a$} (4)
+          (4) edge [bend left] node {$b$} (2)
+          (3) edge node {$a$} (4)
+          (3) edge node {$b$} (1)
+          (2) edge [bend left] node {$a$} (4)
+          (2) edge node {$b$} (1)
+          (1) edge [loop below] node {$a,b$} (1);
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+    \begin{column}{0.29\textwidth}
+      \begin{tabular}{c|c|ccc}
+      \cline{1-2}
+      \multicolumn{1}{|c|}{2} &  &  &  &  \\ \cline{1-3}
+      \multicolumn{1}{|c|}{3} &  & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+      \multicolumn{1}{|c|}{4} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+      \multicolumn{1}{|c|}{5} &  & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+        & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
+      \end{tabular}
+
+      \bigskip
+
+      \begin{tabular}{c|c|ccc}
+        \cline{1-2}
+        \multicolumn{1}{|c|}{2} & $\times$ &  &  &  \\ \cline{1-3}
+        \multicolumn{1}{|c|}{3} & $\times$ & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+        \multicolumn{1}{|c|}{4} & $\times$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{1}{|c|}{5} & $\times$ & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+         & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5} 
+        \end{tabular}
+    \end{column}
+    \begin{column}{0.29\textwidth}
+      \begin{tabular}{c|c|ccc}
+      \cline{1-2}
+      \multicolumn{1}{|c|}{2} &  $\times$ &  &  &  \\ \cline{1-3}
+      \multicolumn{1}{|c|}{3} &  $\times$ & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+      \multicolumn{1}{|c|}{4} &  $\times$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} &  \\ \hline
+      \multicolumn{1}{|c|}{5} &  $\times$ & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
+        & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5}
+      \end{tabular}
+
+      \bigskip
+
+      \begin{tabular}{c|c|ccc}
+        \cline{1-2}
+        \multicolumn{1}{|c|}{2} & $\times$ &  &  &  \\ \cline{1-3}
+        \multicolumn{1}{|c|}{3} & $\times$ & \multicolumn{1}{c|}{} &  &  \\ \cline{1-4}
+        \multicolumn{1}{|c|}{4} & $\times$ & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{$\times$} &  \\ \hline
+        \multicolumn{1}{|c|}{5} & $\times$ & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{$\times$} & \multicolumn{1}{c|}{} \\ \hline
+         & 1 & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} \\ \cline{2-5} 
+        \end{tabular}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+
+  Formar clases de estados de un autómata que pudieran ser equivalentes. \pause
+
+  \bigskip
+
+  Al seguir examinando las clases, podremos percatarnos de si es necesario volver a \textbf{dividirlas}. \pause
+
+  \bigskip
+
+  Si las clases ya no pueden dividirse más, entonces hemos encontrado el autómata más pequeño.
   
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
+      \node[state, initial, accepting] (5) {$5$};
+      \node[state, accepting, below right of=5] (3) {$3$};
+      \node[state, accepting, above right of=5] (4) {$4$};
+      \node[state, accepting, right of=4] (2) {$2$};
+      \node[state, right of=3] (1) {$1$};
+
+      \path
+      (5) edge node {$a$} (4)
+      (5) edge node {$b$} (3)
+      (4) edge [loop above] node {$a$} (4)
+      (4) edge [bend left] node {$b$} (2)
+      (3) edge node {$a$} (4)
+      (3) edge node {$b$} (1)
+      (2) edge [bend left] node {$a$} (4)
+      (2) edge node {$b$} (1)
+      (1) edge [loop below] node {$a,b$} (1);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
+      \node[state, initial, accepting, draw=green] (5) {$5$};
+      \node[state, accepting, below right of=5, draw=green] (3) {$3$};
+      \node[state, accepting, above right of=5, draw=green] (4) {$4$};
+      \node[state, accepting, right of=4, draw=green] (2) {$2$};
+      \node[state, right of=3, draw=red] (1) {$1$};
+
+      \path
+      (5) edge node {$a$} (4)
+      (5) edge node {$b$} (3)
+      (4) edge [loop above] node {$a$} (4)
+      (4) edge [bend left] node {$b$} (2)
+      (3) edge node {$a$} (4)
+      (3) edge node {$b$} (1)
+      (2) edge [bend left] node {$a$} (4)
+      (2) edge node {$b$} (1)
+      (1) edge [loop below] node {$a,b$} (1);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
+      \node[state, initial, accepting, draw=green] (5) {$5$};
+      \node[state, accepting, below right of=5, draw=blue] (3) {$3$};
+      \node[state, accepting, above right of=5, draw=green] (4) {$4$};
+      \node[state, accepting, right of=4, draw=blue] (2) {$2$};
+      \node[state, right of=3, draw=red] (1) {$1$};
+
+      \path
+      (5) edge node {$a$} (4)
+      (5) edge node {$b$} (3)
+      (4) edge [loop above] node {$a$} (4)
+      (4) edge [bend left] node {$b$} (2)
+      (3) edge node {$a$} (4)
+      (3) edge node {$b$} (1)
+      (2) edge [bend left] node {$a$} (4)
+      (2) edge node {$b$} (1)
+      (1) edge [loop below] node {$a,b$} (1);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
+      \node[state, initial, accepting, draw=green] (A) {$A$};
+      \node[state, accepting, draw=blue, right of=A] (C) {$C$};
+      \node[state, draw=red, right of=C] (B) {$B$};
+
+      \path
+      (A) edge [loop above] node {$a$} (A)
+      (A) edge [bend left] node {$b$} (C)
+      (C) edge [bend left] node {$a$} (A)
+      (C) edge node {$b$} (B)
+      (B) edge [loop above] node {$a,b$} (B);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
     \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
-        \node[state, initial, draw=green] (a) {$a$};
-        \node[state, above of=a, draw=green] (b) {$b$};
-        \node[state, accepting, right of=a, draw=green] (c) {$c$};
-        \node[state, accepting, right of=b, draw=green] (d) {$d$};
-        \node[state, accepting, right of=c, draw=green] (e) {$e$};
-        \node[state, right of=d, draw=red] (f) {$f$};
-  
+      \begin{tikzpicture}[node distance=2.5cm, stylename]
+        \node[state, initial] (a) {$a$};
+        \node[state, above of=a] (b) {$b$};
+        \node[state, accepting, right of=a] (c) {$c$};
+        \node[state, accepting, right of=b] (d) {$d$};
+        \node[state, accepting, right of=c] (e) {$e$};
+        \node[state, right of=d] (f) {$f$};
+
         \path
         (a) edge [bend left] node {$0$} (b)
         (a) edge node {$1$} (c)
@@ -593,59 +569,85 @@
         (f) edge [loop above] node {$0,1$} (f);
       \end{tikzpicture}
     \end{center}
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
-        \node[state, initial, draw=blue] (a) {$a$};
-        \node[state, above of=a, draw=blue] (b) {$b$};
-        \node[state, accepting, right of=a, draw=green] (c) {$c$};
-        \node[state, accepting, right of=b, draw=green] (d) {$d$};
-        \node[state, accepting, right of=c, draw=green] (e) {$e$};
-        \node[state, right of=d, draw=red] (f) {$f$};
-  
-        \path
-        (a) edge [bend left] node {$0$} (b)
-        (a) edge node {$1$} (c)
-        (b) edge [bend left] node {$0$} (a)
-        (b) edge node {$1$} (d)
-        (c) edge node {$0$} (e)
-        (c) edge [bend left] node [left] {$1$} (f)
-        (d) edge [bend left] node [below] {$0$} (e)
-        (d) edge node {$1$} (f)
-        (e) edge [loop below] node {$0$} (e)
-        (e) edge node [midway, right] {$1$} (f)
-        (f) edge [loop above] node {$0,1$} (f);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
-    \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
-        \node[state, initial, draw=blue] (a) {$a$};
-        \node[state, accepting, right of=a, draw=green] (b) {$b$};
-        \node[state, right of=b, draw=red] (c) {$c$};
-  
-        \path
-        (a) edge [loop above] node {$0$} (a)
-        (a) edge node {$1$} (b)
-        (b) edge [loop below] node {$0$} (b)
-        (b) edge node {$1$} (c)
-        (c) edge [loop above] node {$0,1$} (c);
-      \end{tikzpicture}
-    \end{center}
-  \end{frame}
-  
-  % \section*{Referencias}
-  
-  % \begin{frame}[t]{Referencias}
-      % \nocite{bibID01}
-      % \nocite{bibID02}
-  
-      % \bibliographystyle{IEEE}
-      % \bibliography{biblio}
-  % \end{frame}
-  
-  \end{document}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
+      \node[state, initial, draw=green] (a) {$a$};
+      \node[state, above of=a, draw=green] (b) {$b$};
+      \node[state, accepting, right of=a, draw=green] (c) {$c$};
+      \node[state, accepting, right of=b, draw=green] (d) {$d$};
+      \node[state, accepting, right of=c, draw=green] (e) {$e$};
+      \node[state, right of=d, draw=red] (f) {$f$};
+
+      \path
+      (a) edge [bend left] node {$0$} (b)
+      (a) edge node {$1$} (c)
+      (b) edge [bend left] node {$0$} (a)
+      (b) edge node {$1$} (d)
+      (c) edge node {$0$} (e)
+      (c) edge [bend left] node [left] {$1$} (f)
+      (d) edge [bend left] node [below] {$0$} (e)
+      (d) edge node {$1$} (f)
+      (e) edge [loop below] node {$0$} (e)
+      (e) edge node [midway, right] {$1$} (f)
+      (f) edge [loop above] node {$0,1$} (f);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
+      \node[state, initial, draw=blue] (a) {$a$};
+      \node[state, above of=a, draw=blue] (b) {$b$};
+      \node[state, accepting, right of=a, draw=green] (c) {$c$};
+      \node[state, accepting, right of=b, draw=green] (d) {$d$};
+      \node[state, accepting, right of=c, draw=green] (e) {$e$};
+      \node[state, right of=d, draw=red] (f) {$f$};
+
+      \path
+      (a) edge [bend left] node {$0$} (b)
+      (a) edge node {$1$} (c)
+      (b) edge [bend left] node {$0$} (a)
+      (b) edge node {$1$} (d)
+      (c) edge node {$0$} (e)
+      (c) edge [bend left] node [left] {$1$} (f)
+      (d) edge [bend left] node [below] {$0$} (e)
+      (d) edge node {$1$} (f)
+      (e) edge [loop below] node {$0$} (e)
+      (e) edge node [midway, right] {$1$} (f)
+      (f) edge [loop above] node {$0,1$} (f);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
+  \begin{center}
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
+      \node[state, initial, draw=blue] (a) {$a$};
+      \node[state, accepting, right of=a, draw=green] (b) {$b$};
+      \node[state, right of=b, draw=red] (c) {$c$};
+
+      \path
+      (a) edge [loop above] node {$0$} (a)
+      (a) edge node {$1$} (b)
+      (b) edge [loop below] node {$0$} (b)
+      (b) edge node {$1$} (c)
+      (c) edge [loop above] node {$0,1$} (c);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+% \section*{Referencias}
+
+% \begin{frame}[t]{Referencias}
+    % \nocite{bibID01}
+    % \nocite{bibID02}
+
+    % \bibliographystyle{IEEE}
+    % \bibliography{biblio}
+% \end{frame}
+
+\end{document}

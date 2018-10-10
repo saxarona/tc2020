@@ -13,13 +13,15 @@
 \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
 
 \tikzset{
+    stylename/.style={
     ->, %arrow type
     >=stealth', %arrow head type (bold)
     shorten >=1pt, 
     auto,
-    semithick,
+    %semithick,
     initial text=$ $, %no start text
     }
+}
 
 % \usepackage{courier}
 % \usepackage{subfigure}
@@ -96,7 +98,7 @@
 \begin{frame}[t]{Equivalencia}{Equivalencia de AFDs}
     ¿Son estos dos autómatas equivalentes?
     \begin{center}
-        \begin{tikzpicture}[node distance=1.5cm]
+        \begin{tikzpicture}[node distance=1.5cm, stylename]
             \node[initial, state, accepting] (A) {$A$};
             \node[state, right of=A] (B) {$B$};
             \path
@@ -108,7 +110,7 @@
 
         \bigskip
     
-        \begin{tikzpicture}[node distance=1.5cm]
+        \begin{tikzpicture}[node distance=1.5cm, stylename]
             \node[initial, state, accepting] (A) {$A$};
             \node[state, right of=A] (B) {$B$};
             \node[state, accepting, right of=B] (C) {$C$};
@@ -138,7 +140,7 @@
      \begin{columns}
         \begin{column}{0.5\textwidth}
           \begin{center}
-            \begin{tikzpicture}[node distance=1.5cm]
+            \begin{tikzpicture}[node distance=1.5cm, stylename]
                 \node[initial, state, accepting] (A) {$A$};
                 \node[state, right of=A] (B) {$B$};
                 \path
@@ -150,7 +152,7 @@
     
             \bigskip
         
-            \begin{tikzpicture}[node distance=1.5cm]
+            \begin{tikzpicture}[node distance=1.5cm, stylename]
                 \node[initial, state, accepting] (A) {$A'$};
                 \node[state, right of=A] (B) {$B'$};
                 \node[state, accepting, right of=B] (C) {$C'$};
@@ -166,7 +168,7 @@
         \end{column}
         \begin{column}{0.5\textwidth}
           \begin{center}
-            \begin{tikzpicture}[level distance=1.5cm]
+            \begin{tikzpicture}[level distance=1.5cm, stylename]
               \Tree
               [.\node(aa){$(A,A')$};
                 \edge node[midway]{$a$};
@@ -188,7 +190,7 @@
 
 \begin{frame}[t,plain]
   \begin{FlushLeft}
-    \begin{tikzpicture}[node distance=1.8cm]
+    \begin{tikzpicture}[node distance=1.8cm, stylename]
       \node[initial, state] (s0) {$q_0$};
       \node[state, right of=s0] (s1) {$q_1$};
       \node[state, below of=s0] (s4) {$q_4$};
@@ -220,7 +222,7 @@
   \vspace{-1.5cm}
 
   \begin{flushright}
-    \begin{tikzpicture}[node distance=1.8cm]
+    \begin{tikzpicture}[node distance=1.8cm, stylename]
       \node[initial, state] (B) {$B$};
       \node[state, right of=B] (C) {$C$};
       \node[state, accepting, right of=C] (A) {$A$};
@@ -249,7 +251,7 @@
   Una máquina $M$ puede tener \alert{estados redundantes}. \pause
 
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state, accepting] (q3) {$q_3$};
       \node[state, accepting, below right of=q3] (q4) {$q_4$};
       \node[state, above right of=q3] (q5) {$q_5$};
@@ -268,7 +270,7 @@
   Borrar transiciones:
 
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state, accepting] (q3) {$q_3$};
       \node[state, accepting, below right of=q3] (q4) {$q_4$};
       \node[state, above right of=q3] (q5) {$q_5$};
@@ -285,7 +287,7 @@
   Redirigir transiciones:
 
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state, accepting] (q3) {$q_3$};
       \node[state, above right of=q3] (q5) {$q_5$};
   
@@ -309,7 +311,7 @@
   \begin{columns}
     \begin{column}{0.42\textwidth}
       \begin{center}
-        \begin{tikzpicture}[node distance=1.6cm]
+        \begin{tikzpicture}[node distance=1.6cm, stylename]
           \node[state, initial, accepting] (5) {$5$};
           \node[state, accepting, below right of=5] (3) {$3$};
           \node[state, accepting, above right of=5] (4) {$4$};
@@ -378,7 +380,7 @@
   \begin{columns}
     \begin{column}{0.42\textwidth}
       \begin{center}
-        \begin{tikzpicture}[node distance=1.6cm]
+        \begin{tikzpicture}[node distance=1.6cm, stylename]
           \node[state, initial, accepting] (5) {$5$};
           \node[state, accepting, below right of=5] (3) {$3$};
           \node[state, accepting, above right of=5] (4) {$4$};
@@ -459,7 +461,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.1cm]
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
       \node[state, initial, accepting] (5) {$5$};
       \node[state, accepting, below right of=5] (3) {$3$};
       \node[state, accepting, above right of=5] (4) {$4$};
@@ -482,7 +484,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.1cm]
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
       \node[state, initial, accepting, draw=green] (5) {$5$};
       \node[state, accepting, below right of=5, draw=green] (3) {$3$};
       \node[state, accepting, above right of=5, draw=green] (4) {$4$};
@@ -505,7 +507,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.1cm]
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
       \node[state, initial, accepting, draw=green] (5) {$5$};
       \node[state, accepting, below right of=5, draw=blue] (3) {$3$};
       \node[state, accepting, above right of=5, draw=green] (4) {$4$};
@@ -528,7 +530,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.1cm]
+    \begin{tikzpicture}[node distance=2.1cm, stylename]
       \node[state, initial, accepting, draw=green] (A) {$A$};
       \node[state, accepting, draw=blue, right of=A] (C) {$C$};
       \node[state, draw=red, right of=C] (B) {$B$};
@@ -545,7 +547,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
     \begin{center}
-      \begin{tikzpicture}[node distance=2.5cm]
+      \begin{tikzpicture}[node distance=2.5cm, stylename]
         \node[state, initial] (a) {$a$};
         \node[state, above of=a] (b) {$b$};
         \node[state, accepting, right of=a] (c) {$c$};
@@ -571,7 +573,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[state, initial, draw=green] (a) {$a$};
       \node[state, above of=a, draw=green] (b) {$b$};
       \node[state, accepting, right of=a, draw=green] (c) {$c$};
@@ -597,7 +599,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[state, initial, draw=blue] (a) {$a$};
       \node[state, above of=a, draw=blue] (b) {$b$};
       \node[state, accepting, right of=a, draw=green] (c) {$c$};
@@ -623,7 +625,7 @@
 
 \begin{frame}{Simplificación por clases de equivalencia}{Simplificación de AFDs}
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[state, initial, draw=blue] (a) {$a$};
       \node[state, accepting, right of=a, draw=green] (b) {$b$};
       \node[state, right of=b, draw=red] (c) {$c$};

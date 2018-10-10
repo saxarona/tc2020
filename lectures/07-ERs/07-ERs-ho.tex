@@ -12,12 +12,14 @@
 \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
 
 \tikzset{
-->, %arrow type
->=stealth', %arrow head type (bold)
-shorten >=1pt, 
-auto,
-semithick,
-initial text=$ $, %no start text
+    stylename/.style={
+        ->, %arrow type
+        >=stealth', %arrow head type (bold)
+        shorten >=1pt, 
+        auto,
+        %semithick,
+        initial text=$ $, %no start text
+    }
 }
 
 % \usepackage{courier}

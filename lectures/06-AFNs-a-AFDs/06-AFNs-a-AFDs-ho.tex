@@ -12,12 +12,14 @@
     \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
     
     \tikzset{
-    ->, %arrow type
-    >=stealth', %arrow head type (bold)
-    shorten >=1pt, 
-    auto,
-    semithick,
-    initial text=$ $, %no start text
+        stylename/.style={
+            ->, %arrow type
+            >=stealth', %arrow head type (bold)
+            shorten >=1pt, 
+            auto,
+            %semithick,
+            initial text=$ $, %no start text
+        }
     }
     
     % \usepackage{courier}
@@ -125,7 +127,7 @@
     El AFN \textbf{acepta} una palabra si existe al menos un estado final dentro del conjunto de estados donde la secuencia termina. \pause
 
     \begin{center}
-        \begin{tikzpicture}[node distance=2cm]
+        \begin{tikzpicture}[node distance=2cm, stylename]
             \node[initial, state, draw=red] (0) {$0$};
             \node[state, above of=0] (1) {$1$};
             \node[state, accepting, right of=0, xshift=1.5cm, draw=red] (2) {$2$};
@@ -155,7 +157,7 @@
   \begin{frame}{Estados de estados}{Conversión de AFN a AFD}
 
     \begin{center}
-        \begin{tikzpicture}[node distance=2cm]
+        \begin{tikzpicture}[node distance=2cm, stylename]
             \node[initial, state] (0) {$0$};
             \node[state, above of=0, draw=red] (1) {$1$};
             \node[state, accepting, right of=0, xshift=1.5cm, draw=red] (2) {$2$};
@@ -192,7 +194,7 @@
     Dado a que existe una transición $\varepsilon$ entre $0$ y $2$ en $N$, claramente el estado inicial en $M$ debe considerar $\{0,2\}$.
 
     \begin{center}
-        \begin{tikzpicture}[node distance=2cm]
+        \begin{tikzpicture}[node distance=2cm, stylename]
           \node[initial, state] (0) {$0$};
           \node[state, above of=0] (1) {$1$};
           \node[state, accepting, right of=0, xshift=1.5cm] (2) {$2$};
@@ -282,7 +284,7 @@
 
   \begin{frame}{Ejemplo}{Conversión de AFN a AFD}
     \begin{center}
-        \begin{tikzpicture}[node distance=3cm ]
+        \begin{tikzpicture}[node distance=3cm, stylename]
             \node [initial, state] (1) {$1$};
             \node [state, accepting, right of=1] (2) {$2$};
             \node [state, below right of=1] (3) {$3$};

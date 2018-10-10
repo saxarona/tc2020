@@ -12,13 +12,15 @@
 \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
 
 \tikzset{
+    stylename/.style={
     ->, %arrow type
     >=stealth', %arrow head type (bold)
     shorten >=1pt, 
     auto,
-    semithick,
+    %semithick,
     initial text=$ $, %no start text
     }
+}
 
 % \usepackage{courier}
 % \usepackage{subfigure}
@@ -102,7 +104,7 @@
 
 \begin{frame}{Ejemplo}{AFDs}
     \begin{center}
-        \begin{tikzpicture}[node distance=3cm]
+        \begin{tikzpicture}[node distance=3cm, stylename]
 
             \node[initial,state, accepting] (A) {$q_0$};
             \node[state] (B) [above right of=A] {$q_1$};
@@ -150,7 +152,7 @@
     AFD para lenguaje en $\{a,b\}$ de palabras que no tienen varias $a$s seguidas.
 
     \begin{center}
-        \begin{tikzpicture}[node distance=2.5cm]
+        \begin{tikzpicture}[node distance=2.5cm, stylename]
 
             \node[initial,state] (A) {$q_0$};
             \node[state, accepting] (B) [above right of=A] {$q_1$};
@@ -173,7 +175,7 @@
     \bigskip
 
     \begin{center}
-        \begin{tikzpicture}[node distance=2.8cm]
+        \begin{tikzpicture}[node distance=2.8cm, stylename]
 
             \node[initial,state, accepting] (A) {$q_0$};
             \node[state, accepting] (B) [right of=A] {$q_1$};
@@ -239,7 +241,7 @@
     Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{no comienzan con 00}.
 
     \begin{center}
-        \begin{tikzpicture}[node distance=2cm]
+        \begin{tikzpicture}[node distance=2cm, stylename]
 
             \node[initial,state, accepting] (A) {$q_0$};
             \node[state, accepting] (B) [above right of=A] {$q_1$};
@@ -260,7 +262,7 @@
 \begin{frame}{Diseño por conjuntos de estados}{Diseñando un AFD}
     Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{tengan $00$ pero no $11$}.
     \begin{center}
-        \begin{tikzpicture}[node distance=2.8cm]
+        \begin{tikzpicture}[node distance=2.8cm, stylename]
 
             \node[initial,state, draw=none] (A) {};
             \node[state, accepting, draw=none] (B) [above right of=A] {};
@@ -306,7 +308,7 @@
     Un AFD que acepte exactamente el lenguaje en el alfabeto $\{0,1\}$ de palabras que \textbf{tengan $00$ pero no $11$}.
 
     \begin{center}
-        \begin{tikzpicture}[node distance=1.5cm]
+        \begin{tikzpicture}[node distance=1.5cm, stylename]
 
             \node[initial, state, draw=blue] (A) {$A$};
             \node[state, draw=blue] (B) [right of=A] {$B$};
@@ -351,7 +353,7 @@
     Obtener un AFD para el lenguaje en $\{a,b\}^*$ de las palabras que \textbf{no contienen la sub-cadena} $\mathbf{abaab}$.
 
     \begin{center}
-        \begin{tikzpicture}[node distance=3cm]
+        \begin{tikzpicture}[node distance=3cm, stylename]
 
             \node[initial,state, draw=none] (A) {};
             \node[state, accepting, draw=none] (B) [above right of=A] {};
@@ -371,7 +373,7 @@
 
 \begin{frame}{Diseño por complemento}{Diseñando un AFD}
     \begin{center}
-        \begin{tikzpicture}[node distance=1.8cm]
+        \begin{tikzpicture}[node distance=1.8cm, stylename]
 
             \node[initial, state, draw=red] (st) {\^{}};
             \node[state, draw=red] (a) [right of=st] {a};
@@ -403,7 +405,7 @@
 
 \begin{frame}{Diseño por complemento}{Diseñando un AFD}
     \begin{center}
-        \begin{tikzpicture}[node distance=2cm]
+        \begin{tikzpicture}[node distance=2cm, stylename]
 
             \node[state, initial, accepting, draw=green] (st) {\^{}};
             \node[state, accepting, draw=green] (a) [right of=st] {a};

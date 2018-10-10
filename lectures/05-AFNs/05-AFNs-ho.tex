@@ -1,4 +1,4 @@
-\documentclass[spanish,handout]{beamer}
+\documentclass[spanish, handout]{beamer}
   
   \usepackage[utf8]{inputenc}
   \usepackage[spanish, mexico]{babel}
@@ -12,12 +12,14 @@
   \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
   
   \tikzset{
-  ->, %arrow type
-  >=stealth', %arrow head type (bold)
-  shorten >=1pt, 
-  auto,
-  semithick,
-  initial text=$ $, %no start text
+    stylename/.style={
+      ->, %arrow type
+      >=stealth', %arrow head type (bold)
+      shorten >=1pt, 
+      auto,
+      %semithick,
+      initial text=$ $, %no start text
+    }
   }
   
   % \usepackage{courier}
@@ -90,7 +92,7 @@
   Las \textbf{transiciones} se etiquetan con \alert{palabras}, no con símbolos del alfabeto. \pause
   \bigskip
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state] (3) {$3$};
       \node[state, accepting, right of=3] (4) {$4$};
       
@@ -117,7 +119,7 @@
   Un estado puede no tener transiciones. \pause
   
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state] (3) {$3$};
       \node[state, accepting, right of=3] (4) {$4$};
       
@@ -135,7 +137,7 @@
   \bigskip
   
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state] (3) {$3$};
       \node[state, accepting, right of=3] (4) {$4$};
 
@@ -169,7 +171,7 @@
   \bigskip
 
   \begin{center}
-    \begin{tikzpicture}[node distance=2cm]
+    \begin{tikzpicture}[node distance=2cm, stylename]
       \node[initial, state] (0) {$0$};
       \node[state, above of=0] (1) {$1$};
       \node[state, accepting, right of=0, xshift=1.5cm] (2) {$2$};
@@ -200,7 +202,7 @@
   \end{block} \pause
 
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[initial, state] (q) {$q$};
       \node[state, above right of=q, draw=gray, fill=gray!50] (m1) {$~~M_1~~$};
       \node[state, below right of=q, draw=gray, fill=gray!50] (m2) {$~~M_2~~$};
@@ -221,7 +223,7 @@
   \bigskip
 
   \begin{center}
-    \begin{tikzpicture}[node distance=2.5cm]
+    \begin{tikzpicture}[node distance=2.5cm, stylename]
       \node[state, initial, draw=gray, fill=gray!50] (m1) {$~~M_1~~$};
       \node[state, below right of=m1, draw=gray, fill=gray!50] (m2) {$~~M_2~~$};
 

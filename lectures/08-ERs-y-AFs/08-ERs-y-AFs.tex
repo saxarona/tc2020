@@ -12,12 +12,14 @@
 \usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
 
 \tikzset{
-->, %arrow type
->=stealth', %arrow head type (bold)
-shorten >=1pt, 
-auto,
-semithick,
-initial text=$ $, %no start text
+    automata/.style={
+        ->, %arrow type
+        >=stealth', %arrow head type (bold)
+        shorten >=1pt, 
+        auto,
+        %semithick,
+        initial text=$ $, %no start text
+    }
 }
 
 % \usepackage{courier}
@@ -101,7 +103,7 @@ initial text=$ $, %no start text
 
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (q0) {$q0$};
             \node[state] (q1) [above right of=q0] {$q1$};
@@ -145,7 +147,7 @@ initial text=$ $, %no start text
 %adding s and f
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -175,7 +177,7 @@ initial text=$ $, %no start text
 % changing q5 and its actions
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -204,7 +206,7 @@ initial text=$ $, %no start text
 % changing actions leading to q5
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -233,7 +235,7 @@ initial text=$ $, %no start text
 % removing q4 and reorienting coming actions to q5
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -260,7 +262,7 @@ initial text=$ $, %no start text
 % removing q3 and reorienting coming actions to q5
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -285,7 +287,7 @@ initial text=$ $, %no start text
 % joining incoming actions for q5 into a single RE
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -308,7 +310,7 @@ initial text=$ $, %no start text
 % removing q1 and reorienting incoming actions to q5
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -329,7 +331,7 @@ initial text=$ $, %no start text
 % removing q2 and reorienting incoming actions to q5
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state] (q0) [right of=s]{$q0$};
@@ -348,7 +350,7 @@ initial text=$ $, %no start text
 % joining q0 actions for q5 into a single RE (END)
 \begin{frame}{Ejemplo: BSL (4-AQA)}{De AFs a ERs}
     \begin{center}
-        \begin{tikzpicture}[node distance=2.3cm]
+        \begin{tikzpicture}[node distance=2.3cm, automata]
 
             \node[state, initial] (s) {$s$};
             \node[state, fill=gray!50] (q0) [right of=s]{$q0$};
@@ -394,7 +396,7 @@ initial text=$ $, %no start text
 
         \begin{column}{0.7\textwidth}
             \begin{center}
-                \begin{tikzpicture}[node distance=2cm]
+                \begin{tikzpicture}[node distance=2cm, automata]
         
                     \node[state, initial] (s) {$s$};
                     \node[state] (k) [right of=s]{$k$};
@@ -419,7 +421,7 @@ initial text=$ $, %no start text
         
         \begin{column}{0.7\textwidth}
             \begin{center}
-                \begin{tikzpicture}[node distance=2.5cm]
+                \begin{tikzpicture}[node distance=2.5cm, automata]
         
                     \node[state, initial] (s) {$s$};
                     \node[state, accepting] (f) [right of=s] {$f$};
@@ -443,7 +445,7 @@ initial text=$ $, %no start text
 
         \begin{column}{0.7\textwidth}
             \begin{center}
-                \begin{tikzpicture}[node distance=2cm]
+                \begin{tikzpicture}[node distance=2cm, automata]
         
                     \node[state, initial] (s) {$s$};
                     \node[state] (k) [right of=s]{$k$};
