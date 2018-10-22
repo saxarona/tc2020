@@ -1,0 +1,257 @@
+\documentclass[spanish]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+\usepackage{textcomp}
+\usepackage{booktabs}
+
+\usetikzlibrary{arrows, automata, positioning, fit, shapes.geometric, backgrounds}
+\tikzset{%
+    automaton/.style={->, >=stealth', shorten >=1pt, auto, semithick, initial text=$ $}
+}
+
+% \usepackage{courier}
+% \usepackage{subfigure}
+% \usepackage{enumerate}
+% \usepackage{algorithmic}
+% \usepackage{algorithm}
+
+
+% \usepackage{listings}
+% \usepackage{lstlinebgrd}
+
+\newcommand\blfootnote[1]{%
+\begingroup
+\renewcommand\thefootnote{}\footnote{#1}%
+\addtocounter{footnote}{-1}%
+\endgroup
+}
+
+\usetheme{Boadilla}
+%\usecolortheme{default}
+\usefonttheme[onlymath]{serif}
+\useoutertheme{infolines}
+
+% Sets the templates
+
+\definecolor{navyblue}{RGB}{0, 0, 128}
+
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg = navyblue, bg = white}
+\setbeamercolor{frametitle}{fg = navyblue, bg = white}
+\setbeamercolor{structure}{fg = navyblue}
+\setbeamercolor{button}{fg = white,bg = navyblue}
+
+\setbeamercovered{transparent}
+
+\title{Gramáticas Libres de Contexto y Autómatas de Pila}
+\subtitle{Matemáticas Computacionales \\ (TC2020)}
+\author{
+\texorpdfstring{
+\begin{center}
+    M.C. Xavier Sánchez Díaz \\
+    \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+\end{center}
+}
+{M.C. Xavier Sánchez Díaz}
+}
+
+\institute[Tecnológico de Monterrey]{\includegraphics[scale=0.5]{../img/logo}}
+\date{}
+
+\begin{document}
+
+
+\setlength{\rightskip}{0pt}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+% \begin{frame}{Tabla de contenidos}
+% \tableofcontents
+% \end{frame}
+
+\section{Compiladores LL y LR}
+
+\begin{frame}{Crecimiento y no-determinismo en GLCs}{Compiladores LL y LR}
+    Recordemos una GLC, por ejemplo, para generar palabras del lenguaje $\{a^nb^n\}$: \pause
+
+    \bigskip
+
+    \begin{enumerate}
+        \item $S \to aSb$ \pause
+        \item $S \to \varepsilon$ \pause
+    \end{enumerate}
+
+    \bigskip
+
+    ¿Hacia dónde \textbf{crece} la palabra? \pause
+    Deriva usando $w = \langle 1, 1, 1, 2 \rangle$. \pause
+
+    Sin usar una secuencia dada, al momento de derivar una palabra usando las reglas de la gramática, tenemos que \alert{decidir} entre cuál de las reglas disponibles usar.
+    
+\end{frame}
+
+\begin{frame}{Crecimiento y no-determinismo en GLCs}{Compiladores LL y LR}
+
+    \begin{enumerate}
+        \item $S \to aSb$ \pause
+        \item $S \to \varepsilon$ \pause
+    \end{enumerate}
+
+    \bigskip
+
+    ¿Cómo sabemos qué regla utilizar? \pause
+
+    \bigskip
+
+    Nosotros podemos decidir porque sabemos a la palabra a la que queremos llegar. Un compilador no puede hacer eso, por lo que necesita de algún otro mecanismo para \textbf{prever} qué regla utilizar. \pause
+
+    Generar la función de transición completa para un autómata de pila para $\{a^nb^n\}$.
+
+\end{frame}
+
+\begin{frame}{Crecimiento y no-determinismo en GLCs}{Compiladores LL y LR}
+
+    \begin{center}
+        \begin{table}[H]
+            \begin{tabular}{@{}llll@{}}
+            \toprule
+            Tape & Pop & Move & Push \\ \midrule
+            $aabb$ & \$ & $R$ & $A$ \\
+            $abb$ & $A$ & $R$ & $AA$ \\
+            $bb$ & $A$ & $R$ & $\varepsilon$ \\
+            $b$ & $A$ & $R$ & $\varepsilon$ \\
+            $\blacksquare$ & \$ & $N$ & $\varepsilon$ \\ \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{center}
+
+    \bigskip
+
+    Hay muchas reglas que no estamos utilizando, y nos guiamos por el hecho de ver hacia \textit{adelante}. \pause    
+    Sabiendo que busco $aabb$, entonces lo más lógico es usar $S \to aSb$ dos veces, para poder \textit{finalizar} con $S\to \varepsilon$. \pause
+    
+    \bigskip
+
+    Este tipo de compiladores, que leen de izquierda a derecha, y que tienen una ventana de ``predicción'' se conocen como \textit{Left to right Leftmost derivation}, o \alert{LL} por sus siglas en inglés.
+
+\end{frame}
+
+\begin{frame}{Crecimiento y no-determinismo en GLCs}{Compiladores LL y LR}
+
+    Por el contrario, hay compiladores que leen \textit{al revés}, de derecha a izquierda (con respecto a las reglas de la gramática, primero $aSB$ y luego $S \to$).
+    De este modo, el árbol de derivación se recorre hacia atrás. \pause
+
+    \bigskip
+
+    Este tipo de compiladores se conoce como \textit{Left to right Rightmost derivation}, o \alert{LR} por sus siglas en inglés. \pause
+
+    \bigskip
+
+    ¿Pero cómo convertimos de una GLC a un AP y viceversa?
+
+\end{frame}
+
+\begin{frame}{Múltiples maneras en la literatura}{Compiladores LL y LR}
+    Como en el caso pasado, distintas personas lo manejan de distinta manera:
+
+    \begin{enumerate}
+        \itemsep2.5ex
+        \item Brena (2003) diferencia entre el tipo de compilador, y convierte una gramática de cierto tipo a un AP utilizando un algoritmo que depende del tipo de compilador. \pause
+        \item Ullman (1979), uno de los autores del libro más usado para este curso a nivel mundial, utiliza otra versión, sólo para compiladores LL y es la que utilizaremos.
+    \end{enumerate}
+\end{frame}
+
+\section{Conversión GLC a AP}
+
+\begin{frame}{Conversión GLC a AP}
+    Sea $L$ un lenguaje de una GLC $G$. \pause
+
+    \bigskip
+
+    Para construir un AP $M$ que acepte $L$, hay que considerar lo siguiente: \pause
+
+    \begin{itemize}
+        \item $M$ tiene \textbf{un estado} $q$ \pause
+        \item El \textbf{alfabeto de la cinta} de $M, \Sigma$ es igual a las terminales de $G$ \pause
+        \item El \textbf{alfabeto de la pila}  de $M, \Gamma \subseteq V \cup \Sigma$ \pause
+        \item El \textbf{símbolo inicial (de la pila)} de $M$ sigue siendo $\$$ (como antes) \pause
+    \end{itemize}
+
+    La \textbf{función de transición} puede calcularse con respecto a eso (como antes) \pause
+
+    \bigskip
+
+    Las \textbf{condiciones de aceptación} son:
+
+    \begin{itemize}
+        \item La pila está vacía (como antes) \pause
+        \item La cinta llegó al final (como antes)
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Ejemplo: $\{a^nb^n\}$}{Formalización y diseño de APs}
+
+    $M = G$:
+
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{enumerate}
+                \item $S \to aSb$
+                \item $S \to ab$
+            \end{enumerate}
+
+            \begin{itemize}
+                \item $Q = \{q\}$
+                \item $\Sigma = \{a, b\}$
+                \item $\Gamma = \{\$, S\}$
+                \item $\delta =$
+                \begin{itemize}
+                    \item $((q,a,\$)(q,\$S))$
+                    \item $((q,a,S)(q,SS))$
+                    \item $((q,b,S)(q,\varepsilon))$
+                    \item $((q,\square,\$),(q,\varepsilon))$
+                \end{itemize}
+                \item $q = q$
+                \item $F = \{q\}$
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[node distance=3.7cm, automaton]
+                    \node[state, initial, accepting] (q) {$q$};
+        
+                    \path
+                    (q) edge [loop above] node {$(a,\$,\$S), (a, S, SS)$} (q)
+                    (q) edge [loop below] node {$(b,S, \varepsilon), (\square,\$, \varepsilon)$} (q);
+                \end{tikzpicture}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+% \section*{Referencias}
+% \begin{frame}[t]{Referencias}
+% \nocite{bibID01}
+% \nocite{bibID02}
+
+% \bibliographystyle{IEEE}
+% \bibliography{biblio}
+% \end{frame}
+
+\end{document}
