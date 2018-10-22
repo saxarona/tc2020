@@ -11,6 +11,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{csquotes}
 \usetikzlibrary{arrows, automata}
 
 \tikzset{
@@ -136,12 +138,12 @@ Describe cada uno de los siguientes lenguajes utilizando expresiones regulares g
 
 \begin{enumerate}[label=\tt \alph*)]
     \itemsep0em
-    \item El lenguaje de las palabras en $\{a,b\}^*$ que empiezan con $a$ y terminan con $b$.
-    \item El lenguaje de las palabras en $\{0,1\}^*$ que son múltiplos de $100$.
-    \item El lenguaje de las palabras en $\{x, y\}^*$ que son de longitud impar o que terminan en $xxx$.
-    \item El lenguaje de las palabras en $\{0,1,2\}^*$ que tengan un $1$ en el centro, y sean simétricas.
-    \item El lenguaje de las palabras en $\{z : z \in \mathbb{N}, 0 \leq z \leq 9\}^*$ que son también denominaciones de billetes o monedas expedidas por el Banco de México y que están en circulación. Omite centavos y series especiales (Onzas de plata, Centenarios, etc.).
-    \item El lenguaje de las palabras en $\{a,b\}^*$ que tengan un número par de $b$s. (\textit{Hint: considera hacer un autómata si te parece muy complicado})
+    \item El lenguaje de las palabras en $\{a,b\}$ que empiezan con $a$ y terminan con $b$.
+    \item El lenguaje de las palabras en $\{0,1\}$ que son múltiplos de $100$.
+    \item El lenguaje de las palabras en $\{x, y\}$ que son de longitud impar o que terminan en $xxx$.
+    \item El lenguaje de las palabras en $\{0,1,2\}$ que tengan un $1$ en el centro, y sean simétricas.
+    \item El lenguaje de las palabras en $\{z : z \in \mathbb{N}, 0 \leq z \leq 9\}$ que son también denominaciones de billetes o monedas expedidas por el Banco de México y que están en circulación. Omite centavos y series especiales (Onzas de plata, Centenarios, etc.).
+    \item El lenguaje de las palabras en $\{a,b\}$ que tengan un número par de $b$s. (\textit{Hint: considera hacer un autómata si te parece muy complicado})
 \end{enumerate}
 
 
@@ -159,49 +161,51 @@ La etiqueta \verb|<html>...</html>| sirve para delimitar el contenido de la pág
     \item Escribe el árbol de derivación para dos palabras válidas (+ 6\%)
 \end{enumerate}
 
-\section{Gramáticas Libres de Contexto (30 \% + 7 \%)}
 
-BSL goes here!
+\section{Ambigüedad en GLCs (20\%)}
 
-El \textit{Biologic Space Lab} que orbita \textsc{SR388} sufrió una falla eléctrica dejando fuertes daños en algunos de sus sectores. Uno de los más afectados fue el que alberga muestras de la vida marina del planeta, el Sector 4 (AQA). Por ello, el equipo de mantenimiento te ha asignado la tarea de implementar un componente de control para el nivel del agua de los 32 tanques en el sector mientras se llevan a cabo las reparaciones.
-
-Cada tanque tiene tres sensores: uno para la detección de movimiento (y así saber si en el tanque se encuentra algún espécimen o si el tanque se encuentra vacío), otro para medir la toxicidad del agua, y uno más para medir la cantidad de carga eléctrica, la cual es indicio de alguna falla. En el caso de los últimos dos, se marca como `peligroso' cuando se sobrepasa un umbral.
-
-Los tanques envían actualizaciones al mecanismo de control una vez cada dos horas por medio de un packet de 8 bits, donde los primeros 3 corresponden a la lectura de los sensores (movimiento, toxicidad y carga, en ese orden), y los últimos 5 al ID del tanque (en binario).
-
-HQ te ha notificado que la compuerta que alimenta a cada tanque debe cerrarse en cualquiera de las siguientes situaciones:
-
-\begin{itemize}
-    \itemsep0em
-    \item Si las especies del tanque están a salvo (baja toxicidad y baja carga eléctrica).
-    \item Si el tanque está deshabitado, pero es altamente tóxico, sin importar lo demás.
-    \item Si el agua del tanque presenta una cantidad peligrosa de carga eléctrica, independientemente de que esté habitado o de su toxicidad.
-\end{itemize}
-
-Diseña un autómata que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet completo de información que se recibe es aceptado. Sugerencias:
+Sea $G=(\{S\},\{\mathtt{if}, c, \mathtt{then}, \mathtt{else}, x\}, \{S \to x, S \to \mathtt{if} \, c \, \mathtt{then} \, S, S \to \mathtt{if} \, c \, \mathtt{then} \, S \, \mathtt{else} \, S\}, S)$ una gramática libre de contexto.
 
 \begin{enumerate}[label=\tt \alph*)]
-    \itemsep0em
-    \item Genera el alfabeto de tu autómata (2 \%)
-    \item Convierte las condiciones de aceptación a palabras de entrada específicas (3 \%)
-    \item Diseña cuantos componentes sean necesarios (15 \%)
-    \item Presenta el mecanismo de control completo (5 \%)
-    \item Describe formalmente tu autómata (5 \%)
-    \item Ponle un nombre a tu mecanismo de control (+2 \%)
-    \item Si te es posible, minimízalo (+5 \%)
+    \item Demuestra que $G$ es ambigua utilizando dos árboles de derivación diferentes para una misma frase (10 \%)
+    \item Expresa cada árbol de derivación en forma secuencial (usando $\implies$) (10 \%)
 \end{enumerate}
 
-\section*{Reto: Conversión de AFN a AFDs (+15 \%)}
 
-Diseña un AFN por \textbf{concatenación} para el lenguaje de las palabras $\{a^n b^m\}$ donde $n$ y $m$ describen las veces que se repite cada carácter.
-Las palabras tienen $n \,$ $a$s, seguidas por $m \,$ $b$s para cualquier valor de $n$ y $m$.
+\section{Gramáticas Libres de Contexto (30 \% +14 \%)}
+
+El \textit{Biologic Space Lab} está en problemas nuevamente.
+Debido a una brecha en un ducto de ventilación, ciertos parásitos lograron entrar a uno de los laboratorios de acceso restringido, en el cual se almacenaban muestras de ADN de especies inteligentes para fines taxonómicos.
+Algunos de los bancos de datos están corruptos debido a la infección, pero otros aún están a salvo.
+HQ te ha asignado la tarea de diseñar un sistema de control para identificar aquellas muestras de ADN que aún pueden rescatarse, y te ha enviado la siguiente información:
 
 \begin{itemize}
-    \item Palabras aceptadas: $\varepsilon, a, b, ab, aab, aabb, \dots$
-    \item Palabras no aceptadas: $ba, bba, bbbba, abba, aaba, \dots$
+    \itemsep0em
+    \item Los parásitos tienen la capacidad de alterar la cadena de ADN, copiando y replicando ciertas subcadenas que consideran necesarias para la supervivencia mediante mutación.
+    \item Al parecer, el parásito replica el número de extremidades inferiores y de globos oculares de manera arbitraria.
+    \item Utilizando cerca de 20 Petabytes de información, se ha confirmado que el número de réplicas de subcadenas de ADN pertenecientes a los ojos nunca es el mismo que el de las extremidades inferiores en un mismo individuo---en un individuo mutado, el número final de ojos nunca es igual al número final de piernas.
+    \item Gracias al análisis de los datos, se determinó también que los parásitos sólo están afectando especies `aptas y balanceadas'; aquellas que tienen el mismo número de ojos que de piernas antes de la mutación.
 \end{itemize}
 
-Sugerencia: minimiza lo más que puedas tu AFN para que no batalles al convertirlo.
+Además, dado a la gran bio-diversidad del BSL, HQ te sugiere lo siguiente:
+
+\begin{tcolorbox}
+{\small Tenemos cerca de 900,000 especies en el databank.
+Es mejor enfocarse en encontrar las discrepancias en el número de genes en lugar de buscar una secuencia.
+Por favor, date prisa. No queremos perder 350 años de trabajo.}
+\end{tcolorbox}
+
+Diseña un conjunto de reglas para generar subcadenas de ADN válidas que pudieran estar infectadas. Sugerencias:
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item Genera el alfabeto de terminales (2 \%)
+    \item Describe (con notación de conjuntos o con palabras) el lenguaje aceptado por tu gramática (5 \%)
+    \item Genera las reglas de tu GLC (10 \%)
+    \item Describe formalmente tu GLC (5 \%)
+    \item Usando tu gramática y sus símbolos y reglas, escribe el árbol de derivación de un \textit{Dachora}, una especie de ave que tiene dos piernas y dos ojos (8 \%)
+    \item Dibuja un \textit{Dachora} (+4 \%)
+    \item Haz un Autómata de Pila para tu GLC (+10 \%)
+\end{enumerate}
 
 \vfill
 
