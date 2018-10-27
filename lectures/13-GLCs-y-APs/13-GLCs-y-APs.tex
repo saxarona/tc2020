@@ -206,8 +206,6 @@
 
 \begin{frame}{Ejemplo: $\{a^nb^n\}$}{Formalización y diseño de APs}
 
-    $M = G$:
-
     \begin{columns}
         \begin{column}{0.4\textwidth}
             \begin{enumerate}
@@ -242,6 +240,36 @@
             \end{center}
         \end{column}
     \end{columns}
+    
+    \bigskip
+
+    ¿Es este enfoque correcto? \pause
+    ¿Qué pasa con $aabb$? \pause
+    ¿Y con abab? 
+\end{frame}
+\begin{frame}{Ejemplo: $\{a^n b^n\}$}{Formalización y diseño de APs}
+    Claramente hemos agotado las combinaciones posibles entre $\Sigma \times \Gamma$ ... \pause
+
+    \bigskip
+
+    ¿Con cuál otro conjunto que tenga el AP podemos hacer producto cartesiano para obtener más posibilidades de cómputo? \pause
+
+    \bigskip
+
+    Con el \textbf{conjunto de estados}.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=3.7cm, automaton]
+            \node[state, initial] (q0) {$q0$};
+            \node[state, accepting, right of=q0] (q1) {$q1$};
+
+            \path
+            (q0) edge [loop above] node {$(a,\$,\$S), (a, S, SS)$} (q0)
+            (q0) edge node {$(\square,\$, \varepsilon), (b,S, \varepsilon)$} (q1)
+            (q1) edge [loop below] node {$(b,S, \varepsilon),(\square,\$, \varepsilon)$} (q1);
+        \end{tikzpicture}
+    \end{center}
+    
 \end{frame}
 
 
