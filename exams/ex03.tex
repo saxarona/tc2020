@@ -1,0 +1,218 @@
+\documentclass[8pt, onside]{article}
+%\usepackage[a4paper]{geometry}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{lipsum}
+\usepackage{bm}
+\usepackage{upgreek}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{csquotes}
+\usetikzlibrary{arrows, automata}
+
+\tikzset{
+    automaton/.style={
+        ->, %arrow type
+        >=stealth', %arrow head type (bold)
+        shorten >=1pt, 
+        auto,
+        %semithick,
+        initial text=$ $, %no start text
+    }
+}
+
+
+% mathtools for: Aboxed (put box on last equation in align envirenment)
+\usepackage{microtype} %improves the spacing between words and letters
+
+%% COLOR DEFINITIONS
+
+\usepackage{xcolor} % Enabling mixing colors and color's call by 'svgnames'
+
+\definecolor{MyColor1}{rgb}{0.2,0.4,0.6} %mix personal color
+\newcommand{\textb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blue}{\color{MyColor1} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blueb}{\color{MyColor1} \usefont{OT1}{lmss}{b}{n}}
+\newcommand{\red}{\color{LightCoral} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\green}{\color{Turquoise} \usefont{OT1}{lmss}{m}{n}}
+
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\diag}{diag}
+
+%% FONTS AND COLORS
+
+%    SECTIONS
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%set section/subsections HEADINGS font and color
+%\sectionfont{\color{Black}}  % sets colour of sections
+%\subsectionfont{\color{Black}}  % sets colour of sections
+
+%set section enumerator to arabic number (see footnotes markings alternatives)
+\renewcommand\thesection{\arabic{section}} %define sections numbering
+\renewcommand\thesubsection{\thesection\arabic{subsection}} %subsec.num.
+
+%define new section style
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{MyColor1}} 
+{\thesection} {3pt} {} } 
+
+
+% %	CAPTIONS
+% \usepackage{caption}
+% \usepackage{subcaption}
+% %%%%%%%%%%%%%%%%%%%%%%%%
+% \captionsetup[figure]{labelfont={color=Turquoise}}
+
+
+%		!!!EQUATION (ARRAY) --> USING ALIGN INSTEAD
+%using amsmath package to redefine eq. numeration (1.1, 1.2, ...) 
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\setlength\parindent{0pt}
+
+
+
+
+\makeatletter
+\let\reftagform@=\tagform@
+\def\tagform@#1{\maketag@@@{(\ignorespaces\textcolor{red}{#1}\unskip\@@italiccorr)}}
+\renewcommand{\eqref}[1]{\textup{\reftagform@{\ref{#1}}}}
+\makeatother
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+
+% For labeling top of page on every page but first one:
+%\usepackage{fancyhdr}
+
+\newcommand{\myclass}{TC2020 -- Matemáticas Computacionales} % Class name?
+\newcommand{\mytitle}{Examen 3} % Title of document?
+\newcommand{\mydate}{24.11.18} % The date?
+\newcommand{\myheader}{
+    \begin{flushleft}
+        \large
+        Nombre: \rule{13 cm}{0.4mm} \\
+        Nombre: \rule{13 cm}{0.4mm} \\
+        Matrícula: \rule{4.3 cm}{0.4mm} Matrícula: \rule{4.3 cm}{0.4mm} \hfill Fecha: \mydate
+    \end{flushleft}
+}
+
+\title{
+    \myclass \\
+    \textbf{\mytitle} \\
+    \myheader
+    \date{}
+}
+
+% You can set the date automatically by replacing "date goes here" with "\today"
+
+% \renewcommand{\rmdefault}{phv} % Arial Font
+% \renewcommand{\sfdefault}{phv} % Arial Font
+
+% \pagestyle{fancy}
+% \fancyhead{}
+% \fancyhead[CO,CE]{{\small{{\bf{\mytitle}} -- \myclass}}}
+
+\begin{document}
+\maketitle
+
+\vspace{-1.5cm}
+
+Este examen debe contestarse o bien de manera \textbf{individual} o \textbf{en parejas}.
+Revisen con calma lo que se pide. Es bastante trabajo, por lo que se sugiere que consideren bien sus tiempos.
+Al momento de contestar, intenten ser lo más explícitos posible: se calificará con base en lo que esté escrito, y se considerará el proceso aún cuando la respuesta final esté errada.
+
+\vspace{1.5ex}
+
+Todos los procedimientos deben venir en \textit{typesetting} (Word o \LaTeX), y serán entregados en un PDF.
+Si necesitas buscar referencias de algo que no está en el material de la clase, se invita a que lo cites apropiadamente.
+La inclusión de bibliografía adecuadamente citada da \textbf{2 puntos extras}.
+
+\vspace{1.5ex}
+
+\textbf{IMPORTANTE}: Deberás contestar tu examen usando el \textit{alfabeto adecuado}.
+
+\vspace{1.5ex}
+
+Sea $\Sigma$ el \textit{alfabeto adecuado} para tu examen, y \texttt{mod} la operación módulo (residuo después de la división), entonces:
+
+$$ \Sigma = 
+\begin{cases}
+   \{0,1\}, & \text{ si tu matrícula } \mathtt{mod} \, 3 = 0 \\
+   \{a,b\}, & \text{ si tu matrícula } \mathtt{mod} \, 3 = 1 \\
+   \{x,y\}, & \text{ si tu matrícula } \mathtt{mod} \, 3 = 2 \\
+\end{cases}
+$$
+
+Si estás trabajando en equipo, considera \textit{tu matrícula} como la suma del último dígito de cada una:
+
+\begin{align*}
+    A0117006\mathbf{5} + A0097344\mathbf{1} & =  6 \\
+    6 \, \mathtt{mod} \, 3 & = 0\\
+    \therefore \quad \Sigma & = \{0,1\}
+\end{align*}
+
+\rule{\textwidth}{0.1mm}
+
+\section{Máquinas de Turing (40 \% + 2 \%)}
+
+Genera $i$ máquinas de Turing $\mathcal{M}_i$ que hagan las siguientes operaciones.
+Para cada una, incluye su \textbf{definición formal} (usando $M = (Q,\Sigma,\Gamma,\delta,q,f)$ y su \textbf{diagrama de estados} (autómata):
+
+\begin{enumerate}[label=\tt \alph*)]
+    \itemsep0em
+    \item $\mathcal{M}_1 =$ Bitwise \texttt{AND} (10 \%)
+    \begin{itemize}
+        \item \textbf{Input}: dos cadenas de caracteres usando el $\Sigma$ adecuado
+        \item \textbf{Output}: \textit{Char}-wise \texttt{AND} de los inputs
+        \item \textbf{Ejemplo}: $\mathcal{M}_1(010,110) = 011$
+    \end{itemize}
+    \pagebreak
+    \item $\mathcal{M}_2 = $ Inversor de palabras (10 \%)
+    \begin{itemize}
+        \item \textbf{Input}: Una palabra $w$ usando el $\Sigma$ adecuado
+        \item \textbf{Output}: La inversión $w^R$ de la palabra $w$
+        \item \textbf{Ejemplo}: $\mathcal{M}_2(0111000) = 0001110$
+    \end{itemize}
+    \item $\mathcal{M}_3 = $ Verificador de CURP (20 / $x$ \%)
+    \begin{itemize}
+        \item \textbf{Input}: Un CURP válido
+        \item \textbf{Output}: Una \textit{string} de 3 caracteres en donde el primero es la inicial del sexo ($H, M$) y los últimos dos son la clave de la entidad federativa.
+        \item \textbf{Ejemplo}: Son muchas posibilidades, así que considera que los inputs serán personas de cualquier sexo pero de tu mismo estado de procedencia.
+        \item \textbf{Bonus}: Escribe una expresión regular en PCRE para identificar un CURP bien formado (+ 2 \%)
+    \end{itemize}
+\end{enumerate}
+
+\section{Máquinas de Turing II (50 \% + 2 \%)}
+
+Lee \textit{On Computable Numbers with an Application to the Entscheidungsproblem}, de Alan Turing, sobre todo las páginas 230--241 (1--12 del \texttt{PDF}). Presta especial atención al \textit{encoding} para la máquina universal. Con esta información y considerando que los tres alfabetos adecuados son equivalentes (es decir $0=a=x$ y $1=b=y$), entonces:
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item Genera una \textit{skeleton table} para los ejercicios $a)$ y $b)$ de la sección anterior (30 \%)
+    \item Expresa cada una de las \textit{skeleton tables} como una \textit{Standard Description} (S.D) (10 \%)
+    \item Expresa cada una de las \textit{standard descriptions} como un \textit{Description Number} (D.N) (10 \%)
+    \item \textbf{Bonus}: genera una expresión regular para cualquier S.D y otra para cualquier D.N en PCRE (+ 2 \%)
+\end{enumerate}
+
+Considera que tanto la tabla como las descripciones deben coincidir con los estados que hayas utilizado en la Sección 1.
+
+\section{Lectura y opinión (10 \%)}
+
+{\footnotesize \it Esto es prácticamente pregunta de rescate...}
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item Escribe una opinión breve (entre 150-200 palabras) del artículo de Turing ($\frac{8}{x}$\footnote{$x$ es el número de integrantes del equipo} \%)
+    \item Escribe una opinión breve (entre 150-200 palabras) de la clase, en donde describas en qué campo de tu área o puesto en el futuro podrías usar lo aprendido en el curso. ($\frac{2}{x}$ \%)
+\end{enumerate}
+
+\vfill
+
+\textbf{De acuerdo con el Código de Ética del Tecnológico de Monterrey, mi desempeño en esta actividad estará guiado por la integridad académica.}
+\end{document}
