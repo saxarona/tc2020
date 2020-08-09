@@ -1,4 +1,4 @@
-\documentclass[spanish, handouts]{beamer}
+\documentclass[spanish, c]{beamer}
 
 \usepackage[utf8]{inputenc}
 \usepackage[spanish, mexico]{babel}
@@ -7,6 +7,7 @@
 \usepackage{color}
 \usepackage{ragged2e}
 \usepackage{tikz}
+\usepackage{amsmath}
 \usepackage{mathrsfs}
 
 \usetikzlibrary{fit, shapes, arrows}
@@ -26,9 +27,11 @@
 
 % Sets the templates
 \definecolor{navyblue}{RGB}{0, 0, 128}
+\definecolor{crimson}{RGB}{128, 16, 0}
 
-\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{headline}{}
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
 \setbeamertemplate{footline}[frame number]
 \setbeamertemplate{bibliography item}[text]
 \setbeamertemplate{theorems}[numbered]
@@ -104,7 +107,7 @@
         \item <3-> \textbf{Inclusión}: $A \subseteq B$ si todos los elementos de $A$ son elementos de $B$.
         \item <4-> \textbf{Igualdad}: si $A \subseteq B$ y $B \subseteq A$, entonces $A = B$.
         \item <5-> \textbf{Inclusión propia}: $A \subset B$ si todos los elementos de $A$ son elementos de $B$ y $A \neq B$.
-        \item <6-> \textbf{Conjunto vacío}: $\varnothing$ o \{\} para representar un conjunto sin elementos.
+        \item <6-> \textbf{Conjunto vacío}: $\varnothing$ o $\{\}$ para representar un conjunto sin elementos.
     \end{itemize}
 \end{frame}
 
