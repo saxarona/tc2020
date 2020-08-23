@@ -1,0 +1,150 @@
+\documentclass[]{book}
+
+%These tell TeX which packages to use.
+\usepackage{array,epsfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsxtra}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage[spanish, mexico]{babel}
+\usepackage[utf8]{inputenc}
+
+%Here I define some theorem styles and shortcut commands for symbols I use often
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem*{rmk}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem*{joke}{Joke}
+\newtheorem{ex}{Example}
+\newtheorem*{sol}{Solución}
+\newtheorem{prop}{Proposition}
+
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\graph}{\mathrm{graph}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\Z}{\bb{Z}}
+\newcommand{\Q}{\bb{Q}}
+\newcommand{\R}{\bb{R}}
+\newcommand{\C}{\bb{C}}
+\newcommand{\N}{\bb{N}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\MM}{\mathscr{M}}
+\newcommand{\HH}{\mathscr{H}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Ho}{\in\HH(\Om)}
+\newcommand{\bd}{\partial}
+\newcommand{\del}{\partial}
+\newcommand{\bardel}{\overline\partial}
+\newcommand{\textdf}[1]{\textbf{\textsf{#1}}\index{#1}}
+\newcommand{\img}{\mathrm{img}}
+\newcommand{\ip}[2]{\left\langle{#1},{#2}\right\rangle}
+\newcommand{\inter}[1]{\mathrm{int}{#1}}
+\newcommand{\exter}[1]{\mathrm{ext}{#1}}
+\newcommand{\cl}[1]{\mathrm{cl}{#1}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\vol}{\mathrm{vol}}
+\newcommand{\cnt}{\mathrm{ct}}
+\newcommand{\osc}{\mathrm{osc}}
+\newcommand{\LL}{\mathbf{L}}
+\newcommand{\UU}{\mathbf{U}}
+\newcommand{\support}{\mathrm{support}}
+\newcommand{\AND}{\;\wedge\;}
+\newcommand{\OR}{\;\vee\;}
+\newcommand{\Oset}{\varnothing}
+\newcommand{\st}{\ni}
+\newcommand{\wh}{\widehat}
+
+%Pagination stuff.
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+\setlength{\itemsep}{0.45in}
+\pagestyle{empty}
+
+
+
+\begin{document}
+
+\begin{center}
+{\huge Matemáticas Computacionales TC2020 -- N}\\[1.5ex]
+{\large \textbf{Tarea 01 -- Soluciones}\\[1.5ex] %You should put your name here
+} %You should write the date here.
+\end{center}
+
+\vspace{0.2 cm}
+
+\subsection*{Preliminares: Lógica proposicional}
+
+\begin{enumerate}
+	\itemsep0.35in
+
+	\item Convierte los siguientes enunciados en otros que digan lo mismo, pero sin implicaciones ni negaciones.
+	Primero define el vocabulario proposicional que utilizarás. Después, usando equivalencias lógicas ve eliminando primero implicaciones y luego negaciones.
+	Finalmente, escribe la nueva proposición equivalente.
+	\begin{enumerate}
+		\item Conjunto de números naturales que si contienen al menos un cero, entonces terminan en 1
+		\begin{sol}
+            Sea $\bb{N}$ el conjunto de números naturales, $P$ el conjunto de números que contienen un cero y $Q$ el conjunto de números que terminan en 1.
+            Entonces, podemos definir el `conjunto $C$ de números naturales que si contienen un 0 entonces terminan en 1' como $n \in C$, donde
+            $$C = \{n \mid n \in \bb{N}, n \in P \implies n \in Q \}$$
+            Específicamente, la condición $P \implies Q$ puede transformarse:
+            \begin{align*}
+                P \implies Q \equiv \neg P \vee Q & \tag{\text{equivalencia de implicación material}}
+            \end{align*}
+            de tal manera que el conjunto $C = \{n \mid n \in \bb{N}, n \not \in P \vee n \in Q\}$
+        \end{sol}
+		\item Conjunto de palabras formadas con $a$s y $b$s que contienen $a$s si y sólo si contienen $b$s.
+		\begin{sol}
+            Sean $A$ y $B$ los enunciados `contiene $a$s' y `contiene $b$s' respectivamente. Entonces, el conjunto $C$ de `palabras formadas con $a$s y $b$s que contienen $a$s si y sólo si contienen $b$s' puede expresarse como
+            $$C = \{c \mid A \iff B\}$$
+            La doble implicación puede ser descompuesta fácilmente:
+            \begin{align*}
+                A \iff B & \equiv \\
+                & \equiv A \implies B \wedge B \implies A & \tag{\text{definición de doble implicación}}\\
+                & \equiv (\neg A \vee B) \wedge (\neg B \vee A) & \tag{\text{implicación material}}
+            \end{align*}
+            de tal modo que el conjunto $C = \{c \mid (\neg A \vee B) \wedge (\neg B \vee A)\}$
+            que se leería como `cualquier palabra que no tenga $a$ o tenga $b$, y que además no tenga $b$ o tenga $a$'.
+        \end{sol}
+	\end{enumerate}
+	\item Considera el conjunto de números naturales tales que si son mayores que 5 o terminan en 5, entonces contienen algún 1 o 2.
+	\begin{enumerate}
+		\item Especifica tres números que cumplan la condición y tres que no la cumplan.
+		\begin{sol}
+            Los números $3, 14, 25$ y $200$ cumplen la condición, mientras que $5, 33, 49$ y $88$ no la cumplen.
+        \end{sol}
+		\item Expresa el enunciado como una fórmula proposicional donde $M$ significa \textit{mayor que 5}, $T$ significa que \textit{terminan en 5}, $U$ significa que \textit{contienen algún 1} y $D$ significa que \textit{contienen algún 2}.
+		\begin{sol}
+            $(M \vee T) \implies (U \vee D)$
+        \end{sol}
+		\item Transforma la fórmula del inciso anterior de forma que se eliminen implicaciones y negaciones, y posteriormente escríbela con palabras.
+		\begin{sol}
+            La fórmula $(M \vee T) \implies (U \vee D)$ puede reescribirse de la siguiente manera:w
+
+            \begin{align*}
+                (M \vee T) \implies (U \vee D) & \equiv \\
+                & \equiv \neg (M \vee T) \vee (U \vee D) & \tag{\text{implicación material}} \\
+                & \equiv (\neg M \wedge \neg T) \vee (U \vee D) & \tag{\text{de Morgan}}
+            \end{align*}
+            lo cual se lee como `números que no sean mayores a 5 ni que terminen en 5, o bien que contengan un 1 o un 2'.
+            Podemos ver que $3$ está permitido porque no es mayor que 5 ni tampoco termina en cinco, aunque no contiene un $1$ o un $2$.
+            $25$, en cambio, contiene un 2 y con eso es suficiente; incluso si termina en 5.
+        \end{sol}
+	\end{enumerate}
+    \end{enumerate}
+    
+    \vspace{0.5in}
+    \noindent Sube un PDF \textit{typeset} (nativamente digital en Word/\LaTeX) con tus respuestas al espacio designado en Canvas.
+\end{document}
+
+
