@@ -1,4 +1,4 @@
-\documentclass[spanish,handout]{beamer}
+\documentclass[spanish, handout]{beamer}
   
     \usepackage[utf8]{inputenc}
     \usepackage[spanish, mexico]{babel}
@@ -19,8 +19,9 @@
             auto,
             %semithick,
             initial text=$ $, %no start text
+            }
         }
-    }
+    
     
     % \usepackage{courier}
     % \usepackage{subfigure}
@@ -43,18 +44,20 @@
     \usefonttheme[onlymath]{serif}
     
     % Sets the templates
-    \definecolor{navyblue}{RGB}{0, 0, 128}
-    
-    \setbeamertemplate{navigation symbols}{} 
-    \setbeamertemplate{headline}{}
-    \setbeamertemplate{footline}[frame number]
-    \setbeamertemplate{bibliography item}[text]
-    \setbeamertemplate{theorems}[numbered]
-    
-    \setbeamercolor{title}{fg=navyblue, bg=white}
-    \setbeamercolor{frametitle}{fg=navyblue, bg=white}
-    \setbeamercolor{structure}{fg=navyblue}
-    \setbeamercolor{button}{fg=white,bg=navyblue}
+\definecolor{navyblue}{RGB}{0, 0, 128}
+\definecolor{crimson}{RGB}{128, 16, 0}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{theorems}[numbered]
+
+\setbeamercolor{title}{fg=navyblue, bg=white}
+\setbeamercolor{frametitle}{fg=navyblue, bg=white}
+\setbeamercolor{structure}{fg=navyblue}
+\setbeamercolor{button}{fg=white,bg=navyblue}
     
     \setbeamercovered{transparent}
     
@@ -64,7 +67,7 @@
     \texorpdfstring{
     \begin{center}
       M.C. Xavier Sánchez Díaz \\
-      \href{mailto:sax@itesm.mx}{\texttt{sax@itesm.mx}}
+      \href{mailto:sax@tec.mx}{\texttt{sax@tec.mx}}
     \end{center}
     }
     {M.C. Xavier Sánchez Díaz}
@@ -126,31 +129,55 @@
   \begin{frame}{Estados de estados}{Conversión de AFN a AFD}
     El AFN \textbf{acepta} una palabra si existe al menos un estado final dentro del conjunto de estados donde la secuencia termina. \pause
 
-    \begin{center}
-        \begin{tikzpicture}[node distance=2cm, stylename]
-            \node[initial, state, draw=red] (0) {$0$};
-            \node[state, above of=0] (1) {$1$};
-            \node[state, accepting, right of=0, xshift=1.5cm, draw=red] (2) {$2$};
-            \node[state, above right of=2] (3) {$3$};
-            \node[state, above left of=2, draw=red] (4) {$4$};
+    \only<4>{
+        \begin{center}
+            \begin{tikzpicture}[node distance=2cm, stylename]
+              \node[initial, state, draw=red] (0) {$0$};
+              \node[state, above of=0] (1) {$1$};
+              \node[state, accepting, right of=0, xshift=1.5cm, draw=red] (2) {$2$};
+              \node[state, above right of=2] (3) {$3$};
+              \node[state, above left of=2, draw=red] (4) {$4$};
+        
+              \path
+              (0) edge [loop below] node {$b$} (0)
+              (0) edge [bend right] node {$a$} (1)
+              (0) edge node {$\varepsilon$} (2)
+              (1) edge [bend right] node {$a$} (0)
+              (2) edge [bend right] node {$a$} (3)
+              (2) edge [loop below] node {$b$} (2)
+              (3) edge [bend right] node {$a$} (4)
+              (4) edge [bend right] node {$a$} (2);
+            \end{tikzpicture}
+          \end{center}
+    }
 
-            \path
-            (0) edge [loop below] node {$b$} (0)
-            (0) edge [bend right] node {$a$} (1)
-            (0) edge node {$\varepsilon$} (2)
-            (1) edge [bend right] node {$a$} (0)
-            (2) edge [bend right] node {$a$} (3)
-            (2) edge [loop below] node {$b$} (2)
-            (3) edge [bend right] node {$a$} (4)
-            (4) edge [bend right] node {$a$} (2);
-        \end{tikzpicture}
-    \end{center}
+    \only<1-3>{
+        \begin{center}
+            \begin{tikzpicture}[node distance=2cm, stylename]
+              \node[initial, state] (0) {$0$};
+              \node[state, above of=0] (1) {$1$};
+              \node[state, accepting, right of=0, xshift=1.5cm] (2) {$2$};
+              \node[state, above right of=2] (3) {$3$};
+              \node[state, above left of=2] (4) {$4$};
+        
+              \path
+              (0) edge [loop below] node {$b$} (0)
+              (0) edge [bend right] node {$a$} (1)
+              (0) edge node {$\varepsilon$} (2)
+              (1) edge [bend right] node {$a$} (0)
+              (2) edge [bend right] node {$a$} (3)
+              (2) edge [loop below] node {$b$} (2)
+              (3) edge [bend right] node {$a$} (4)
+              (4) edge [bend right] node {$a$} (2);
+            \end{tikzpicture}
+        \end{center}
+    }
     
     \pause
 
-    La palabra $aa$ termina en $\{0,2,4\}$. \pause
-    
-    Podemos pensar entonces que $\{0,2,4\}$ tendría que ser un \textbf{estado final} en el AFD equivalente.
+      La palabra $aa$ termina en $\{0,2,4\}$. \pause
+      
+      Podemos pensar entonces que $\{0,2,4\}$ tendría que ser un \textbf{estado final} en el AFD equivalente.
       
   \end{frame}
 
