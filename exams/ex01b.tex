@@ -1,0 +1,300 @@
+\documentclass[8pt, onside]{article}
+%\usepackage[a4paper]{geometry}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{lipsum}
+\usepackage{bm}
+\usepackage{upgreek}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usetikzlibrary{arrows, automata}
+
+\tikzset{
+    ->, %arrow type
+    >=stealth', %arrow head type (bold)
+    shorten >=1pt, 
+    auto,
+    semithick,
+    initial text=$ $, %no start text
+    }
+
+
+% mathtools for: Aboxed (put box on last equation in align envirenment)
+\usepackage{microtype} %improves the spacing between words and letters
+
+%% COLOR DEFINITIONS
+
+\usepackage{xcolor} % Enabling mixing colors and color's call by 'svgnames'
+
+\definecolor{MyColor1}{rgb}{0.2,0.4,0.6} %mix personal color
+\newcommand{\textb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blue}{\color{MyColor1} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blueb}{\color{MyColor1} \usefont{OT1}{lmss}{b}{n}}
+\newcommand{\red}{\color{LightCoral} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\green}{\color{Turquoise} \usefont{OT1}{lmss}{m}{n}}
+
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\diag}{diag}
+
+%% FONTS AND COLORS
+
+%    SECTIONS
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%set section/subsections HEADINGS font and color
+%\sectionfont{\color{Black}}  % sets colour of sections
+%\subsectionfont{\color{Black}}  % sets colour of sections
+
+%set section enumerator to arabic number (see footnotes markings alternatives)
+\renewcommand\thesection{\arabic{section}} %define sections numbering
+\renewcommand\thesubsection{\thesection\arabic{subsection}} %subsec.num.
+
+%define new section style
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{MyColor1}} 
+{\thesection} {3pt} {} } 
+
+
+% %	CAPTIONS
+% \usepackage{caption}
+% \usepackage{subcaption}
+% %%%%%%%%%%%%%%%%%%%%%%%%
+% \captionsetup[figure]{labelfont={color=Turquoise}}
+
+
+%		!!!EQUATION (ARRAY) --> USING ALIGN INSTEAD
+%using amsmath package to redefine eq. numeration (1.1, 1.2, ...) 
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\setlength\parindent{0pt}
+
+
+
+
+\makeatletter
+\let\reftagform@=\tagform@
+\def\tagform@#1{\maketag@@@{(\ignorespaces\textcolor{red}{#1}\unskip\@@italiccorr)}}
+\renewcommand{\eqref}[1]{\textup{\reftagform@{\ref{#1}}}}
+\makeatother
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+
+% For labeling top of page on every page but first one:
+%\usepackage{fancyhdr}
+
+\newcommand{\myclass}{TC2020 -- Matemáticas Computacionales} % Class name?
+\newcommand{\mytitle}{Examen 1} % Title of document?
+\newcommand{\mydate}{21.09.20} % The date?
+\newcommand{\myheader}{
+    \begin{flushleft}
+        \large
+        Nombre: \rule{10 cm}{0.4mm} \quad \rule{2.5 cm}{0.4mm} \\
+        Nombre: \rule{10 cm}{0.4mm} \quad \rule{2.5 cm}{0.4mm} \\
+        Nombre: \rule{10 cm}{0.4mm} \quad \rule{2.5 cm}{0.4mm} \\
+    \end{flushleft}
+}
+\title{
+    \myclass \\
+    \textbf{\mytitle} \\
+    \myheader
+    \date{}
+}
+
+% You can set the date automatically by replacing "date goes here" with "\today"
+
+% \renewcommand{\rmdefault}{phv} % Arial Font
+\renewcommand{\familydefault}{phv} % Arial Font
+
+% \pagestyle{fancy}
+% \fancyhead{}
+% \fancyhead[CO,CE]{{\small{{\bf{\mytitle}} -- \myclass}}}
+
+\begin{document}
+\maketitle
+
+\vspace{-1.5cm}
+
+Este examen está pensado para resolverse en los mismos equipos de las tareas anteriores.
+Revisen con calma lo que se pide. Es bastante trabajo, por lo que se sugiere que consideren bien sus tiempos.
+Al momento de contestar, intenten ser lo más explícito posible: se calificará con base en lo que esté escrito, y se considerará el proceso aún cuando la respuesta final esté errada.
+Recuerden que pueden revisar material de la clase, el libro de texto o sus notas.
+Buena suerte.
+
+\vspace{1.5ex}
+
+Todos los procedimientos deben venir en \textit{typesetting} (Word o \LaTeX), y serán entregados en un PDF.
+
+\vspace{1.5ex}
+
+\textbf{IMPORTANTE}: Deberán contestar su examen usando el \textit{alfabeto adecuado}.
+
+\vspace{1.5ex}
+
+Sea $\Sigma$ el \textit{alfabeto adecuado} para su examen, y \texttt{mod} la operación módulo (residuo después de la división), entonces:
+
+$$ \Sigma = 
+\begin{cases}
+   \{0,1\}, & \text{ si el \textbf{número maestro} } \mathtt{mod} \, 3 = 0 \\
+   \{a,b\}, & \text{ si el \textbf{número maestro} } \mathtt{mod} \, 3 = 1 \\
+   \{x,y\}, & \text{ si el \textbf{número maestro} } \mathtt{mod} \, 3 = 2 \\
+\end{cases}
+$$
+
+donde \textbf{el número maestro} es la suma del último dígito de cada una de sus matrículas:
+
+\begin{align*}
+    A0117006\mathbf{5} + A0097344\mathbf{1} & =  6, \\
+    6 \, \mathtt{mod} \, 3 & = 0 \\
+    \therefore \quad \Sigma & = \{0,1\}
+\end{align*}
+\vspace{-2ex}
+\section{Diseño de AFDs (10 \%)}
+
+Diseñen un \textbf{Autómata Finito Determinista} \textbf{correcto} y \textbf{completo} para el lenguaje de las palabras en el \textit{alfabeto adecuado} que contienen la subcadena \texttt{baaa, 11011} o \textit{xyy} según sea el caso de acuerdo a su número maestro (8 \%) y escriban su definición formal completa (1 \%).
+Después, den dos ejemplos de palabras que sean aceptadas y otros tres de palabras no aceptadas (1 \%).
+
+
+\section{Conversión de AFN a AFDs (15 \%)}
+
+Diseñen un \textbf{Autómata Finito No-determinista} por \textbf{concatenación} para el lenguaje de las palabras $\{c^n d^m\}$ donde $n$ y $m$ describen las veces que se repite cada carácter, y $c,d$ son los dos símbolos del \textit{alfabeto adecuado} según su número maestro.
+Las palabras tienen $n \,$ $c$s, seguidas por $m \,$ $d$s donde $n, m \in \mathbb{Z}^{+}$.
+
+\begin{itemize}
+    \item Palabras aceptadas: $\varepsilon, c, d, cd, ccd, ccdd, \dots$
+    \item Palabras no aceptadas: $dc, ddc, ddddc, cddc, ccdc, \dots$
+\end{itemize}
+
+Sugerencia: minimicen lo más que puedan su AFN para que no batallen demasiado al convertirlo.
+
+\section{Diseño de Autómatas Finitos (75 \% + 15 \%)}
+
+\subsection*{Preámbulo}
+
+El \textit{Biologic Space Lab} (BSL) que orbita \textsc{SR388} es un laboratorio espacial con hábitats artificiales, y que refugia especies extraterrestres para fines taxonómicos. Está organizado en seis sectores diferentes (dependiendo de las condiciones de vida de cada especie) los cuáles están anclados a la Cubierta Principal que los une en el centro:
+
+\begin{itemize}
+    \itemsep0em
+    \item Sector 1 (SRX): especies comunes en la superficie del planeta SR388
+    \item Sector 2 (TRO): especies de climas tropicales y húmedos
+    \item Sector 3 (PYR): especies de climas desérticos o ecosistemas volcánicos
+    \item Sector 4 (AQA): especies subacuáticas
+    \item Sector 5 (ARC): especies de climas gélidos o ecosistemas polares
+    \item Sector 6 (NOC): especies nocturnas y de cuidados especiales cuya supervivencia es imposible en otro sector
+\end{itemize}
+
+El BSL sufrió una falla eléctrica dejando fuertes daños en algunos de sus sectores.
+
+\subsection*{Compuertas en Sector 4 (AQA)}
+
+Uno de los sectores más afectados es el que alberga muestras de la vida marina del planeta, el Sector 4 (AQA). Por ello, el equipo de mantenimiento les ha asignado la tarea de implementar un componente de control para el nivel del agua de los 32 tanques en el sector mientras se llevan a cabo las reparaciones.
+
+Cada tanque tiene tres sensores: uno para la detección de movimiento (y así saber si en el tanque se encuentra algún espécimen o si el tanque se encuentra vacío), otro para medir la toxicidad del agua, y uno más para medir la cantidad de carga eléctrica (la cual es un indicio de alguna falla).
+En el caso de los últimos dos sensores, se marca como `peligroso' cuando se sobrepasa un umbral, o `inofensivo' en caso contrario.
+
+Los tanques envían actualizaciones al mecanismo de control una vez cada dos horas por medio de un \textit{packet} de 1 byte, donde los primeros 3 bits corresponden a la lectura de los sensores (movimiento, toxicidad y carga, en ese orden), y los últimos 5 al ID del tanque (en binario).
+
+HQ te ha notificado que la compuerta que alimenta a cada tanque debe cerrarse en \textbf{cualquiera} de las siguientes situaciones:
+
+\begin{itemize}
+    \itemsep0em
+    \item Si las especies del tanque están a salvo (baja toxicidad y baja carga eléctrica).
+    \item Si el tanque está deshabitado pero es altamente tóxico, y sin importar lo demás.
+    \item Si el agua del tanque presenta una cantidad peligrosa de carga eléctrica, independientemente de que esté habitado o de su toxicidad.
+\end{itemize}
+
+\pagebreak
+
+Diseñen un \textbf{autómata finito} que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet completo de información que se recibe es aceptado. Sugerencias:
+
+\begin{enumerate}[label=\tt \alph*)]
+    \itemsep0em
+    \item Generen el alfabeto de su autómata (2 \%)
+    \item Conviertan las condiciones de aceptación a palabras de entrada específicas (3 \%)
+    \item Diseñen cuantos componentes sean necesarios (10 \%)
+    \item Presenten el mecanismo de control completo (5 \%)
+    \item Describan formalmente su autómata (5 \%)
+    \item Pongan nombre a su mecanismo de control (+2 \%)
+    \item Si les es posible, minimícenlo (+5 \%)
+\end{enumerate}
+
+\subsection*{Reasignación de hábitats}
+
+Con la falla eléctrica en todo el laboratorio, los estabilizadores de presión, la iluminación y los termostatos han sido afectados. Específicamente, los sectores 1 (SRX), 3 (PYR) y 4 (AQA) (los más afectados) contienen especies extraterrestres que necesitan condiciones atmosféricas específicas, temperaturas controladas y rangos de luz no muy diferentes a su hábitat natural.
+
+La base de datos del \textit{Biologic Space Lab} guarda en un byte la información para cada una de las especies que existen en su interior Este byte es también su ID.
+La descripción del packet es la siguiente:
+
+\begin{itemize}
+    \itemsep0em
+    \item Los primeros tres bits contienen información del sector en el que habita la especie
+    \item El cuarto bit contiene información del gas que necesita la especie para respirar: 0 para ${O_2}$ o 1 para $N_2$
+    \item El siguiente bit hace referencia a su resistencia a la luz para saber si la especie es diurna (1) o nocturna (0)
+    \item Los dos bits siguientes contienen información sobre la resistencia de la especie a temperaturas extremas: 0 si no resiste los puntos de congelación y ebullición del agua, 1 si es resistente a bajas temperaturas, 2 si es resistente a altas temperaturas o 3 si resiste incluso en las temperaturas más extremas de la galaxia
+    \item El último bit se utiliza para saber si la especie es una amenaza para los seres humanos
+\end{itemize}
+
+Diseñen un mega-\textbf{autómata} que funcione como mecanismo de asignación para encontrar posibles hábitats temporales.
+Para ello, generen un autómata por cada sector no afectado (incluida la Cubierta Principal) en donde si el packet es aceptado, significa que la especie puede sobrevivir allí.
+Consideren la siguiente información que envían desde HQ:
+
+\begin{itemize}
+    \itemsep0em
+    \item Pueden vivir en ARC aquellas especies resistentes a bajas temperaturas y de ecosistemas subacuáticos
+    \item En TRO pueden sobrevivir las especies que respiran nitrógeno y que vienen desde PYR
+    \item NOC sólo puede contener aquellas especies comunes que vivan en la superficie del planeta y que sean nocturnas, independientemente de la temperatura, el gas que respiren o su agresividad
+    \item La Cubierta Principal sólo puede dar asilo a aquellas especies que sean diurnas, que no representan ninguna amenaza para la tripulación y que respiran oxígeno (obviamente)
+\end{itemize}
+\pagebreak
+Para poder resolver este problema, se sugiere que sigan estos pasos: 
+
+\begin{enumerate}[label=\tt \alph*)]
+    \itemsep0em
+    \item Generen el alfabeto de su mega-autómata (2 \%)
+    \item Conviertan las condiciones de aceptación a \textit{patrones} específicos de entrada (8 \%)
+    \item Diseñen cuantos componentes sean necesarios (20 \%)
+    \item Presenten el mecanismo de control completo (2 \%)
+    \item Describan formalmente cada componente (8 \%)
+    \item Tomando en cuenta la codificación de la base de datos del BSL, describan y dibujen la criatura que se les venga a la mente con el número de identificación de especie \texttt{131} (+5 \%)
+\end{enumerate}
+
+
+\subsection*{Análisis de especies perdidas}
+
+La información del mega-autómata será usada para mudar a las especies más exigentes primero a los únicos sectores que puedan habitar. Posteriormente, se moverá a aquellas que son más adaptables.
+En caso de que una especie no pueda ser reubicada, se optará por resecuenciar su ADN y lamentablemente sacrificar a los especímenes.
+
+Considera ahora que se obtiene una muestra aleatoria de $\frac{1}{64}$ de la base de datos para dimensionar las pérdidas en el laboratorio.
+
+\begin{table}[htbp]
+    \label{tab:my-table}
+    \caption{Muestra aleatoria de especies en el BSL.}
+    \centering
+    \begin{tabular}{@{}cc@{}}
+    \toprule
+    ID  & Especie      \\ \midrule
+    40  & Etecoon      \\
+    42  & Dachora      \\
+    93  & Kihunter     \\
+    215 & Virus-X M-R2 \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+Con base en la información de la Tabla~\ref{tab:my-table}, generen dos conjuntos $P$ y $D$ con los sectores de $P$rocedencia y sectores $D$estino de las especies en la muestra (2 \%)
+Después, utilizando la información que mandó HQ como una relación que asocia procedencias con destinos, contesten:
+
+\begin{itemize}
+    \item Si supieran que la relación que asigna hábitats temporales a las especies es una función parcial, ¿tendrían elementos suficientes para asegurar que alguna especie tendrá que ser sacrificada? ¿Por qué? (8 \%)
+    \item ¿Cuántas especies distintas hay en la base de datos? (+3 \%)
+\end{itemize}
+
+\vfill
+
+\textbf{De acuerdo con el Código de Ética del Tecnológico de Monterrey, mi desempeño en esta actividad estará guiado por la integridad académica.}
+\end{document}
