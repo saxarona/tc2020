@@ -79,13 +79,13 @@
 
 \begin{center}
 {\huge Matemáticas Computacionales TC2020}\\[1.5ex]
-{\large \textbf{Tarea EX 01}\\[1.5ex] %You should put your name here
-15.09.18} %You should write the date here.
+{\large \textbf{Tarea EX 01}\\[1.5ex]} %You should put your name here
+% 15.09.18} %You should write the date here.
 \end{center}
 
 \vspace{0.2 cm}
 
-\subsection*{Diseño de Autómatas Finitos (30 \% + 7 \%)}
+\subsection*{Diseño de Autómatas Finitos (+3)}
 
 El \textit{Biologic Space Lab} que orbita \textsc{SR388} sufrió una falla eléctrica dejando fuertes daños en algunos de sus sectores.
 Uno de los más afectados fue el que alberga muestras de la vida marina del planeta, el Sector 4 (AQA).
@@ -105,17 +105,27 @@ HQ te ha notificado que la compuerta que alimenta a cada tanque debe cerrarse en
     \item Si el agua del tanque presenta una cantidad peligrosa de carga eléctrica, independientemente de que esté habitado o de su toxicidad.
 \end{itemize}
 
-Diseña un autómata que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet completo de información (la palabra de longitud 8 bits) que se recibe es \textbf{aceptado}. Sugerencias:
+Diseña un autómata que funcione como mecanismo de control para cerrar la compuerta de cada tanque si el packet completo de información (la palabra de longitud 8 bits) que se recibe es \textbf{aceptado}.
+
+\textbf{Incluye el autómata que hiciste para el examen. Si por alguna razón no lo terminaste o no salió correctamente, ésta es una buena oportunidad para rehacerlo.} (+1)
+
+Sugerencias:
 
 \begin{enumerate}[label=\tt \alph*)]
     \itemsep0em
-    \item Genera el alfabeto de tu autómata. \textit{¿Cuáles son los símbolos que verá tu autómata?} (2 \%)
-    \item Convierte las condiciones de aceptación a palabras de entrada específicas. Considera el ejemplo dado (3 \%)
-    \item Diseña cuantos componentes sean necesarios. Lo más sencillo es hacer un autómata para cada condición de aceptación. No tiene por qué ser un AFD (15 \%)
-    \item Presenta el mecanismo de control completo. El mecanismo debe aceptar \textbf{cualquiera} de las condiciones. Habrá que juntar los autómatas que hiciste (5 \%)
-    \item Describe formalmente tu autómata usando $M = (Q, \Sigma, \delta, q, F)$ (5 \%)
-    \item Ponle un nombre a tu mecanismo de control. Algo creativo como \textit{El Portero Maximus-9000} o algo así (+2 \%)
-    \item Si te es posible, minimízalo. Puede que haya estados redundantes que habría que eliminar, pero antes debes asegurarte de que el mecanismo sea un AFD y no un AFN. (+5 \%)
+    \item Genera el alfabeto de tu autómata. \textit{¿Cuáles son los símbolos que verá tu autómata?}
+    \item Convierte las condiciones de aceptación a palabras de entrada específicas. Considera el ejemplo dado
+    \item Diseña cuantos componentes sean necesarios. Lo más sencillo es hacer un autómata para cada condición de aceptación. No tiene por qué ser un AFD.
+    \item Presenta el mecanismo de control completo. El mecanismo debe aceptar \textbf{cualquiera} de las condiciones. Habrá que juntar los autómatas que hiciste.
+    \item Describe formalmente tu autómata usando $M = (Q, \Sigma, \delta, q, F)$
+    \item Ponle un nombre a tu mecanismo de control. Algo creativo como \textit{El Portero Maximus-9000} o algo así.
+    \item Si te es posible, minimízalo (para que no batalles tanto en el siguiente punto). Puede que haya estados redundantes que habría que eliminar, pero antes debes asegurarte de que el mecanismo sea un AFD y no un AFN.
 \end{enumerate}
+
+Una vez que tengas el autómata listo, conviértelo a una Expresión Regular en PCRE. (+1)
+
+\vspace{4ex}
+
+Al terminar, \textit{implementa} tu autómata (la ER en PCRE) y pruébala en RegExr (\url{https://regexr.com/})  con diferentes ejemplos. Adjunta una captura de pantalla con ejemplos de tanques cubriendo todas las condiciones (+1)
 
 \end{document}
