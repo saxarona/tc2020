@@ -1,0 +1,231 @@
+\documentclass[8pt, onside]{article}
+%\usepackage[a4paper]{geometry}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage{lipsum}
+\usepackage{bm}
+\usepackage{upgreek}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{csquotes}
+\usetikzlibrary{arrows, automata}
+
+% mathtools for: Aboxed (put box on last equation in align envirenment)
+\usepackage{microtype} %improves the spacing between words and letters
+
+%% COLOR DEFINITIONS
+
+\usepackage{xcolor} % Enabling mixing colors and color's call by 'svgnames'
+
+\definecolor{MyColor1}{rgb}{0.2,0.4,0.6} %mix personal color
+\newcommand{\textb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blue}{\color{MyColor1} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blueb}{\color{MyColor1} \usefont{OT1}{lmss}{b}{n}}
+\newcommand{\red}{\color{LightCoral} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\green}{\color{Turquoise} \usefont{OT1}{lmss}{m}{n}}
+
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\diag}{diag}
+
+%% FONTS AND COLORS
+
+%    SECTIONS
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%set section/subsections HEADINGS font and color
+%\sectionfont{\color{Black}}  % sets colour of sections
+%\subsectionfont{\color{Black}}  % sets colour of sections
+
+%set section enumerator to arabic number (see footnotes markings alternatives)
+\renewcommand\thesection{\arabic{section}} %define sections numbering
+\renewcommand\thesubsection{\thesection\arabic{subsection}} %subsec.num.
+
+%define new section style
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{MyColor1}} 
+{\thesection} {3pt} {} } 
+
+
+% %	CAPTIONS
+% \usepackage{caption}
+% \usepackage{subcaption}
+% %%%%%%%%%%%%%%%%%%%%%%%%
+% \captionsetup[figure]{labelfont={color=Turquoise}}
+
+
+%		!!!EQUATION (ARRAY) --> USING ALIGN INSTEAD
+%using amsmath package to redefine eq. numeration (1.1, 1.2, ...) 
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\setlength\parindent{0pt}
+
+
+
+
+\makeatletter
+\let\reftagform@=\tagform@
+\def\tagform@#1{\maketag@@@{(\ignorespaces\textcolor{red}{#1}\unskip\@@italiccorr)}}
+\renewcommand{\eqref}[1]{\textup{\reftagform@{\ref{#1}}}}
+\makeatother
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+
+% For labeling top of page on every page but first one:
+%\usepackage{fancyhdr}
+
+\newcommand{\myclass}{TC2020 -- Matemáticas Computacionales} % Class name?
+\newcommand{\mytitle}{Examen 2} % Title of document?
+\newcommand{\mydate}{22.10.18} % The date?
+\newcommand{\myheader}{
+    \begin{flushleft}
+        \large
+        Nombre: \rule{10 cm}{0.4mm} \quad \rule{2.5 cm}{0.4mm} \\
+        Nombre: \rule{10 cm}{0.4mm} \quad \rule{2.5 cm}{0.4mm} \\
+        Nombre: \rule{10 cm}{0.4mm} \quad \rule{2.5 cm}{0.4mm} \\
+    \end{flushleft}
+}
+
+\title{
+    \myclass \\
+    \textbf{\mytitle} \\
+    \myheader
+    \date{}
+}
+
+% You can set the date automatically by replacing "date goes here" with "\today"
+
+% \renewcommand{\rmdefault}{phv} % Arial Font
+\renewcommand{\familydefault}{phv} % Arial Font
+
+% \pagestyle{fancy}
+% \fancyhead{}
+% \fancyhead[CO,CE]{{\small{{\bf{\mytitle}} -- \myclass}}}
+
+\begin{document}
+\maketitle
+
+\vspace{-1.5cm}
+
+Este examen está pensado para resolverse con el nuevo equipo (\textit{Season 2}).
+Revisen con calma lo que se pide. Es bastante trabajo, por lo que se sugiere que consideren bien sus tiempos.
+Al momento de contestar, intenten ser lo más explícitos posible: se calificará con base en lo que esté escrito, y se considerará el proceso aún cuando la respuesta final esté errada.
+Recuerden que pueden revisar material de la clase, el libro de texto o sus notas.
+Buena suerte.
+
+\section{Expresiones Regulares (36\%)}
+
+Describan cada uno de los siguientes lenguajes utilizando \textbf{expresiones regulares} genéricas o PCRE; \textit{your choice}. En dado caso de que el lenguaje no se pueda describir con una ER, demuestren el porqué. Posteriormente, e independientemente de si tiene ER o no, escriban dos ejemplos de palabras aceptadas para cada lenguaje.
+
+\begin{enumerate}[label=\tt \alph*)]
+    \itemsep0em
+    \item El lenguaje de las palabras en $\{a,b\}$ que empiezan con $a$ y terminan con $b$.
+    \item El lenguaje de las palabras en $\{0,1\}$ que son múltiplos de $100$.
+    \item El lenguaje de las palabras en $\{x, y\}$ que son de longitud impar o que terminan en $xxx$.
+    \item El lenguaje de las palabras en $\{0,1,2\}$ que tengan un $1$ en el centro, y sean simétricas.
+    \item El lenguaje de las palabras en $\{z : z \in \mathbb{Z}, z \geq 0\}$ que son también denominaciones de billetes o monedas expedidas por el Banco de México y que están en circulación. Omitan centavos y series especiales (Onzas de plata, Centenarios, etc.).
+    \item El lenguaje de las palabras en $\{a,b\}$ que tengan un número par de $b$s. (\textit{Hint: consideren hacer un autómata y luego convertir si les parece muy complicado.})
+\end{enumerate}
+
+
+\section{Gramáticas Regulares (14 \% + 4 \%)}
+
+En \texttt{HTML}, le llamamos ``etiquetas'' a las \textit{keywords} para abrir o cerrar elementos de la página web.
+Una etiqueta siempre se escribe entre \textit{brackets} para iniciar el elemento, y la misma etiqueta pero con una diagonal al principio para finalizar el elemento.
+Las etiquetas \verb|<html>...</html>| sirven para delimitar el contenido de la página web.
+
+\begin{enumerate}[label=\tt \alph*)]
+    \itemsep0em
+    \item Escriban una expresión regular para seleccionar (o sea, que acepte) las \textit{keywords} de inicio y fin de las listas ordenadas (\texttt{ol}) y no ordenadas (\texttt{ul}), incluyendo los brackets como parte de la selección (4 \%)
+    \item Conviertan a AF y escriban su definición formal (5 \%)
+    \item Conviertan a Gramática \textbf{Regular} (no es GLC) y escriban su definición formal (5 \%)
+    \item Escriban el árbol de derivación para dos palabras válidas (+ 4\%)
+\end{enumerate}
+
+
+\section{Ambigüedad en GLCs (15\%)}
+
+Sea $G=(\{S\},\{\mathtt{if}, c, \mathtt{then}, \mathtt{else}, x\}, \{S \to x, S \to \mathtt{if} \, c \, \mathtt{then} \, S, S \to \mathtt{if} \, c \, \mathtt{then} \, S \, \mathtt{else} \, S\}, S)$ una gramática libre de contexto.
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item Demuestren que $G$ es una gramática \textbf{ambigua} utilizando dos \textbf{árboles de derivación diferentes} para una misma \textit{string} (10 \%)
+    \item Expresen cada árbol de derivación en forma secuencial (usando $\implies$) (5 \%)
+\end{enumerate}
+
+
+\section{Lenguajes Libres de Contexto (35 \% +2 \%)}
+
+\subsection*{Identificando anomalías}
+
+El \textit{Biologic Space Lab} (BSL) está en problemas nuevamente.
+Debido a una brecha en un ducto de ventilación, ciertos parásitos lograron entrar a uno de los laboratorios de acceso restringido (Sector 7), en el cual se almacenaban muestras de ADN de especies inteligentes para fines taxonómicos.
+Algunos de los bancos de datos están corruptos debido a la infección, pero otros aún están a salvo.
+HQ les ha asignado la tarea de diseñar un sistema de control para identificar aquellas muestras de ADN que aún pueden rescatarse, y les ha enviado la siguiente información:
+
+\begin{itemize}
+    \itemsep0em
+    \item Los parásitos tienen la capacidad de alterar el genoma de las especies, copiando y replicando ciertas subcadenas de ADN mediante mutación.
+    \item El parásito replica los genes pertenecientes al número de extremidades inferiores y de globos oculares de manera arbitraria.
+    \item Gracias al análisis de los datos, se determinó que los parásitos sólo están afectando a ciertas especies que consideran `aptas y balanceadas`, que son aquellas que tienen el mismo número de ojos que de piernas.
+    \item Sin embargo, se ha confirmado que el número de genes replicados pertenecientes a los ojos nunca es igual que el de las extremidades inferiores en el mismo individuo---en un individuo mutado, el número final de ojos nunca es igual al número final de piernas.
+\end{itemize}
+
+Además, dada la gran bio-diversidad del BSL, HQ les sugiere lo siguiente:
+
+\begin{tcolorbox}
+{\small Tenemos 902,451 muestras en el databank del laboratorio, de las cuáles sólo 487,350 podrían estar infectadas.
+Nos interesa saber cuáles de esas muestras posiblemente infectadas están sanas para separarlas cuanto antes.
+Como son tantas especies distintas, creemos que es mejor enfocarse en encontrar diferencias en el número de genes en lugar de buscar una secuencia válida.}
+\end{tcolorbox}
+
+Diseñen un sistema de reglas para generar subcadenas de genes de ojos y piernas de individuos sanos.
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item Generen el alfabeto de terminales (2 \%)
+    \item Describan (con notación de conjuntos o con palabras) el lenguaje aceptado por su gramática (5 \%)
+    \item Generen las reglas de su gramática (5 \%)
+    \item Describan formalmente su gramática (5 \%)
+    \item Usando su gramática, sus símbolos y reglas, escriban el árbol de derivación de un \textit{Dachora} sano, que es una especie de ave que tiene dos piernas y dos ojos (8 \%)
+    \item Hagan un Autómata \textit{adecuado} para su GLC y descríbanlo formalmente (5 \%)
+    \item Dibujen un \textit{Dachora} (+2 \%)
+    
+\end{enumerate}
+
+\subsection*{Uniendo mecanismos}
+
+HQ quiere tener acceso a las $k$ especies sanas más rápidamente.
+La sugerencia de uno de los \textit{interns} de algoritmia del BSL es agregar un prefijo a cada cadena sana y ordenar toda la base de datos para conseguir todas las cadenas de especies sanas juntas y cortar más fácilmente.
+
+Generen alguna mecanismo (autómata o gramática; \textit{your choice}) que incluya el sistema completo de tal manera que logre \textit{reconocer} cadenas sanas con todo y el prefijo de ordenamiento. Sugerencias:
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item Propongan un prefijo para ordenamiento (1 \%)
+    \item Describan con notación de conjuntos o palabras el lenguaje aceptado por el mecanismo completo (1 \%)
+    \item Generen las reglas, variables, estados o transiciones necesarias según sea el caso (1 \%)
+    \item Describan el mecanismo completo formalmente (1 \%)
+    \item Demuestren que su mecanismo es regular o libre de contexto, según consideren (1 \%)
+\end{enumerate}
+
+\section*{Extra Challenge (+8 \%)}
+
+Determinen si llevar a cabo la sugerencia del \textit{intern} es viable o no y expliquen por qué. Sugerencias:
+
+\begin{enumerate}[label=\tt \alph*)]
+    \item ¿Cuáles son los valores máximos y mínimos posibles de $k$? (+2 \%)
+    \item Asuman que se utilizará un algoritmo \textbf{eficiente} de ordenamiento sobre las $n$ muestras del laboratorio.
+    \item ¿Cuál es el valor de $n$? (+1 \%)
+    \item ¿Cuántas operaciones tomaría encontrar todas las $k$ especies sanas si las buscas entre las $n$ posibles de una por una? (+2 \%)
+    \item ¿Cuántas operaciones tomaría ordenar las $n$ especies? (+2 \%)
+    \item ¿Qué es más rápido? ¿La opción \texttt{d} o la opción \texttt{e}? (+1 \%)
+\end{enumerate}
+
+\vfill
+
+\textbf{De acuerdo con el Código de Ética del Tecnológico de Monterrey, nuestro desempeño en esta actividad estará guiado por la integridad académica.}
+\end{document}
