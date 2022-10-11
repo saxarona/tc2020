@@ -1,3 +1,4 @@
 *.synctex*
 *.nav
 *.snm
+*.ipynb_checkpoints
